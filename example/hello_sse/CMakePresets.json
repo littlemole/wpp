@@ -1,0 +1,386 @@
+{
+    "version": 3,
+    "configurePresets": [
+      {
+        "name": "win32",
+        "description": "windows base preset",
+        "hidden": true,
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
+        "installDir": "${sourceDir}/out/install/${presetName}",
+        "toolchainFile": "${sourceDir}/../../vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "environment": {
+          "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
+        },
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Windows"
+        }
+      },
+      {
+        "name": "win-x64-asio-debug",
+        "displayName": "x64 Debug asio",
+        "description": "Sets debug build type and x64 arch",
+        "inherits": "win32",
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "architecture": {
+          "value": "x64",
+          "strategy": "external"
+        },
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Debug",
+          "WITH_LIBEVENT": "Off",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "win-x64-asio-release",
+        "displayName": "x64 Release asio",
+        "description": "Sets release build type",
+        "inherits": "win-x64-asio-debug",
+        "binaryDir": "${sourceDir}/out/build/x64-Release",
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      },
+      {
+        "name": "win-x64-libevent-debug",
+        "displayName": "x64 Debug libevent",
+        "description": "Sets debug build type and x64 arch",
+        "inherits": "win32",
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "architecture": {
+          "value": "x64",
+          "strategy": "external"
+        },
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Debug",
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "win-x64-libevent-release",
+        "displayName": "x64 Release libevent",
+        "description": "Sets release build type",
+        "inherits": "win-x64-libevent-debug",
+        "binaryDir": "${sourceDir}/out/build/x64-Release",
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      },
+      {
+        "name": "gcc-debug",
+        "displayName": "gcc Debug",
+        "description": "linux base",
+        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "hidden": true,
+        "cacheVariables": {
+          "CMAKE_C_COMPILER": "gcc",
+          "CMAKE_CXX_COMPILER": "g++",
+          "CMAKE_BUILD_TYPE": "Debug"
+        },
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Linux"
+        }
+      },
+      {
+        "name": "gcc-release",
+        "displayName": "gcc Release",
+        "description": "Sets release build type",
+        "inherits": "gcc-debug",
+        "hidden": true,
+        "binaryDir": "${sourceDir}/out/build/x64-Release",
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      },
+      {
+        "name": "gcc-debug-libevent",
+        "displayName": "gcc Debug libevent",
+        "description": "libevent base",
+        "inherits": "gcc-debug",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "gcc-release-libevent",
+        "displayName": "gcc Release libevent",
+        "description": "Sets release build type",
+        "inherits": "gcc-release",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "gcc-debug-asio",
+        "displayName": "gcc Debug boost_asio",
+        "description": "libevent base",
+        "inherits": "gcc-debug",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "Off",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "gcc-release-asio",
+        "displayName": "gcc Release boost_asio",
+        "description": "Sets release build type",
+        "inherits": "gcc-release",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "Off",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "clang-debug",
+        "displayName": "clang Debug",
+        "description": "linux base",
+        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "hidden": true,
+        "cacheVariables": {
+          "CMAKE_C_COMPILER": "clang",
+          "CMAKE_CXX_COMPILER": "clang++",
+          "CMAKE_BUILD_TYPE": "Debug"
+        },
+        "condition": {
+          "type": "equals",
+          "lhs": "${hostSystemName}",
+          "rhs": "Linux"
+        }
+      },
+      {
+        "name": "clang-release",
+        "displayName": "clang Release",
+        "description": "Sets release build type",
+        "hidden": true,
+        "inherits": "clang-debug",
+        "binaryDir": "${sourceDir}/out/build/x64-Release",
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      },
+      {
+        "name": "clang-debug-libevent",
+        "displayName": "clang Debug libevent",
+        "description": "linux base clang-libevent",
+        "inherits": "clang-debug",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "clang-release-libevent",
+        "displayName": "clang Release libevent",
+        "description": "Sets release build type",
+        "inherits": "clang-release",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "clang-debug-asio",
+        "displayName": "clang Debug asio",
+        "description": "linux base clang-asio",
+        "inherits": "clang-debug",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "Off",
+          "WITH_TEST" : "On"
+        }
+      },
+      {
+        "name": "clang-release-asio",
+        "displayName": "clang Release asio",
+        "description": "Sets release build type",
+        "inherits": "clang-release",
+        "cacheVariables": {
+          "WITH_LIBEVENT": "Off",
+          "WITH_TEST" : "On"
+        }
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "gcc-debug-libevent",
+        "displayName": "Debug gcc libevent",
+        "configurePreset": "gcc-debug-libevent",
+        "description": "Vanilla build gcc debug with libevent"
+      },
+      {
+        "name": "gcc-release-libevent",
+        "displayName": "Release gcc libevent",
+        "configurePreset": "gcc-release-libevent",
+        "description": "Vanilla build gcc release with libevent"
+      },
+      {
+        "name": "gcc-debug-asio",
+        "displayName": "Debug gcc asio",
+        "configurePreset": "gcc-debug-asio",
+        "description": "gcc build debug with asio"
+      },
+      {
+        "name": "gcc-release-asio",
+        "displayName": "Release gcc asio",
+        "configurePreset": "gcc-release-asio",
+        "description": "Vanilla build gcc release with asio"
+      },
+      {
+        "name": "clang-debug-libevent",
+        "displayName": "Debug clang++ with libevent",
+        "configurePreset": "clang-debug-libevent",
+        "description": "Vanilla build clang debug with libevent"
+      },
+      {
+        "name": "clang-release-libevent",
+        "displayName": "Release clang++ with libevent",
+        "configurePreset": "clang-release-libevent",
+        "description": "Vanilla build clang release with libevent"
+      },
+      {
+        "name": "clang-debug-asio",
+        "displayName": "Debug clang++ with asio",
+        "configurePreset": "clang-debug-asio",
+        "description": "Vanilla build clang debug with asio"
+      },
+      {
+        "name": "clang-release-asio",
+        "displayName": "Release clang++ with asio",
+        "configurePreset": "clang-release-asio",
+        "description": "Vanilla build clang release with asio"
+      },
+      {
+        "name": "asio-debug-build-windows",
+        "displayName": "Default",
+        "configurePreset": "win-x64-asio-debug",
+        "description": "Vanilla build asio"
+      },
+      {
+        "name": "asio-release-build-windows",
+        "displayName": "Release",
+        "configurePreset": "win-x64-asio-release",
+        "description": "Release build asio"
+      },
+      {
+        "name": "libevent-debug-build-windows",
+        "displayName": "Default libevent",
+        "configurePreset": "win-x64-libevent-debug",
+        "description": "Vanilla build libevent"
+      },
+      {
+        "name": "libevent-release-build-windows",
+        "displayName": "Release libevent",
+        "configurePreset": "win-x64-libevent-release",
+        "description": "Release build libevent"
+      }
+
+    ],
+    "testPresets": [
+      {
+        "name": "gcc-debug-libevent-test",
+        "description": "Enable output on failure",
+        "configurePreset": "gcc-debug-libevent",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "gcc-release-libevent.test",
+        "description": "Enable output on failure",
+        "configurePreset": "gcc-release-libevent",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "gcc-debug-asio-test",
+        "description": "Enable output on failure",
+        "configurePreset": "gcc-debug-asio",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "gcc-release-asio-test",
+        "description": "Enable output on failure",
+        "configurePreset": "gcc-release-asio",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "clang-debug-libevent-test",
+        "description": "Enable output on failure",
+        "configurePreset": "clang-debug-libevent",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "clang-release-libevent-test",
+        "description": "Enable output on failure",
+        "configurePreset": "clang-release-libevent",
+        "output": {
+          "outputOnFailure": true
+        }
+      },      
+      {
+        "name": "clang-debug-asio-test",
+        "description": "Enable output on failure",
+        "configurePreset": "clang-debug-asio",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "clang-release-asio-test",
+        "description": "Enable output on failure",
+        "configurePreset": "clang-release-asio",
+        "output": {
+          "outputOnFailure": true
+        }
+      },      
+      {
+        "name": "debug-libevent.test-windows",
+        "description": "Enable output on failure",
+        "configurePreset": "win-x64-libevent-debug",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "release-libevent-test-windows",
+        "description": "Enable output on failure",
+        "configurePreset": "win-x64-libevent-release",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "debug-asio.test-windows",
+        "description": "Enable output on failure",
+        "configurePreset": "win-x64-asio-debug",
+        "output": {
+          "outputOnFailure": true
+        }
+      },
+      {
+        "name": "release-asio-test-windows",
+        "description": "Enable output on failure",
+        "configurePreset": "win-x64-asio-release",
+        "output": {
+          "outputOnFailure": true
+        }
+      }
+
+    ]
+  }

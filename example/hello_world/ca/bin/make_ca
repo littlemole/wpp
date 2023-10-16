@@ -1,0 +1,23 @@
+#!/bin/bash
+
+CN=$1
+C="DE"
+ST="Berlin"
+O="reprocpp"
+
+if [ "$CN" = "" ] ; then
+	echo "specify cn of root domain"
+	exit 1
+else
+	echo "$CN" > "ca/name"
+fi
+
+cd ca
+openssl genrsa -out "ca.key" 4096 
+
+openssl req -x509 -new -nodes -key ca.key -subj "/C=$C/ST=$ST/O=$O/CN=$CN" -sha256 -days 3072 -out ca.crt
+cd ..
+
+
+
+

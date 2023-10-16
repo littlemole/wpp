@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CXX: ${CXX}
+        BACKEND: ${BACKEND}
+        BUILDCHAIN: ${BUILDCHAIN}
+    ports:
+     - "9876:9876"
+  redis:
+    image: "redis:alpine"
+    

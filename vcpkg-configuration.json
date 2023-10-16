@@ -1,0 +1,22 @@
+{
+    "default-registry": {
+      "kind": "git",
+      "repository": "https://github.com/microsoft/vcpkg",
+      "baseline": "38dd6b15ada368740b5047e4282cbd8395228f03" 
+    },
+    "registries": [
+      {
+        "kind": "git",
+        "repository": "https://github.com/littlemole/vcpkg-registry",
+        "baseline": "1f71fa090df5f87b33390e7978426c42e4697e16",
+        "packages": [ 
+		"beison", "beicode", 
+		"metacpp", "patex", 
+		"webview2", "winmdparser", 
+		"utest", "cryptoneat", 
+		"diycpp", "reprocpp", 
+		"mustache" 
+	]
+      }
+    ]
+}

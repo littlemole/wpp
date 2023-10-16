@@ -1,0 +1,12 @@
+{
+    "redis"  : "redis://localhost:6379/",
+
+    "https"  :
+    {
+        "cert"   : "pem/session.pem",
+        "ports"  : [ 9878 ],
+        "http2"  : true
+    }
+}
+
+ 

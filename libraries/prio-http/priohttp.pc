@@ -1,0 +1,9 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: prio-http
+Description: reactive c++ http with promises
+Version: 0.0.1
+Cflags: -I${includedir}
+Libs: -L${libdir} -lpriocpp  -lssl -lcrypto -lpthread 

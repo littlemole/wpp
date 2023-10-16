@@ -1,0 +1,9 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: promise-web
+Description: The c++ promise-web library
+Version: 1.0.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lreproweb -lpriohttp -lpriocpp

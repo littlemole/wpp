@@ -1,0 +1,54 @@
+# index
+index.title.headline=hello coroutine websockets
+index.title.desc=hello world websocket example with coroutines for modern reactive c++ for the web.
+
+index.main.headline=Hello Coroutines WebSockets Example
+index.main.greeting=Hello dear {{ username }}
+index.main.logout=you can logout 
+index.main.logout.link=here
+
+index.main.chat=Websocket chat: type a message
+index.main.chat.send=Send
+
+# login
+login.title.headline=hello coroutine websockets login
+login.title.desc=hello world websocket login example with coroutines for modern reactive c++ for the web.
+
+login.main.headline=Hello Coroutines WebSockets Login Example
+login.main.desc=please specify login and password. if you do not have a login yet you can register 
+login.main.desc.link=here
+
+#register
+register.title.headline=hello coroutine websockets registration
+register.title.desc=hello world registration websocket example with coroutines for modern reactive c++ for the web.
+
+register.main.headline=Hello Coroutines WebSockets Registration Example
+register.main.desc=new user registration
+register.main.fields=please fill out all fields.
+
+#generic
+generic.page.title=Hello Coro Websockets
+
+generic.header.headline=wpp
+generic.header.headline.desc=modern reactive c++ for the web.
+generic.header.headline.home=home
+generic.header.headline.examples=examples
+generic.header.headline.this.example=this example
+
+generic.menu.title=Hello WSCORO Menu
+generic.menu.home=home
+generic.menu.login=login
+generic.menu.register=register
+generic.menu.logout=logout
+
+generic.main.copyright=&copy; littlemole. All rights reserved.
+
+error.msg.login.failed=invalid login/password combination
+error.msg.username.empty=username may not be empty
+error.msg.username.invalid=username contains invalid tokens.
+error.msg.password.empty=password shall not be empty
+error.msg.login.empty=login may not be empty
+error.msg.login.invalid.email=login must be valid email address
+error.msg.avatar.invalid.url=avatar url must be emty or a valid htpp/https url.
+error.msg.login.alreaady.taken=login is already taken.
+

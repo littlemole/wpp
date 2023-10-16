@@ -1,0 +1,22 @@
+{
+    "user-service" : "https://localhost:9877",
+    "session-service" : "https://localhost:9878",
+    "redis"  : "redis://localhost:6379/",
+    "sqlite" : "./user.db",
+    "cert"   : "pem/web.pem",
+    "view"   : "/view/",
+    "htdocs" : "/htdocs/",
+    "i18n"   : {
+        "path"    : "/locale/properties", 
+        "locales" : ["en", "de"]
+    },
+    "https"  :
+    {
+        "cert"   : "pem/web.pem",
+        "ports"  : [ 9876 ],
+        "http2"  : false
+    }
+
+}
+
+ 

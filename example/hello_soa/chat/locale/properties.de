@@ -1,0 +1,47 @@
+# index
+index.title.headline=hallo soa websockets
+index.title.desc=hallo soa websocket beispiel für modernes reactive c++ für das web.
+
+index.main.headline=Hallo Soa WebSockets Beispiel
+index.main.greeting=Hallo {{ username }}
+index.main.logout=Ausloggen kannst Du 
+index.main.logout.link=hier
+
+index.main.chat=Websocket chat: schreibe eine nachricht.
+index.main.chat.send=Versenden
+
+# login
+login.title.headline=hallo soa websockets login
+login.title.desc=hallo soa websocket login beispiel für modernes reactives c++ für das web.
+
+login.main.headline=Hallo SOA WebSockets Login Beispiel
+login.main.desc=Bitte login und password angeben. Registrieren kannst Du Dich
+login.main.desc.link=hier
+
+#register
+register.title.headline=hallo soa websockets registration
+register.title.desc=hallo soa registration websocket beispiel für modernes reactives c++ für das web.
+
+register.main.headline=Hallo SOA WebSockets Registration Beispiel
+register.main.desc=Registrierung für neue Benutzer.
+register.main.fields=Bitte fülle alle Felder aus.
+
+#generic
+generic.page.title=Hallo SOA Websockets
+
+generic.header.headline=wpp
+generic.header.headline.desc=modern reactive c++ for the web.
+generic.header.headline.home=home
+generic.header.headline.examples=examples
+generic.header.headline.this.example=this example
+
+generic.menu.title=Hallo SOA Menu
+generic.menu.home=home
+generic.menu.login=login
+generic.menu.register=register
+generic.menu.logout=logout
+
+generic.main.copyright=&copy; littlemole 2023. All rights reserved.
+
+
+

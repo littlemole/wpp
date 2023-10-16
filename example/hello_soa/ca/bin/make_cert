@@ -1,0 +1,29 @@
+#!/bin/bash
+
+CN=$1
+ALT=$2
+C="DE"
+ST="Berlin"
+O="reprocpp"
+
+if [ "$CN" = "" ] ; then
+	echo "specify domain name"
+	exit 1
+fi
+
+cd certs
+mkdir $CN
+cd $CN
+
+openssl genrsa -out "$CN.key" 4096 
+
+openssl req -new -sha256 -key "$CN.key" -subj "/C=$C/ST=$ST/O=$O/CN=$CN" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "\n[SAN]\nsubjectAltName=$ALT")) -out "$CN.csr"
+
+openssl x509 -req -extfile <(printf "subjectAltName=$ALT") -in "$CN.csr" -CA "../../ca/ca.crt" -CAkey "../../ca/ca.key" -CAcreateserial -out "$CN.crt" -days 5000 -sha256
+
+cat "$CN.key" > "$CN.pem"
+cat "$CN.crt" >> "$CN.pem"
+
+cd ..
+cd ..
+

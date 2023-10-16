@@ -1,0 +1,29 @@
+{
+    "redis"  : "redis://localhost:6379/",
+    "sqlite" : "./user.db",
+    "cert"   : "pem/server.pem",
+
+    "view"   : "/view/",
+    "htdocs" : "/htdocs/",
+
+    "i18n"   : {
+        "path"    : "/locale/properties", 
+        "locales" : ["en", "de"]
+    },
+
+    "https"  :
+    {
+        "cert"   : "pem/server.pem",
+        "ports"  : [ 9876 ],
+        "http2"  : false
+    },
+
+    "session" : 
+    {
+        "verb"  : "(GET)|(POST)",
+        "path"  : "^((?!(/css)|(/img)|(/js)|(/inc)).)*$",
+        "prio"  : 10
+    }    
+}
+
+ 

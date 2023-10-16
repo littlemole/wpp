@@ -1,0 +1,12 @@
+{
+    "mysql"  : "mysql://userservice:serviceuser@mysql/userservice",
+    "cert"   : "pem/user.pem",
+    "https"  :
+    {
+        "cert"   : "pem/user.pem",
+        "ports"  : [ 9878 ],
+        "http2"  : true
+    }    
+}
+
+ 

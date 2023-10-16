@@ -1,0 +1,9 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: repro-curl
+Description: reactive c++ curl client wrapper with promises
+Version: 0.0.1
+Cflags: -I${includedir}
+Libs: -L${libdir} -lreprocurl -lpriocpp -lcurl -lssl -lcrypto -lpthread 

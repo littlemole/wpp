@@ -1,0 +1,86 @@
+static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 8080
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        typed_config:
+          "@type": type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
+          upgrade_configs:
+          - upgrade_type: "websocket"     
+            enabled: true
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: backend
+              domains:
+              - "localhost:8080"
+              routes:
+              - match:
+                  regex: "/ws"
+                route:
+                  cluster: ws_chat_ws
+                  upgrade_configs:
+                    - upgrade_type: "websocket"
+                      enabled: true
+              - match:
+                  regex: ".*"
+                route:
+                  cluster: ws_chat
+
+          http_filters:
+          - name: envoy.router
+            typed_config: {}
+      tls_context:
+        common_tls_context:
+          tls_certificates:
+            - certificate_chain:
+                filename: "/etc/server.crt"
+              private_key:
+                filename: "/etc/server.key"            
+  clusters:
+  - name: ws_chat
+    connect_timeout: 15.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: { allow_connect: true }
+    load_assignment:
+      cluster_name: ws_chat
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: web
+                port_value: 9876
+    tls_context: 
+      sni: "localhost" 
+      common_tls_context: 
+        alpn_protocols: "h2" 
+  - name: ws_chat_ws
+    connect_timeout: 15.25s
+    type: strict_dns
+    lb_policy: round_robin
+    load_assignment:
+      cluster_name: ws_chat_ws
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: web
+                port_value: 9876
+    tls_context: 
+      sni: "localhost" 
+
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001

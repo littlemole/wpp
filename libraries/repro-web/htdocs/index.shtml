@@ -1,0 +1,10 @@
+<html><head></head><body>
+<table><tr><td>
+<!--#include virtual='/root/path/a' -->
+</td></tr><tr><td>
+<!--#include virtual='/root/path/a' -->
+</td></tr><tr><td>
+<!--#include virtual='/root/path/a' -->
+</td></tr><tr><td>
+</td></tr></table>
+</body></html>

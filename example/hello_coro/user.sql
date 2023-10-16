@@ -1,0 +1,7 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT NOT_NULL UNIQUE PRIMARY KEY,
+    username VARCHAR(256),
+    login VARCHAR(64) UNIQUE,
+    pwd VARCHAR(270),
+    avatar_url VARCHAR(2048)
+);

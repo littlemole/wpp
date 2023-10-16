@@ -1,0 +1,9 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: priocpp
+Description: a reactive c++ io library built on promises
+Version: 0.0.4
+Cflags: -I${includedir}
+Libs: -L${libdir} -lpriocpp -lssl -lcrypto 

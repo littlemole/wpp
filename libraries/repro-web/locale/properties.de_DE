@@ -1,0 +1,15 @@
+login.page.title=Guten Tag Coro Websockets
+
+login.header.headline=repro-web
+login.header.headline.desc=modernes reactives c++ für das web.
+
+login.title.headline=Hallo Coroutine Websockets
+login.title.desc=Hallo welt websocket Beispier mit Coroutinen für modernes reactives C++ für das Web.
+
+login.main.headline=Hallo Coroutinen WebSockets Beispiel
+login.main.greeting=Willkomen zurück, {{ username }}!
+
+login.main.logout=Ausloggen kannst Du Dich
+login.main.logout.link=hier
+login.main.chat=Websocket chat: Schreibe eine Botschaft:
+

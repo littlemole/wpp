@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo mkdir /usr/local/share/ca-certificates/reprocpp
+sudo cp ca/ca.crt /usr/local/share/ca-certificates/reprocpp/root.cert.crt
+sudo update-ca-certificates

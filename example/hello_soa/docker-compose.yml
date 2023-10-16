@@ -1,0 +1,50 @@
+version: '2'
+services:
+  web:
+    build: 
+      context: ./chat
+      dockerfile: Dockerfile
+      args:
+        CXX: ${CXX}
+        BACKEND: ${BACKEND}
+        BUILDCHAIN: ${BUILDCHAIN}
+        BASE_IMAGE: ${BASE_IMAGE}
+    ports:
+     - "9876:9876"
+  user:
+    build: 
+      context: ./user-service
+      dockerfile: Dockerfile
+      args:
+        CXX: ${CXX}
+        BACKEND: ${BACKEND}
+        BUILDCHAIN: ${BUILDCHAIN}
+        BASE_IMAGE: ${BASE_IMAGE}
+    ports:
+     - "9877:9877"
+    depends_on:
+      mysql:
+        condition: service_healthy     
+  session:
+    build: 
+      context: ./session-service
+      dockerfile: Dockerfile
+      args:
+        CXX: ${CXX}
+        BACKEND: ${BACKEND}
+        BUILDCHAIN: ${BUILDCHAIN}
+        BASE_IMAGE: ${BASE_IMAGE}
+    ports:
+     - "9879:9879"          
+  redis:
+    image: "redis:alpine"
+  mysql:
+    build: 
+      context: ./mysql
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes 
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10

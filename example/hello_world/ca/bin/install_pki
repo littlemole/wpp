@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bin/install_ca
+cp certs/localhost/localhost.pem ../pem/server.pem

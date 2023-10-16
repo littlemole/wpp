@@ -1,0 +1,12 @@
+#!/bin/bash
+
+bin/remove_ca
+rm -rf ca
+rm -rf certs
+mkdir ca
+mkdir certs
+bin/make_ca "ca.localhost"
+bin/install_ca
+bin/install_ca_nss
+bin/make_cert "localhost"
+cp certs/localhost/localhost.pem ../pem/server.pem

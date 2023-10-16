@@ -1,0 +1,180 @@
+-- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
+--
+-- Host: localhost    Database: oauth
+-- ------------------------------------------------------
+-- Server version	5.7.17-0ubuntu0.16.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `access_tokens`
+--
+
+create database oauth;
+grant all privileges on oauth.* to 'oauth'@'%' identified by 'oauth';
+flush privileges;
+
+use oauth;
+
+--
+-- Table structure for table `authorization_codes`
+--
+
+DROP TABLE IF EXISTS `authorization_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `authorization_codes` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `authorization_code` char(40) DEFAULT NULL,
+  `client_id` varchar(40) DEFAULT NULL,
+  `user_id` mediumint(8) DEFAULT NULL,
+  `redirect_uri` varchar(4096) DEFAULT NULL,
+  `expires` timestamp NULL DEFAULT NULL,
+  `scope` varchar(32) DEFAULT NULL,
+  `id_token` varchar(32) DEFAULT NULL,
+  `offline` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`),
+  KEY `scope` (`scope`),
+  CONSTRAINT `authorization_codes_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `authorization_codes_ibfk_2` FOREIGN KEY (`scope`) REFERENCES `scopes` (`scope`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `authorization_codes`
+--
+
+LOCK TABLES `authorization_codes` WRITE;
+/*!40000 ALTER TABLE `authorization_codes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `authorization_codes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clients`
+--
+
+DROP TABLE IF EXISTS `clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clients` (
+  `id` varchar(40) NOT NULL,
+  `user_id` int(6) DEFAULT NULL,
+  `client_secret` char(40) DEFAULT NULL,
+  `redirect_uri` varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clients`
+--
+
+LOCK TABLES `clients` WRITE;
+/*!40000 ALTER TABLE `clients` DISABLE KEYS */;
+INSERT INTO `clients` VALUES ('app_mgr',1,'45558117b8b0c8c8d654c6ecb9a3fc2968de933c','https://localhost:8888/oauth_callback'),('app_service',1,'45558117b8b0c8c8d654c6ecb9a3fc2968de9339',NULL),('test',1,'23b9fbb4f79629bf4423f5ba7277323dbcf5b924','https://localhost:6666/oauth_callback'),('user_service',1,'45558117b8b0c8c8d654c6ecb9a3fc2968de9335',NULL),('usr_mgr',1,'143bae29c60218a76428c4f9a5bf423fe89623b1','http://localhost:7777/oauth_callback');
+/*!40000 ALTER TABLE `clients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `refresh_tokens`
+--
+
+DROP TABLE IF EXISTS `refresh_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `refresh_tokens` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `refresh_token` char(40) DEFAULT NULL,
+  `client_id` varchar(40) DEFAULT NULL,
+  `user_id` mediumint(8) DEFAULT NULL,
+  `expires` timestamp NULL DEFAULT NULL,
+  `scope` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`),
+  KEY `scope` (`scope`),
+  CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `refresh_tokens_ibfk_2` FOREIGN KEY (`scope`) REFERENCES `scopes` (`scope`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `refresh_tokens`
+--
+
+LOCK TABLES `refresh_tokens` WRITE;
+/*!40000 ALTER TABLE `refresh_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `refresh_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `scopes`
+--
+
+DROP TABLE IF EXISTS `scopes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `scopes` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `scope` varchar(32) DEFAULT NULL,
+  `is_default` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `scope` (`scope`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `scopes`
+--
+
+LOCK TABLES `scopes` WRITE;
+/*!40000 ALTER TABLE `scopes` DISABLE KEYS */;
+INSERT INTO `scopes` VALUES (1,'default',1),(2,'uid',0),(3,'profile',0),(4,'credentials',0),(5,'apps',0);
+/*!40000 ALTER TABLE `scopes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `user_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) NOT NULL,
+  `pwdhash` varchar(264) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','20aa80043a7a1f0166f88fc3633cada17cabbc7c4173e0600b66ede8029ad3d485a4c92b69f30e3f4e5c0acaa1977162bd4970bdb7e96b19f26bc3905da8751f2c33be7abca42e560367ad21ebbb84c2eea24c173a3bad2a31bb2ca3c71d90a6b5d3fa7d728fdc950ab98ebb65a083a3821b108512979cb0d6ee2bf14e8122cd19b57432'),(2,'test','69fb310c4684e41b70236a287e6b8166c53981045bffda9f5c0392abe3117b712ca9f1547f9c98c6ef22d84f9451951002d02acbd3340a21b233cd793a79bbef697ff9ad405f4b815f8abc225c8da859cfe1517a152126bdb56215722d475bd651f0148ff1caf148cdad15ee0717e7c1c44104e43b2a9cc7be960a5cd2997b6f7ee407ce');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-03-07 20:21:59

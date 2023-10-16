@@ -1,0 +1,6 @@
+{
+    "mysql"  : "mysql://userservice:serviceuser@mysql/userservice",
+    "cert"   : "pem/user.pem"
+}
+
+ 

@@ -1,0 +1,15 @@
+login.page.title=Heya Coro Websockets
+
+login.header.headline=repro-web
+login.header.headline.desc=modern reactive c++ for the web.
+
+login.title.headline=hello coroutine websockets
+login.title.desc=hello world websocket example with coroutines for modern reactive c++ for the web.
+
+login.main.headline=Hello Coroutines WebSockets Example
+login.main.greeting=Hello dear {{ username }}
+
+login.main.logout=you can logout 
+login.main.logout.link=here
+login.main.chat=Websocket chat: type a message
+
