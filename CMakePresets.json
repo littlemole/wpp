@@ -259,25 +259,25 @@
         "description": "Vanilla build clang release with asio"
       },
       {
-        "name": "asio-debug-build-windows",
+        "name": "win-x64-asio-debug",
         "displayName": "Default",
         "configurePreset": "win-x64-asio-debug",
         "description": "Vanilla build asio"
       },
       {
-        "name": "asio-release-build-windows",
+        "name": "win-x64-asio-release",
         "displayName": "Release",
         "configurePreset": "win-x64-asio-release",
         "description": "Release build asio"
       },
       {
-        "name": "libevent-debug-build-windows",
+        "name": "win-x64-libevent-debug",
         "displayName": "Default libevent",
         "configurePreset": "win-x64-libevent-debug",
         "description": "Vanilla build libevent"
       },
       {
-        "name": "libevent-release-build-windows",
+        "name": "win-x64-libevent-release",
         "displayName": "Release libevent",
         "configurePreset": "win-x64-libevent-release",
         "description": "Release build libevent"
@@ -286,7 +286,7 @@
     ],
     "testPresets": [
       {
-        "name": "gcc-debug-libevent-test",
+        "name": "gcc-debug-libevent",
         "description": "Enable output on failure",
         "configurePreset": "gcc-debug-libevent",
         "output": {
@@ -294,7 +294,7 @@
         }
       },
       {
-        "name": "gcc-release-libevent.test",
+        "name": "gcc-release-libevent",
         "description": "Enable output on failure",
         "configurePreset": "gcc-release-libevent",
         "output": {
@@ -302,7 +302,7 @@
         }
       },
       {
-        "name": "gcc-debug-asio-test",
+        "name": "gcc-debug-asio",
         "description": "Enable output on failure",
         "configurePreset": "gcc-debug-asio",
         "output": {
@@ -310,7 +310,7 @@
         }
       },
       {
-        "name": "gcc-release-asio-test",
+        "name": "gcc-release-asio",
         "description": "Enable output on failure",
         "configurePreset": "gcc-release-asio",
         "output": {
@@ -318,7 +318,7 @@
         }
       },
       {
-        "name": "clang-debug-libevent-test",
+        "name": "clang-debug-libevent",
         "description": "Enable output on failure",
         "configurePreset": "clang-debug-libevent",
         "output": {
@@ -326,7 +326,7 @@
         }
       },
       {
-        "name": "clang-release-libevent-test",
+        "name": "clang-release-libevent",
         "description": "Enable output on failure",
         "configurePreset": "clang-release-libevent",
         "output": {
@@ -334,7 +334,7 @@
         }
       },      
       {
-        "name": "clang-debug-asio-test",
+        "name": "clang-debug-asio",
         "description": "Enable output on failure",
         "configurePreset": "clang-debug-asio",
         "output": {
@@ -342,7 +342,7 @@
         }
       },
       {
-        "name": "clang-release-asio-test",
+        "name": "clang-release-asio",
         "description": "Enable output on failure",
         "configurePreset": "clang-release-asio",
         "output": {
@@ -350,7 +350,7 @@
         }
       },      
       {
-        "name": "debug-libevent.test-windows",
+        "name": "win-x64-libevent-debug",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-libevent-debug",
         "output": {
@@ -358,7 +358,7 @@
         }
       },
       {
-        "name": "release-libevent-test-windows",
+        "name": "win-x64-libevent-release",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-libevent-release",
         "output": {
@@ -366,7 +366,7 @@
         }
       },
       {
-        "name": "debug-asio.test-windows",
+        "name": "win-x64-asio-debug",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-asio-debug",
         "output": {
@@ -374,7 +374,7 @@
         }
       },
       {
-        "name": "release-asio-test-windows",
+        "name": "win-x64-asio-release",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-asio-release",
         "output": {
