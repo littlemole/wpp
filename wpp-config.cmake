@@ -68,30 +68,29 @@ IF (WIN32)
 
     set(VERSION "${CMAKE_CXX_COMPILER_ID}_${CMAKE_BUILD_TYPE}")
 
-    message("+++++++++++++++++")
-    message("${CMAKE_BUILD_TYPE}")
-    message("+++++++++++++++++")
-
     set(OSLIBS "Ws2_32" "Rpcrt4" "Shlwapi")
 
     find_library(EXPAT_LIBRARY NAMES libexpat.lib)
     find_library(EXPATD_LIBRARY NAMES libexpatd.lib)
-    find_library(LIBEVENT NAMES event)
-    set(LIBEVENT_LIBRARY ${LIBEVENT_LIBRARIES})
-
     find_library(NGHTTP2_LIBRARY NAMES nghttp2)
 
     find_package(jsoncpp REQUIRED)
     find_package(unofficial-sqlite3 CONFIG REQUIRED)
     find_package(Iconv)
     find_package(CURL REQUIRED)
-    find_package(libmysql REQUIRED)
+    find_package(unofficial-libmysql CONFIG REQUIRED)
     find_package(ZLIB REQUIRED)
 
     if(WITH_LIBEVENT)
         add_definitions(-DPROMISE_USE_LIBEVENT)    
-    	find_package(Libevent CONFIG REQUIRED)
-        set(BACKEND "libevent::core" "libevent::extra")
+
+        if(CMAKE_BUILD_TYPE MATCHES "Debug")
+           find_library(LIBEVENT_LIBRARY NAMES "eventd.lib")
+        else()
+            find_library(LIBEVENT_LIBRARY NAMES "event.lib")
+        endif()
+
+        set(BACKEND "${LIBEVENT_LIBRARY}") 
     else()
         add_definitions(-DPROMISE_USE_BOOST_ASIO)
         find_package( Boost COMPONENTS system date_time  REQUIRED )
@@ -117,9 +116,6 @@ IF (WIN32)
 	    ZLIB::ZLIB
 	    ${STDLIB}	
     )
-
-    message("++++++++++++++++++++++")
-    message("${CMAKE_BUILD_TYPE}")
 
  ELSEIF (UNIX)
 
@@ -215,5 +211,4 @@ include_directories(${JSONCPP_INCLUDE_DIR})
 if(UNIX)
     include_directories("/usr/include/kainjow")
 endif()
-
 

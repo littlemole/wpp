@@ -8,7 +8,6 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/build/${presetName}",
         "installDir": "${sourceDir}/out/install/${presetName}",
-        "toolchainFile": "${sourceDir}/../../vcpkg/scripts/buildsystems/vcpkg.cmake",
         "environment": {
           "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
         },
@@ -30,6 +29,7 @@
           "strategy": "external"
         },
         "cacheVariables": {
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build/x64-Debug/vcpkg_installed/x64-windows/debug;${sourceDir}/../../out/build/x64-Debug/vcpkg_installed/x64-windows/",
           "CMAKE_BUILD_TYPE": "Debug",
           "WITH_LIBEVENT": "Off",
           "WITH_TEST" : "On"
@@ -42,6 +42,7 @@
         "inherits": "win-x64-asio-debug",
         "binaryDir": "${sourceDir}/out/build/x64-Release",
         "cacheVariables": {
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build/x64-Release/vcpkg_installed/x64-windows/",
           "CMAKE_BUILD_TYPE": "Release"
         }
       },
@@ -57,6 +58,7 @@
           "strategy": "external"
         },
         "cacheVariables": {
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build/x64-Debug/vcpkg_installed/x64-windows/debug;${sourceDir}/../../out/build/x64-Debug/vcpkg_installed/x64-windows/",
           "CMAKE_BUILD_TYPE": "Debug",
           "WITH_LIBEVENT": "On",
           "WITH_TEST" : "On"
@@ -66,10 +68,18 @@
         "name": "win-x64-libevent-release",
         "displayName": "x64 Release libevent",
         "description": "Sets release build type",
-        "inherits": "win-x64-libevent-debug",
+        "inherits": "win32",
+        "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/build/x64-Release",
+        "architecture": {
+          "value": "x64",
+          "strategy": "external"
+        },
         "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Release"
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build/x64-Release/vcpkg_installed/x64-windows/",
+          "CMAKE_BUILD_TYPE": "Release",
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
         }
       },
       {

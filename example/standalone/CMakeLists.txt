@@ -4,9 +4,19 @@
 
 cmake_minimum_required(VERSION 3.22)
 
-project(hello_world)
+project(hello_standalone)
 
-find_package("wpp_examples")
+
+############################################
+# base config
+#
+# alternatively replace 'find_package("wpp")'
+# with the contents wpp-config.cmake for
+# customization
+############################################
+
+find_package("wpp")
+
 
 ############################################
 # sources
@@ -21,10 +31,10 @@ file(GLOB SOURCES "./*.cpp")
 file(COPY pem DESTINATION .)
 file(COPY htdocs DESTINATION .)
 file(COPY view DESTINATION .)
+file(COPY locale DESTINATION .)
 file(COPY config.json DESTINATION .)
 file(COPY mime.types DESTINATION .)
 file(COPY user.db DESTINATION .)
-
 
 ############################################
 # exe

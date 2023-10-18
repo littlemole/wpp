@@ -250,3 +250,4 @@ message("INCDIRS : ${INCLUDE_DIRECTORIES}")
 ############################################
 
 install(FILES wpp-config.cmake DESTINATION lib/wpp-${VERSION})
+install(FILES wpp_examples-config.cmake DESTINATION lib/wpp_examples-${VERSION})

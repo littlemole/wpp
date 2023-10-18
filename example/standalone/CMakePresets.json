@@ -25,7 +25,6 @@
         "inherits": "win32",
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/build/x64-Debug",
-        "installDir": "${sourceDir}/out/build/x64-Debug/vcpkg_installed/x64-windows",
         "architecture": {
           "value": "x64",
           "strategy": "external"
@@ -42,7 +41,6 @@
         "description": "Sets release build type",
         "inherits": "win-x64-asio-debug",
         "binaryDir": "${sourceDir}/out/build/x64-Release",
-        "installDir": "${sourceDir}/out/build/x64-Release/vcpkg_installed/x64-windows",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
@@ -54,7 +52,6 @@
         "inherits": "win32",
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/build/x64-Debug",
-        "installDir": "${sourceDir}/out/build/x64-Debug/vcpkg_installed/x64-windows",
         "architecture": {
           "value": "x64",
           "strategy": "external"
@@ -71,7 +68,6 @@
         "description": "Sets release build type",
         "inherits": "win-x64-libevent-debug",
         "binaryDir": "${sourceDir}/out/build/x64-Release",
-        "installDir": "${sourceDir}/out/build/x64-Release/vcpkg_installed/x64-windows",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
