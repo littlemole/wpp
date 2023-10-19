@@ -7,7 +7,7 @@
         "hidden": true,
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "installDir": "${sourceDir}/out/install/${presetName}",
+        "installDir": "${sourceDir}/out/build/${presetName}/vcpkg_installed/x64-windows",
         "toolchainFile": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "environment": {
           "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
@@ -24,8 +24,6 @@
         "description": "Sets debug build type and x64 arch",
         "inherits": "win32",
         "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
-        "installDir": "${sourceDir}/out/build/x64-Debug/vcpkg_installed/x64-windows",
         "architecture": {
           "value": "x64",
           "strategy": "external"
@@ -41,8 +39,6 @@
         "displayName": "x64 Release asio",
         "description": "Sets release build type",
         "inherits": "win-x64-asio-debug",
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
-        "installDir": "${sourceDir}/out/build/x64-Release/vcpkg_installed/x64-windows",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
@@ -53,8 +49,6 @@
         "description": "Sets debug build type and x64 arch",
         "inherits": "win32",
         "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
-        "installDir": "${sourceDir}/out/build/x64-Debug/vcpkg_installed/x64-windows",
         "architecture": {
           "value": "x64",
           "strategy": "external"
@@ -70,8 +64,6 @@
         "displayName": "x64 Release libevent",
         "description": "Sets release build type",
         "inherits": "win-x64-libevent-debug",
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
-        "installDir": "${sourceDir}/out/build/x64-Release/vcpkg_installed/x64-windows",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
@@ -80,7 +72,7 @@
         "name": "gcc-debug",
         "displayName": "gcc Debug",
         "description": "linux base",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
         "hidden": true,
         "cacheVariables": {
           "CMAKE_C_COMPILER": "gcc",
@@ -99,7 +91,6 @@
         "description": "Sets release build type",
         "inherits": "gcc-debug",
         "hidden": true,
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
@@ -148,7 +139,7 @@
         "name": "clang-debug",
         "displayName": "clang Debug",
         "description": "linux base",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
         "hidden": true,
         "cacheVariables": {
           "CMAKE_C_COMPILER": "clang",
@@ -167,7 +158,6 @@
         "description": "Sets release build type",
         "hidden": true,
         "inherits": "clang-debug",
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }

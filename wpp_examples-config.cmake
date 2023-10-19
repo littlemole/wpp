@@ -1,7 +1,7 @@
 find_package("wpp")
 
 ############################################
-# dlls for windows if with libevent
+# copy dlls for windows
 ############################################
 
 if(WIN32)
