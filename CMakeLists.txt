@@ -112,7 +112,7 @@ IF (WIN32)
     )
 
     # hm, inspect why this errors ?
-    # add_definitions(-D_WIN32_WINNT=0x0601)    
+    add_definitions("-D_WIN32_WINNT=0x0601")    
    
 
 ELSEIF (UNIX)
