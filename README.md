@@ -286,16 +286,19 @@ private:
 assuming a recent installation of docker and docker-compose:
 
 ```bash
-git clone https://github.com/littlemole/repro-web
-cd repro-web
+git clone https://github.com/littlemole/wpp
+cd wpp
 make image CXX=g++ BACKEND=libevent
 ``` 
 
 both g++ and clang++ are supported as argument to CXX. Valid values for BACKEND are libevent and boost_asio
 
+g++ and libevent are the default and can be ommited.
+
 at this point do *make run* to start the image with a bash shell and tinker around.
 
-or look at the examples. the examples depend on the image just build.
+or look at the examples. the examples depend on the image just build. just cd into the example root directory
+and invoke ```make up```. smae arguments as for make image above are supported.
 
 
 ```bash
@@ -311,16 +314,14 @@ reproduce steps as in [devenv](https://github.com/littlemole/wpp/blob/main/libra
 this roughly boils down to
 - install std c++ dev packages
 - install 3dparty C linraries
-- install 3dparty C++ libraries (gtest and jsoncpp) and compile with g++ or clang++ respectively
 - fetch and install these static libs from [github.com/littlemole](https://github.com/littlemole)
     - cryptoneat
     - diy
+    - patex
+    - metacpp
     - repro
-    - prio
-    - prio-http
-    - repro-web
 
-use cmake to install. compare the Dockerfile and the helper scripts in docker directory for details.
+use cmake with presets to install. compare the Dockerfile and the helper scripts in docker directory for details.
 
 ## windows
 
@@ -356,3 +357,8 @@ with -DMOL_PROMISE_DEBUG defined your app has to setup the tracked counters as i
 LINUX: for normal application development just link to release libs and do a debug build of your app only without defining -DMOL_PROMISE_DEBUG
 WIN32: due to the link-time incompat of debug and release builds there is currently no win32 setup to support debug builds without -DMOL_PROMISE_DEBUG. this is a limitation of
 the current implementation. 
+
+## IDE support
+use an IDE with support form CMake presets. vscode works nicely, make sure you have CMake tools (included by default in recent installations) installed. 
+
+For windows, start vscode from a msvc dev environment. you want to install MS C/C++ extension so you can debug with msvc.

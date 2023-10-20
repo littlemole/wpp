@@ -12,7 +12,11 @@ namespace reprocurl {
 
 namespace impl {
 
+#ifndef _WIN32
 	typedef int socket_t;
+#else
+	typedef uintptr_t socket_t;
+#endif
 
 	typedef void CURL;
 	typedef void CURLM;

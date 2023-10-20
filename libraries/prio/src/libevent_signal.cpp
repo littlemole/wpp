@@ -30,9 +30,9 @@ Future<int> Signal::when(int s)
 	auto p = promise<int>();
 
 	impl_->e_signal = onEvent( s, EV_SIGNAL|EV_PERSIST);
-	impl_->e_signal->callback( [p](int fd, short what) {
+	impl_->e_signal->callback( [p](socket_t fd, short what) {
 
-		p.resolve(fd);
+		p.resolve((int)fd);
 	});
 	impl_->e_signal->add();
 

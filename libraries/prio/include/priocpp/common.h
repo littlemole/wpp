@@ -54,7 +54,7 @@ int unix_timestamp();
 #ifndef _WIN32
 typedef int socket_t;
 #else
-typedef intptr_t socket_t;
+typedef uintptr_t socket_t;
 #endif
 
 

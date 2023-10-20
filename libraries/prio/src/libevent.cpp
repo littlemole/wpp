@@ -89,7 +89,7 @@ Event::Ptr onEvent(socket_t fd, short what)
 }
 
 
-void Event::event_handler(socket_t fd, short what, void* arg)
+void Event::event_handler(intptr_t fd, short what, void* arg)
 {
 	Event* e = (Event*)arg;
 	e->cb_(fd,what);

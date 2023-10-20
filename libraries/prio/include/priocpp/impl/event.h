@@ -59,7 +59,7 @@ private:
 	Event& operator=(const Event& rhs) = delete;
 	Event& operator=(Event&& rhs) = delete;
 
-	static void event_handler(socket_t fd, short what, void* arg);
+	static void event_handler(intptr_t fd, short what, void* arg);
 
 	event* e;
 };

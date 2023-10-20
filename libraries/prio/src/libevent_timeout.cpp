@@ -36,7 +36,7 @@ Future<> Timeout::after(int ms)
 	cancel();
 	auto p = promise();
 	impl_->e_timer = onEvent(-1,0);
-	impl_->e_timer->callback( [p](int fd, short what)
+	impl_->e_timer->callback( [p](socket_t fd, short what)
 	{
 		p.resolve();
 	});
@@ -53,7 +53,7 @@ void Timeout::after( const std::function<void()>& f, int ms)
 	cancel();
 
 	impl_->e_timer = onEvent(-1,0);
-	impl_->e_timer->callback( [f](int fd, short what)
+	impl_->e_timer->callback( [f](socket_t fd, short what)
 	{	
 		f();
 	});
@@ -69,7 +69,7 @@ void Timeout::after( std::function<void()>&& f, int ms)
 	cancel();
 
 	impl_->e_timer = onEvent(-1, 0);
-	impl_->e_timer->callback([f](int fd, short what)
+	impl_->e_timer->callback([f](socket_t fd, short what)
 	{
 		f();
 	});
