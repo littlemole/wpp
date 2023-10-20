@@ -8,7 +8,6 @@
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/out/build/${presetName}",
         "installDir": "${sourceDir}/out/install/${presetName}",
-        "toolchainFile": "${sourceDir}/../../../vcpkg/scripts/buildsystems/vcpkg.cmake",
         "environment": {
           "VCPKG_FEATURE_FLAGS": "manifests,versions,binarycaching,registries"
         },
@@ -24,12 +23,12 @@
         "description": "Sets debug build type and x64 arch",
         "inherits": "win32",
         "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
         "architecture": {
           "value": "x64",
           "strategy": "external"
         },
         "cacheVariables": {
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build//${presetName}/vcpkg_installed/x64-windows/debug;${sourceDir}/../../out/build//${presetName}/vcpkg_installed/x64-windows/",
           "CMAKE_BUILD_TYPE": "Debug",
           "WITH_LIBEVENT": "Off",
           "WITH_TEST" : "On"
@@ -40,8 +39,8 @@
         "displayName": "x64 Release asio",
         "description": "Sets release build type",
         "inherits": "win-x64-asio-debug",
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
         "cacheVariables": {
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build//${presetName}/vcpkg_installed/x64-windows/",
           "CMAKE_BUILD_TYPE": "Release"
         }
       },
@@ -51,12 +50,12 @@
         "description": "Sets debug build type and x64 arch",
         "inherits": "win32",
         "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
         "architecture": {
           "value": "x64",
           "strategy": "external"
         },
         "cacheVariables": {
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build//${presetName}/vcpkg_installed/x64-windows/debug;${sourceDir}/../../out/build//${presetName}/vcpkg_installed/x64-windows/",
           "CMAKE_BUILD_TYPE": "Debug",
           "WITH_LIBEVENT": "On",
           "WITH_TEST" : "On"
@@ -66,17 +65,24 @@
         "name": "win-x64-libevent-release",
         "displayName": "x64 Release libevent",
         "description": "Sets release build type",
-        "inherits": "win-x64-libevent-debug",
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
+        "inherits": "win32",
+        "generator": "Ninja",
+        "architecture": {
+          "value": "x64",
+          "strategy": "external"
+        },
         "cacheVariables": {
-          "CMAKE_BUILD_TYPE": "Release"
+          "CMAKE_PREFIX_PATH": "${sourceDir}/../../out/build//${presetName}/vcpkg_installed/x64-windows/",
+          "CMAKE_BUILD_TYPE": "Release",
+          "WITH_LIBEVENT": "On",
+          "WITH_TEST" : "On"
         }
       },
       {
         "name": "gcc-debug",
         "displayName": "gcc Debug",
         "description": "linux base",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
         "hidden": true,
         "cacheVariables": {
           "CMAKE_C_COMPILER": "gcc",
@@ -95,7 +101,6 @@
         "description": "Sets release build type",
         "inherits": "gcc-debug",
         "hidden": true,
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
@@ -144,7 +149,7 @@
         "name": "clang-debug",
         "displayName": "clang Debug",
         "description": "linux base",
-        "binaryDir": "${sourceDir}/out/build/x64-Debug",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
         "hidden": true,
         "cacheVariables": {
           "CMAKE_C_COMPILER": "clang",
@@ -163,7 +168,6 @@
         "description": "Sets release build type",
         "hidden": true,
         "inherits": "clang-debug",
-        "binaryDir": "${sourceDir}/out/build/x64-Release",
         "cacheVariables": {
           "CMAKE_BUILD_TYPE": "Release"
         }
@@ -259,25 +263,25 @@
         "description": "Vanilla build clang release with asio"
       },
       {
-        "name": "asio-debug-build-windows",
+        "name": "win-x64-asio-debug",
         "displayName": "Default",
         "configurePreset": "win-x64-asio-debug",
         "description": "Vanilla build asio"
       },
       {
-        "name": "asio-release-build-windows",
+        "name": "win-x64-asio-release",
         "displayName": "Release",
         "configurePreset": "win-x64-asio-release",
         "description": "Release build asio"
       },
       {
-        "name": "libevent-debug-build-windows",
+        "name": "win-x64-libevent-debug",
         "displayName": "Default libevent",
         "configurePreset": "win-x64-libevent-debug",
         "description": "Vanilla build libevent"
       },
       {
-        "name": "libevent-release-build-windows",
+        "name": "win-x64-libevent-release",
         "displayName": "Release libevent",
         "configurePreset": "win-x64-libevent-release",
         "description": "Release build libevent"
@@ -286,7 +290,7 @@
     ],
     "testPresets": [
       {
-        "name": "gcc-debug-libevent-test",
+        "name": "gcc-debug-libevent",
         "description": "Enable output on failure",
         "configurePreset": "gcc-debug-libevent",
         "output": {
@@ -294,7 +298,7 @@
         }
       },
       {
-        "name": "gcc-release-libevent.test",
+        "name": "gcc-release-libevent",
         "description": "Enable output on failure",
         "configurePreset": "gcc-release-libevent",
         "output": {
@@ -302,7 +306,7 @@
         }
       },
       {
-        "name": "gcc-debug-asio-test",
+        "name": "gcc-debug-asio",
         "description": "Enable output on failure",
         "configurePreset": "gcc-debug-asio",
         "output": {
@@ -310,7 +314,7 @@
         }
       },
       {
-        "name": "gcc-release-asio-test",
+        "name": "gcc-release-asio",
         "description": "Enable output on failure",
         "configurePreset": "gcc-release-asio",
         "output": {
@@ -318,7 +322,7 @@
         }
       },
       {
-        "name": "clang-debug-libevent-test",
+        "name": "clang-debug-libevent",
         "description": "Enable output on failure",
         "configurePreset": "clang-debug-libevent",
         "output": {
@@ -326,7 +330,7 @@
         }
       },
       {
-        "name": "clang-release-libevent-test",
+        "name": "clang-release-libevent",
         "description": "Enable output on failure",
         "configurePreset": "clang-release-libevent",
         "output": {
@@ -334,7 +338,7 @@
         }
       },      
       {
-        "name": "clang-debug-asio-test",
+        "name": "clang-debug-asio",
         "description": "Enable output on failure",
         "configurePreset": "clang-debug-asio",
         "output": {
@@ -342,7 +346,7 @@
         }
       },
       {
-        "name": "clang-release-asio-test",
+        "name": "clang-release-asio",
         "description": "Enable output on failure",
         "configurePreset": "clang-release-asio",
         "output": {
@@ -350,7 +354,7 @@
         }
       },      
       {
-        "name": "debug-libevent.test-windows",
+        "name": "win-x64-libevent-debug",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-libevent-debug",
         "output": {
@@ -358,7 +362,7 @@
         }
       },
       {
-        "name": "release-libevent-test-windows",
+        "name": "win-x64-libevent-release",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-libevent-release",
         "output": {
@@ -366,7 +370,7 @@
         }
       },
       {
-        "name": "debug-asio.test-windows",
+        "name": "win-x64-asio-debug",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-asio-debug",
         "output": {
@@ -374,7 +378,7 @@
         }
       },
       {
-        "name": "release-asio-test-windows",
+        "name": "win-x64-asio-release",
         "description": "Enable output on failure",
         "configurePreset": "win-x64-asio-release",
         "output": {
