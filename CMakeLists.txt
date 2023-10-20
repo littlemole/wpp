@@ -111,6 +111,9 @@ IF (WIN32)
 	    ${STDLIB}	
     )
 
+    add_definitions(-D_WIN32_WINNT=0x0601)    
+   
+
 ELSEIF (UNIX)
 
     set(OSLIBS "pthread")
