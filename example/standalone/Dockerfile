@@ -23,6 +23,6 @@ ADD . /usr/local/src/reproweb-example
 
 RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
 
-CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone
+CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'
 
 
