@@ -49,18 +49,7 @@ then
 fi
 
 
-if [ "$BUILDCHAIN" == "make" ] 
-then
-    if [ "$SKIPTESTS" != "true" ]
-    then    
-        make clean
-        make -e test
-    fi
-    make clean
-    make -e install
-else
-    cmake_build "Debug"
-    cmake_build "Release"
-fi
+cmake_build "Debug"
+cmake_build "Release"
 
 

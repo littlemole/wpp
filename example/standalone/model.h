@@ -19,7 +19,7 @@ public:
 		auto p = promise<User>();
 
 		userRepository->get_user(login)
-		.then([this,pwd,p](User user)
+		.then([pwd,p](User user)
 		{
 			cryptoneat::Password pass;
 			bool verified = pass.verify(pwd, user.hash() );

@@ -22,7 +22,7 @@ function cmake_build {
      
     make
     
-    if [ "$SKIPTESTS" == "true" ]
+    if [ "$WITH_TEST" == "Off" ]
     then
     	echo "skipping tests for $1 ..."
     else
@@ -35,17 +35,7 @@ function cmake_build {
 
 cd /usr/local/src/$1
 
-if [ "$BUILDCHAIN" == "make" ] 
-then
-    if [ "$SKIPTESTS" != "true" ]
-    then    
-        make clean
-        make -e test
-    fi
-    make -e release
-else
-    cmake_build "Debug"
-    cmake_build "Release"
-fi
+cmake_build "Debug"
+cmake_build "Release"
 
 

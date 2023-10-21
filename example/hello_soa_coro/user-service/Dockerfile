@@ -30,9 +30,9 @@ RUN mkdir /usr/local/share/ca-certificates/reprocpp && \
 
 #RUN cd /usr/local/src/reproweb-example && (if [ "$BUILDCHAIN" != "cmake" ] ; then make -e; else (mkdir -p build && cd build && cmake .. && make) fi)
 
-RUN bash -c 'cd /usr/local/src/reproweb-example && SKIPTESTS=true VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
+RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=true VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
 
-CMD bash -c 'cd /usr/local/src/reproweb-example &&  (if [ "$BUILDCHAIN" != "cmake" ] ; then build/hello_soa_userservice.bin; else Release/hello_soa_userservice.bin; fi )'
+CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_soa_userservice.bin'
 
 
 
