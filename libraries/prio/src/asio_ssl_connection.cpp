@@ -104,7 +104,7 @@ Future<Connection::Ptr> SslConnection::connect(const std::string& host, int port
 	boost::asio::ip::tcp::resolver::query query(host, "");
 	impl->resolver.async_resolve(
 		query,
-		[host,&ctx,impl,p,port,c](const boost::system::error_code& /*error*/, boost::asio::ip::tcp::resolver::iterator iterator)
+		[host,impl,p,port,c](const boost::system::error_code& /*error*/, boost::asio::ip::tcp::resolver::iterator iterator)
 		{
 			while(iterator != boost::asio::ip::tcp::resolver::iterator())
 			{
