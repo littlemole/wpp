@@ -190,7 +190,7 @@ void SessionFilter::after( prio::Request& req, prio::Response& res, std::shared_
             {
                 chain->next(req,res);     
             })
-            .otherwise([&req,&res,chain]( const std::exception& ex)
+            .otherwise([&req,&res,chain]( const std::exception& /*ex*/ )
             {
                 chain->next(req,res);     
             });

@@ -102,7 +102,7 @@ TEST_F(BasicTest, RawRedis)
 {
 	std::string result;
 	{
-		signal(SIGINT).then([](int s) {theLoop().exit(); });
+		signal(SIGINT).then([](int ) {theLoop().exit(); });
 
 		RedisPool redis("redis://localhost:6379");
 
@@ -129,7 +129,7 @@ TEST_F(BasicTest, RawRedisChained)
 {
 	std::string result;
 	{
-		signal(SIGINT).then([](int s) {theLoop().exit(); });
+		signal(SIGINT).then([](int ) {theLoop().exit(); });
 
 		RedisPool redis("redis://localhost:6379");
 
@@ -159,7 +159,7 @@ TEST_F(BasicTest, RawRedisChained2)
 {
 	std::string result;
 	{
-		signal(SIGINT).then([](int s) {theLoop().exit(); });
+		signal(SIGINT).then([](int ) {theLoop().exit(); });
 
 		RedisPool redis("redis://localhost:6379");
 
@@ -199,7 +199,7 @@ TEST_F(BasicTest, RawRedisSubscribe)
 
 		RedisSubscriber sub(redis);
 
-		signal(SIGINT).then([](int s) 
+		signal(SIGINT).then([](int ) 
 		{
 			theLoop().exit(); 
 		});
@@ -253,7 +253,7 @@ TEST_F(BasicTest, RawRedisSubscribeTwoMsgs)
 
 		RedisSubscriber sub(redis);
 
-		signal(SIGINT).then([](int s) 
+		signal(SIGINT).then([](int ) 
 		{
 			theLoop().exit(); 
 		});

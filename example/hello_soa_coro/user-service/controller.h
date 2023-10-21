@@ -63,12 +63,12 @@ public:
 	Exceptions()
 	{}
 
-	void on_http_ex(const HttpEx& ex,Request& req, Response& res)
+	void on_http_ex(const HttpEx& ex, Request& /*req*/, Response& res)
 	{
 		ex.render_error(res);
 	}	
 
-	void on_std_ex(const std::exception& ex,Request& req, Response& res)
+	void on_std_ex(const std::exception& ex, Request& /*req*/, Response& res)
 	{
 		ServerEx se(ex.what());
 		se.render_error(res);

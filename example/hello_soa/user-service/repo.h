@@ -71,7 +71,7 @@ public:
 				throw UserNotFoundEx("error.msg.login.failed");
 			}
 		})
-		.otherwise([p](const std::exception& ex)
+		.otherwise([p](const std::exception& )
 		{
 			p.reject(UserNotFoundEx("error.msg.login.failed"));
 		});

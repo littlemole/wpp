@@ -34,7 +34,7 @@ private:
 	template<class T, class ... Args>
 	void bind(std::shared_ptr<Statement>& st, T t, Args ... args);
 
-	void bind(std::shared_ptr<Statement>& st)
+	void bind(std::shared_ptr<Statement>& /*st*/ )
 	{}
 
 	std::string host_;

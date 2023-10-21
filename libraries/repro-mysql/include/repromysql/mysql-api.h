@@ -23,10 +23,10 @@ public:
 
 	bool fetch();
 
-	const int fields() const;
+	int fields() const;
 	const Retval& field(int i) const;
 
-	const int affected_rows() const;
+	int affected_rows() const;
 
 	std::shared_ptr<statement> st();
 	std::shared_ptr<mysql> con();
@@ -58,7 +58,7 @@ public:
 	template<class T>
 	void bind(int index, T value, enum_field_types t)
 	{
-		int i = index-1;
+		std::size_t i = index-1;
 		if ( i < 0 || i >= params_.size())
 		{
 			throw repro::Ex("invalid param index");
@@ -70,7 +70,7 @@ public:
 	template<class T>
 	void bind(int index, T value)
 	{
-		int i = index-1;
+		std::size_t i = index-1;
 		if ( i < 0 || i >= params_.size())
 		{
 			throw repro::Ex("invalid param index");
@@ -178,8 +178,8 @@ class MySQL
 {
 public:
 	MySQL();	
-	MySQL(const MySQL& rhs) {};	
-	MySQL(MySQL&& rhs) {};	
+	MySQL(const MySQL& /*rhs*/ ) {};	
+	MySQL(MySQL&& /*rhs*/ ) {};	
 };
 
 //////////////////////////////////////////////////////////////

@@ -36,7 +36,7 @@ Future<int> Signal::when(int s)
 }
 
 
-void Signal::wait(Promise<int> p, int s)
+void Signal::wait(Promise<int> p, int /*s*/ )
 {
 	impl_->signals.async_wait( [this,p]( const boost::system::error_code& e,int signal_number)
 	{

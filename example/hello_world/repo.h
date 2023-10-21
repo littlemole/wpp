@@ -40,11 +40,11 @@ public:
 			"INSERT INTO users (username,login,pwd,avatar_url) VALUES ( ? , ? , ? , ? )",
 			username,login,hash,avatar_url
 		)
-		.then( [p,result](reprosqlite::Result r) 
+		.then( [p,result](reprosqlite::Result ) 
 		{
 			p.resolve(result);
 		})
-		.otherwise( [p](const std::exception& ex)
+		.otherwise( [p](const std::exception& )
 		{
 			p.reject(RegistrationEx("login is already taken"));
 		});
@@ -73,7 +73,7 @@ public:
 
 			p.resolve(result);
 		})
-		.otherwise( [p](const std::exception& ex)
+		.otherwise( [p](const std::exception&)
 		{
 			p.reject(AuthEx("invalid credentials specified. pls try again."));
 		});

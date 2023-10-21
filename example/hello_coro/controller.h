@@ -31,12 +31,12 @@ public:
 		view_->render_index(res,session->data);
 	}
 
-	void show_login( Request& req, Response& res)
+	void show_login( Request& /*req*/, Response& res)
 	{
 		view_->render_login(res,"");		
 	}
 
-	void show_registration( Request& req, Response& res)
+	void show_registration( Request& /*req*/, Response& res)
 	{
 		view_->render_registration(res,"");		
 	}
@@ -102,25 +102,25 @@ public:
 		: view_(view)
 	{}
 
-	void on_auth_failed(const AuthEx& ex,Request& req, Response& res)
+	void on_auth_failed(const AuthEx& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << "auth failed: " << ex.what() << std::endl;
 		view_->redirect_to_login(res);
 	}
 
-	void on_login_failed(const LoginEx& ex,Request& req, Response& res)
+	void on_login_failed(const LoginEx& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << "login failed: " <<  ex.what() << std::endl;
 		view_->render_login(res,ex.what());
 	}
 
-	void on_registration_failed(const RegistrationEx& ex,Request& req, Response& res)
+	void on_registration_failed(const RegistrationEx& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << "reg failed: " << ex.what() << std::endl;
 		view_->render_registration(res,ex.what());
 	}
 
-	void on_std_ex(const std::exception& ex,Request& req, Response& res)
+	void on_std_ex(const std::exception& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << ex.what() << std::endl;
 		view_->redirect_to_login(res);

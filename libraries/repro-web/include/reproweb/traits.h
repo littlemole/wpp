@@ -49,7 +49,7 @@ namespace reproweb {
         }
 
         template <class T , typename  std::enable_if<!has_valid<T>::value>::type* = nullptr >
-        static void invoke( T& t) 
+        static void invoke( T& /*t*/ ) 
         {}
     };
 

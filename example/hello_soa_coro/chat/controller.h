@@ -85,7 +85,7 @@ public:
 		: view(v)
 	{}
 
-	void on_auth_ex(const AuthEx& ex, prio::Request& req, prio::Response& res)
+	void on_auth_ex(const AuthEx& /*ex*/, prio::Request& req, prio::Response& res)
 	{
 		view->render_login(req,"").then(flush(res));
 	}		
@@ -100,7 +100,7 @@ public:
 		view->render_registration(req,ex.what()).then(flush(res));
 	}	
 
-	void on_std_ex(const std::exception& ex,prio::Request& req, prio::Response& res)
+	void on_std_ex(const std::exception& ex,prio::Request& /*req*/, prio::Response& res)
 	{
 		view->render_error(res,ex);
 	}

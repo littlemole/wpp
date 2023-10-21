@@ -20,8 +20,7 @@ namespace reprocurl   	{
 
 std::map<reprocurl::impl::socket_t, boost::asio::ip::tcp::socket *> socket_map;
  	
-static curl_socket_t opensocket(void *clientp, curlsocktype purpose,
-                                struct curl_sockaddr *address)
+static curl_socket_t opensocket(void* /*clientp*/, curlsocktype purpose, struct curl_sockaddr* address)
 {
   curl_socket_t sockfd = CURL_SOCKET_BAD;
  
@@ -48,7 +47,7 @@ static curl_socket_t opensocket(void *clientp, curlsocktype purpose,
   return sockfd;
 }
 
-static int close_socket(void *clientp, reprocurl::impl::socket_t item)
+static int close_socket(void* /*clientp*/, reprocurl::impl::socket_t item)
 {
   std::map<reprocurl::impl::socket_t, boost::asio::ip::tcp::socket *>::iterator it = socket_map.find(item);
  
@@ -287,34 +286,36 @@ int CurlMulti::on_sock_cb(CURL *curl, reprocurl::impl::socket_t sock, int what, 
 	{
 		tcp_socket->async_read_some(
 			boost::asio::null_buffers(), 
-			[this,curl,sock,what,easy] (boost::system::error_code ec, std::size_t bytes_transferred )
-		{
-			if(onSocket(sock,what,easy))
+			[this,curl,sock,what,easy] (boost::system::error_code /*ec*/, std::size_t /*bytes_transferred*/ )
 			{
-				return;
+				if(onSocket(sock,what,easy))
+				{
+					return;
+				}
+				on_sock_cb(curl,sock,easy->what_,easy);
 			}
-			on_sock_cb(curl,sock,easy->what_,easy);
-		});
+		);
 	}
 	else
 	if (what & CURL_POLL_OUT)
 	{			
 		tcp_socket->async_write_some(
 			boost::asio::null_buffers(), 
-			[this,curl,sock,what,easy] (boost::system::error_code ec, std::size_t bytes_transferred )
-		{
-			if(onSocket(sock,what,easy))
+			[this,curl,sock,what,easy] (boost::system::error_code /*ec*/, std::size_t /*bytes_transferred*/ )
 			{
-				return;
+				if(onSocket(sock,what,easy))
+				{
+					return;
+				}
+				on_sock_cb(curl,sock,easy->what_,easy);
 			}
-			on_sock_cb(curl,sock,easy->what_,easy);
-		});
+		);
 	}
 
 	return 0;
 }
 
-int CurlMulti::on_multi_timer_cb(CURLM *multi, long timeout_ms)
+int CurlMulti::on_multi_timer_cb(CURLM* /*multi*/, long timeout_ms)
 {
 	if(!timeout_)
 		return 0;
@@ -336,7 +337,7 @@ int CurlMulti::on_multi_timer_cb(CURLM *multi, long timeout_ms)
 
 
 // socketdata on multi, value from multi_assign is sockp
-int CurlMulti::sock_cb(CURL *e, reprocurl::impl::socket_t s, int what, void *cbp, void *sockp)
+int CurlMulti::sock_cb(CURL* e, reprocurl::impl::socket_t s, int what, void* cbp, void* /*sockp*/ )
 {
 	CurlMulti *curl = (CurlMulti*) cbp;
 

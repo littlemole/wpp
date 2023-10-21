@@ -14,6 +14,12 @@ namespace prio  		{
 
 bool would_block();
 
+#ifndef _WIN32
+	typedef int event_fd_t;
+#else
+	typedef intptr_t event_fd_t;
+#endif
+
 //////////////////////////////////////////////////////////////
 
 }
@@ -23,6 +29,7 @@ typedef struct ssl_ctx_st SSL_CTX;
 typedef struct ssl_st SSL;
 
 namespace prio      {
+
 
 
 class Event : public std::enable_shared_from_this<Event>
@@ -59,7 +66,7 @@ private:
 	Event& operator=(const Event& rhs) = delete;
 	Event& operator=(Event&& rhs) = delete;
 
-	static void event_handler(intptr_t fd, short what, void* arg);
+	static void event_handler(event_fd_t fd, short what, void* arg);
 
 	event* e;
 };

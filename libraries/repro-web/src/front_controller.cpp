@@ -124,7 +124,7 @@ void FrontController::handle_request(
     	filters_,
 		method,
 		path,
-    	[h] (prio::Request& req, prio::Response& res, std::shared_ptr<FilterChain> chain)
+    	[h] (prio::Request& req, prio::Response& res, std::shared_ptr<FilterChain> /*chain*/ )
 		{
 
             h->invoke(req,res);
@@ -137,7 +137,7 @@ void FrontController::handle_request(
     	flush_filters_,
 		method,
 		path,
-    	[p] (prio::Request& req, prio::Response& res, std::shared_ptr<FilterChain> chain)
+    	[p] (prio::Request& /*req*/, prio::Response& /*res*/, std::shared_ptr<FilterChain> /*chain*/ )
 		{
 			p.resolve();
 		}
@@ -147,7 +147,7 @@ void FrontController::handle_request(
     	completion_filters_,
 		method,
 		path,
-    	[] (prio::Request& req, prio::Response& res, std::shared_ptr<FilterChain> chain)
+    	[] (prio::Request& /*req*/, prio::Response& /*res*/, std::shared_ptr<FilterChain> /*chain*/ )
 		{}
     );
 
@@ -218,7 +218,7 @@ repro::Future<std::string> FrontController::include(const prio::Request& req, co
 
 	auto subreq = std::make_shared<prio::SubRequest>(); 
 	subreq->on(req,path)
-	.then( [p]( prio::Request& req, prio::Response& res)
+	.then( [p]( prio::Request& /*req*/, prio::Response& res)
 	{
 		p.resolve(res.body()); 
 	})
@@ -242,7 +242,7 @@ HandlerInfo* FrontController::find_handler(
 	const std::string& path, 
 	const std::string& method, 
 	prio::Request& req, 
-	prio::Response& res)
+	prio::Response& /*res*/ )
 {
 	prio::HttpRequest& request = (prio::HttpRequest&)req;
 

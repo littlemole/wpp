@@ -42,9 +42,9 @@ TEST_F(BasicTest, HttpClient2) {
 	std::string result;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s){ std::cout << "SIGPIPE" << std::endl; });
+		signal(SIGPIPE).then([](int ){ std::cout << "SIGPIPE" << std::endl; });
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 		Connection::Ptr client;
 
 		TcpConnection::connect("amazon.de",80)
@@ -85,9 +85,9 @@ TEST_F(BasicTest, SSlClient2) {
 	std::string result;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s){ std::cout << "SIGPIPE" << std::endl; });
+		signal(SIGPIPE).then([](int ){ std::cout << "SIGPIPE" << std::endl; });
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 		Connection::Ptr client;
 
@@ -134,7 +134,7 @@ TEST_F(BasicTest, SSlClient3)
 
 	std::string result;
 	{ 
-		signal(SIGINT).then([](int s){ theLoop().exit(); });
+		signal(SIGINT).then([](int ){ theLoop().exit(); });
 
 		Connection::Ptr c;
 
@@ -219,7 +219,7 @@ TEST_F(BasicTest, SSlClientWithCert4)
 
 	std::string result;
 	{ 
-		signal(SIGINT).then([](int s){ theLoop().exit(); });
+		signal(SIGINT).then([](int ){ theLoop().exit(); });
 
 		Connection::Ptr c;
 
@@ -305,7 +305,7 @@ TEST_F(BasicTest, Coroutine) {
 
 	std::string result;
 	{
-		signal(SIGINT).then([](int s) {theLoop().exit(); });
+		signal(SIGINT).then([](int ) {theLoop().exit(); });
 
 		Connection::Ptr client;
 		coroutine_example(result,client).then([](){});
@@ -373,7 +373,7 @@ TEST_F(BasicTest, Coroutine2) {
 
 	std::string result;
 	{
-		signal(SIGINT).then([](int s) {theLoop().exit(); });
+		signal(SIGINT).then([](int ) {theLoop().exit(); });
 
 		coroutine_example2(result)
 		.then([]() 

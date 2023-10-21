@@ -106,9 +106,9 @@ void SslConnection::ssl_do_connect(Promise<Connection::Ptr> p,SslCtx& ctx)
 	}
 
 	impl_->e_ = onEvent( impl_->fd, s)
-	->callback( [this,p,&ctx](socket_t fd, short w)
+	->callback( [this,p,&ctx](socket_t /* fd */, short what)
 	{
-		if(w == EV_TIMEOUT)
+		if(what == EV_TIMEOUT)
 		{
 			p.reject(IoTimeout("IO timeout in SslConnection::do_connect"));
 			delete this;
@@ -162,7 +162,7 @@ Future<Connection::Ptr> SslConnection::connect(const std::string& host, int port
 void SslConnection::do_ssl_read(Promise<Connection::Ptr,std::string> p, short what)
 {
 	impl_->e_ = onEvent(impl_->fd,what)
-	->callback( [this,p,what](socket_t fd, short w)
+	->callback( [this,p,what](socket_t /* fd */, short /* w */) 
 	{
 		if( what & EV_TIMEOUT)
 		{
@@ -239,7 +239,7 @@ Future<Connection::Ptr, std::string> SslConnection::read()
 void SslConnection::do_ssl_read( Promise<Connection::Ptr,std::string> p, short what, std::shared_ptr<std::string> buffer, std::shared_ptr<size_t> want)
 {
 	impl_->e_ = onEvent(impl_->fd,what)
-	->callback( [this,p,want,buffer](socket_t fd, short w)
+	->callback( [this,p,want,buffer](socket_t /* fd */, short /* w */ )
 	{
 		while(true)
 		{
@@ -333,7 +333,7 @@ Future<Connection::Ptr, std::string> SslConnection::read(size_t s)
 void SslConnection::do_ssl_write(Promise<Connection::Ptr> p, std::string data, std::shared_ptr<size_t> written, short what)
 {
 	impl_->e_ = onEvent(impl_->fd,what)
-	->callback([this,p,data,written](socket_t fd, short w)
+	->callback([this,p,data,written](socket_t /* fd */, short /* w */)
 	{
 		while(true)
 		{

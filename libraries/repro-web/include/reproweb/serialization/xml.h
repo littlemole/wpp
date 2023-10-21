@@ -48,7 +48,7 @@ class HandlerParam<xml_t<T>>
 {
 public:
 
-	static xml_t<T> get(prio::Request& req,  prio::Response& res)
+	static xml_t<T> get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		auto doc = patex::xml::Document::parse_str(req.body());
 

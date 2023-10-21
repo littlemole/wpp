@@ -37,7 +37,7 @@ using namespace prio;
 
 //namespace {
 
-static int callback(void *NotUsed, int argc, char **argv, char **azColName)
+static int callback(void* /*NotUsed*/, int argc, char **argv, char **azColName)
 {
 	int i;
 	for(i=0; i<argc; i++){
@@ -97,9 +97,9 @@ TEST_F(BasicTest, SimpleSql) {
 	std::string result;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s){});
+		signal(SIGPIPE).then([](int ){});
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 		reprosqlite::SqlitePool sql("test.db");
 
@@ -118,7 +118,7 @@ TEST_F(BasicTest, SimpleSql) {
 			result = oss.str();
 			theLoop().exit();
 		})
-		.otherwise([](const std::exception& ex)
+		.otherwise([](const std::exception& )
 		{
 
 		});
@@ -135,9 +135,9 @@ TEST_F(BasicTest, SimpleSqlJson) {
 	std::string result;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s){});
+		signal(SIGPIPE).then([](int ){});
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 		reprosqlite::SqlitePool sql("test.db");
 
@@ -151,7 +151,7 @@ TEST_F(BasicTest, SimpleSqlJson) {
 			result = Json::writeString(wbuilder, toJson(r));
 			theLoop().exit();
 		})
-		.otherwise([](const std::exception& ex)
+		.otherwise([](const std::exception& )
 		{
 
 		});
@@ -167,9 +167,9 @@ TEST_F(BasicTest, SimpleSql2) {
 	std::string result;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 		reprosqlite::SqlitePool sql("test.db");
 
@@ -188,7 +188,7 @@ TEST_F(BasicTest, SimpleSql2) {
 			result = oss.str();
 			theLoop().exit();
 		})
-			.otherwise([](const std::exception& ex)
+			.otherwise([](const std::exception& )
 		{
 
 		});
@@ -204,9 +204,9 @@ TEST_F(BasicTest, SimpleSqlFailconstraint) {
 	std::string result;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 		reprosqlite::SqlitePool sql("test.db");
 

@@ -72,17 +72,17 @@ TEST_F(BasicTest, EventBusMore)
 
 	EventBus eventBus;
 
-	eventBus.subscribe( "test", [&result](Json::Value value)
+	eventBus.subscribe( "test", [&result](Json::Value )
 	{
 		result++;
 	});
 
-	eventBus.subscribe( "test", [&result](Json::Value value)
+	eventBus.subscribe( "test", [&result](Json::Value )
 	{
 		result++;
 	});
 
-	eventBus.subscribe( "test2", [&result](Json::Value value)
+	eventBus.subscribe( "test2", [&result](Json::Value )
 	{
 		result = -1;
 	});
@@ -112,17 +112,17 @@ TEST_F(BasicTest, EventBusMoreButLess)
 
 	EventBus eventBus;
 
-	std::string id = eventBus.subscribe( "test", [&result](Json::Value value)
+	std::string id = eventBus.subscribe( "test", [&result](Json::Value )
 	{
 		result++;
 	});
 
-	eventBus.subscribe( "test", [&result](Json::Value value)
+	eventBus.subscribe( "test", [&result](Json::Value )
 	{
 		result++;
 	});
 
-	eventBus.subscribe( "test2", [&result](Json::Value value)
+	eventBus.subscribe( "test2", [&result](Json::Value )
 	{
 		result = -1;
 	});
@@ -284,7 +284,7 @@ TEST_F(BasicTest, Invocable)
  
 TEST_F(BasicTest, NamedArgs) 
 {
-	User user{ "mike", "littlemole", "secret" };
+	User user{ "mike", "littlemole", "secret", {} };
 
 	std::string sql = "SELECT username,login,pwd FROM User WHERE login = :login AND pwd = :pwd";
 

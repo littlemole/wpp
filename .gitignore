@@ -5,3 +5,4 @@ vcpkg/
 debug/
 release/
 **/.vscode/
+**/.vs/

@@ -257,7 +257,7 @@ TEST_F(BasicTest, AsyncTask) {
 
 	{
 		signal(SIGINT)
-		.then([](int s){
+		.then([](int /* s */){
 
 		});
 
@@ -285,7 +285,7 @@ TEST_F(BasicTest, TcpServer) {
 
 	{
 		signal(SIGINT)
-		.then([](int s){
+		.then([](int /* s */){
 
 		});
 
@@ -301,7 +301,7 @@ TEST_F(BasicTest, TcpServer) {
 			{
 				return client->write(data);
 			})
-			.then([](Connection::Ptr client)
+			.then([](Connection::Ptr /* client */ )
 			{
 			});
 		});
@@ -319,7 +319,7 @@ TEST_F(BasicTest, TcpServer) {
 			{
 				return client->read();
 			})
-			.then([&result,&listener](Connection::Ptr client, std::string data)
+			.then([&result,&listener](Connection::Ptr /* client */, std::string data)
 			{
 				result = data;
 				listener.cancel();
@@ -353,7 +353,7 @@ TEST_F(BasicTest, TcpServerReadN) {
 			{
 				return client->write(data);
 			})
-			.then([](Connection::Ptr client)
+			.then([](Connection::Ptr /* client */)
 			{
 			});
 		});
@@ -371,7 +371,7 @@ TEST_F(BasicTest, TcpServerReadN) {
 			{
 				return client->read(4);
 			})
-			.then([&result,&listener](Connection::Ptr client, std::string data)
+			.then([&result,&listener](Connection::Ptr /* client */, std::string data)
 			{
 				result = data;
 				listener.cancel();
@@ -586,7 +586,7 @@ TEST_F(BasicTest, Pipe1Async)
 	bool done = false;
 
 	signal(SIGINT)
-		.then([](int s) {
+		.then([](int /* s */) {
 		theLoop().exit();
 	});
 
@@ -625,7 +625,7 @@ TEST_F(BasicTest, Pipe1AsyncLine)
 	bool done = false;
 
 	signal(SIGINT)
-		.then([](int s) {
+		.then([](int ) {
 		theLoop().exit();
 	});
 		
@@ -671,7 +671,7 @@ TEST_F(BasicTest, Pipe1AsyncLine2)
 	bool done = false;
 
 	signal(SIGINT)
-		.then([](int s) {
+		.then([](int ) {
 		theLoop().exit();
 	});
 		
@@ -722,7 +722,7 @@ TEST_F(BasicTest, Logger)
 	std::string result;
 
 	signal(SIGINT) 
-	.then([](int s) {
+	.then([](int ) {
 		theLoop().exit(); 
 	});    
 		     
@@ -814,7 +814,7 @@ TEST_F(BasicTest, SimplePdf)
 //Ecma Style test function
 Future<int> test(int i)
 {
-	return future<int>( [i]( auto resolve, auto reject )
+	return future<int>( [i]( auto resolve, auto /* reject */ )
 	{
 		nextTick([i,resolve]()
 		{

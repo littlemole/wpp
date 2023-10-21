@@ -21,7 +21,7 @@ http2_stream::http2_stream(int32_t id,Conversation* con)
     reset_callbacks();
 }
 
-http2_stream::http2_stream(Request& request,Conversation* con)
+http2_stream::http2_stream(Request& request,Conversation* /*con*/)
 :   req(request),
     res(0),
     stream_id(0),
@@ -62,17 +62,17 @@ http2_server_stream::~http2_server_stream()
 {}
 
 int http2_server_stream::on_header_callback(
-    const nghttp2_frame *frame, 
+    const nghttp2_frame* /*frame*/, 
     const uint8_t *name,
     size_t namelen, 
-    const uint8_t *value,
-    size_t valuelen, 
-    uint8_t flags) 
+    const uint8_t* value,
+    size_t /*valuelen*/, 
+    uint8_t /*flags*/ ) 
 {
     static const char* pseudo_headers[] = { ":method", ":scheme",":authority",":path" };
     static std::function<void(HttpRequest& r,char* c)> pseudo_handlers[] = { 
         [](HttpRequest& req,char* c){ req.path.method(c); },
-        [](HttpRequest& req,char* c){ ; },
+        [](HttpRequest& ,char* ){ ; },
         [](HttpRequest& req,char* c){ req.header("Host",c); },
         [](HttpRequest& req,char* c){ req.path.path(c); }
     };
@@ -99,7 +99,7 @@ int http2_server_stream::on_header_callback(
 }
 
 int http2_server_stream::data_chunk_recv_callback(
-    uint8_t flags, 
+    uint8_t /*flags*/, 
     const uint8_t *data, 
     size_t len) 
 {
@@ -230,7 +230,7 @@ int http2_session::send_connection_header()
 }
 
 // stream has been closed
-int http2_session::on_stream_close_callback(int32_t stream_id, uint32_t error_code) 
+int http2_session::on_stream_close_callback(int32_t stream_id, uint32_t /*error_code*/ ) 
 {
     http2_stream* stream_data = get_stream_by_id(session_,stream_id);
     if (!stream_data) 
@@ -458,14 +458,14 @@ http2_server_stream* http2_server_session::get_stream_by_id(int id)
 
 // static c-style trampoline callbacks
 
-static int on_frame_recv_callback(nghttp2_session *session,const nghttp2_frame *frame, void *user_data) 
+static int on_frame_recv_callback(nghttp2_session* /*session*/,const nghttp2_frame* frame, void* user_data) 
 {
     http2_session* s = (http2_session *)user_data;
     return s->on_frame_recv_callback(frame);
 }
 
 static int on_header_callback(
-    nghttp2_session *session,
+    nghttp2_session* /*session*/,
     const nghttp2_frame *frame, 
     const uint8_t *name,
     size_t namelen, 
@@ -478,38 +478,38 @@ static int on_header_callback(
     return s->on_header_callback(frame,name,namelen,value,valuelen,flags);
 }
 
-static int on_begin_headers_callback(nghttp2_session *session,const nghttp2_frame *frame,void *user_data) 
+static int on_begin_headers_callback(nghttp2_session* /*session*/, const nghttp2_frame* frame, void* user_data) 
 {
     http2_session* s = (http2_session *)user_data;
     return s->on_begin_headers_callback(frame);
 }
 
-static int on_stream_close_callback(nghttp2_session *session, int32_t stream_id,uint32_t error_code, void *user_data) 
+static int on_stream_close_callback(nghttp2_session* /*session*/, int32_t stream_id, uint32_t error_code, void* user_data) 
 {
     http2_session* s = (http2_session *)user_data;
     return s->on_stream_close_callback(stream_id,error_code);
 }
 
 ssize_t data_provider_callback(
-    nghttp2_session *session, 
-    int32_t stream_id,
-    uint8_t *buf, 
+    nghttp2_session* /*session*/, 
+    int32_t /*stream_id*/,
+    uint8_t* buf, 
     size_t length,
-    uint32_t *data_flags,
-    nghttp2_data_source *source,
-    void *user_data) 
+    uint32_t* data_flags,
+    nghttp2_data_source* source,
+    void* /*user_data*/ ) 
 {
     http2_stream* stream = (http2_stream*)(source->ptr);
     return stream->data_provider_callback(buf,length,data_flags);
 }
 
 static int on_data_chunk_recv_callback(
-    nghttp2_session *session,
+    nghttp2_session* session,
     uint8_t flags, 
     int32_t stream_id,
-    const uint8_t *data, 
+    const uint8_t* data, 
     size_t len,
-    void *user_data) 
+    void* /*user_data*/ ) 
 {
     http2_stream* stream = get_stream_by_id(session,stream_id);
     return stream->data_chunk_recv_callback(flags,data,len);

@@ -104,7 +104,7 @@ Future<Connection::Ptr> SslConnection::connect(const std::string& host, int port
 	boost::asio::ip::tcp::resolver::query query(host, "");
 	impl->resolver.async_resolve(
 		query,
-		[host,&ctx,impl,p,port,c](const boost::system::error_code& error,boost::asio::ip::tcp::resolver::iterator iterator)
+		[host,&ctx,impl,p,port,c](const boost::system::error_code& /*error*/, boost::asio::ip::tcp::resolver::iterator iterator)
 		{
 			while(iterator != boost::asio::ip::tcp::resolver::iterator())
 			{
@@ -126,7 +126,7 @@ Future<Connection::Ptr> SslConnection::connect(const std::string& host, int port
 				.lowest_layer()
 				.async_connect( 
 					endpoint, 
-					[host,&ctx,impl,p,c](const boost::system::error_code& error)
+					[host,impl,p,c](const boost::system::error_code& error)
 					{
 						if(error)
 						{
@@ -254,7 +254,7 @@ Future<Connection::Ptr> SslConnection::write( const std::string& data)
 	async_write(
 		impl_->socket,
 		boost::asio::buffer(buffer->data(),buffer->size()),
-		[this,p,ptr,buffer](const boost::system::error_code& error,std::size_t bytes_transferred)
+		[this,p,ptr,buffer](const boost::system::error_code& error,std::size_t /*bytes_transferred*/ )
 		{
 			impl_->timer.cancel();
 
@@ -293,12 +293,12 @@ Future<> SslConnection::shutdown()
 	impl_->socket.shutdown();
 
 	read()
-	.then([this,p](Connection::Ptr,std::string data)
+	.then([this,p](Connection::Ptr,std::string /*data*/ )
 	{
 		close();
 		p.resolve();
 	})
-	.otherwise([this,p](const std::exception& ex)
+	.otherwise([this,p](const std::exception& /*ex*/ )
 	{
 		close();
 		p.resolve();

@@ -59,7 +59,7 @@ Future<std::string> HttpConversation::read()
 	auto p = repro::promise<std::string>();
 
 	con_->read()
-	.then( [p] (Connection::Ptr c, std::string s)
+	.then( [p] (Connection::Ptr /*c*/, std::string s)
 	{
 		p.resolve(s);
 	})
@@ -76,7 +76,7 @@ Future<> HttpConversation::write(const std::string& s)
 	auto p = repro::promise<>();
 
 	con_->write(s)
-	.then( [p] (Connection::Ptr c)
+	.then( [p] (Connection::Ptr /*c*/ )
 	{
 		p.resolve();
 	})
@@ -228,12 +228,12 @@ Connection::Ptr HttpConversation::con()
 	return con_;
 }
 
-void HttpConversation::onCompletion(std::function<void(Request& req, Response& res)> f, Response& res)
+void HttpConversation::onCompletion(std::function<void(Request& req, Response& res)> f, Response& /*res*/ )
 {
 	completion_func_ = f;
 }
 
-void HttpConversation::onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> f, Response& res)
+void HttpConversation::onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> f, Response& /*res*/ )
 {
 	flusheaders_func_ = f;
 }
@@ -283,7 +283,7 @@ void SubRequest::resolve(Request& req, Response& res)
     cb_.resolve(req,res);
 }
 
-repro::Future<> SubRequest::flush(Response& res)
+repro::Future<> SubRequest::flush(Response& /*res*/ )
 {
 	auto p = repro::promise();
 
@@ -315,13 +315,13 @@ Connection::Ptr SubRequest::con()
 	return empty;
 }
 
-void SubRequest::onCompletion(std::function<void(Request& req, Response& res)> f, Response& res)
+void SubRequest::onCompletion(std::function<void(Request& req, Response& res)> f, Response& /*res*/ )
 {
 	completion_func_ = f;
 }
 
 
-void SubRequest::onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> f, Response& res)
+void SubRequest::onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> f, Response& /*res*/ )
 {
 	flusheaders_func_ = f;
 }

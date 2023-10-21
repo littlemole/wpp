@@ -39,15 +39,15 @@ public:
 	virtual repro::Future<std::string> read();
 	virtual repro::Future<> write(const std::string& s);
 
-	virtual repro::Future<> flush(Response& res) 
+	virtual repro::Future<> flush(Response& /*res*/ ) 
 	{
 		auto p = repro::promise();
 		nextTick([p](){ p.resolve(); });
 		return p.future();
 	}
-	virtual void onCompletion(std::function<void(Request& req, Response& res)> f, Response& res) {};
-	virtual void onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> f, Response& res) {};
-	virtual void chunk(const std::string& ch) {};
+	virtual void onCompletion(std::function<void(Request& req, Response& res)> /*f*/, Response& /*res*/ ) {};
+	virtual void onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> /*f*/, Response& /*res*/ ) {};
+	virtual void chunk(const std::string& /*ch*/) {};
 	
 	virtual bool keepAlive()
 	{
@@ -94,17 +94,17 @@ public:
 	virtual Connection::Ptr con();
 
 	virtual void onRequestError(const std::exception_ptr& s);
-	virtual repro::Future<> flush(Response& res) 
+	virtual repro::Future<> flush(Response& /*res*/ ) 
 	{
 		auto p = repro::promise();
 		nextTick([p](){ p.resolve(); });
 		return p.future();
 	}
 
-	virtual void onCompletion(std::function<void(Request& req, Response& res)> f, Response& res) {};
-	virtual void onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> f, Response& res) {};
+	virtual void onCompletion(std::function<void(Request& req, Response& res)> /*f*/, Response& /*res*/ ) {};
+	virtual void onFlushHeaders(std::function<repro::Future<>(Request& req, Response& res)> /*f*/, Response& /*res*/) {};
 
-	virtual void chunk(const std::string& ch) {};
+	virtual void chunk(const std::string& /*ch*/ ) {};
 	
 	virtual bool keepAlive()
 	{

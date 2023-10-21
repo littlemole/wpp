@@ -289,12 +289,12 @@ result::result(std::shared_ptr<statement> st)
 
 }
 
-const int result::fields() const
+int result::fields() const
 {
 	return column_count_;
 }
 
-const int result::affected_rows() const
+int result::affected_rows() const
 {
 	return affected_rows_;
 }

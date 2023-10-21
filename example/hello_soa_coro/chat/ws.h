@@ -71,7 +71,7 @@ public:
 				eventBus_->notify("chat-topic",result);
 
 			})
-			.otherwise([ws](const std::exception& ex)
+			.otherwise([ws](const std::exception& )
 			{
 				ws->close();
 			});

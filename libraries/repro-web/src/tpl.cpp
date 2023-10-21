@@ -220,7 +220,7 @@ TemplateView::TemplateView( std::shared_ptr<TplStore> tpls)
 	: templates_(tpls)
 {}
 
-repro::Future<std::string> TemplateView::render_content(prio::Request& req, const std::string& page, Json::Value value)
+repro::Future<std::string> TemplateView::render_content(prio::Request& /*req*/, const std::string& page, Json::Value value)
 {
 	auto p = repro::promise<std::string>();
 

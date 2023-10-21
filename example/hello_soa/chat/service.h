@@ -50,7 +50,7 @@ public:
 		//.insecure()
 		.post( session )
 		.fetch<Json::Value>()
-		.then([p](Json::Value json)
+		.then([p](Json::Value )
 		{
 			p.resolve();
 		})

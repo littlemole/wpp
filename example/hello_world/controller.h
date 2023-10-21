@@ -30,12 +30,12 @@ public:
 		view_->render_index(res,profile);
 	}
 
-	void show_login( Request& req, Response& res)
+	void show_login( Request& /*req*/, Response& res)
 	{
 		view_->render_login(res,"");		
 	}
 
-	void show_registration( Request& req, Response& res)
+	void show_registration( Request& /*req*/, Response& res)
 	{
 		view_->render_registration(res,"");		
 	}

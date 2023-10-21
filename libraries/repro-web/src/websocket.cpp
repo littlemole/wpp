@@ -180,7 +180,7 @@ Future<WsConnection::Ptr> WsConnection::connect(std::string urlStr)
 	{
 		return client->read();
 	})
-	.then([this,p](Connection::Ptr client, std::string data)
+	.then([this,p](Connection::Ptr /*client*/, std::string /*data*/ )
 	{
 		//std::cout << "WS DATA: " << data << std::endl;
 
@@ -270,7 +270,7 @@ void WsConnection::read_frame()
 
 		read_len();
 	})
-	.otherwise( [this](const std::exception_ptr& e)
+	.otherwise( [this](const std::exception_ptr& )
 	{
 		pending_ = false;
 		onClose_(shared_from_this());
@@ -313,7 +313,7 @@ void WsConnection::read_len()
 
 			read_mask_or_msg();
 		})
-		.otherwise([this](const std::exception_ptr& ex)
+		.otherwise([this](const std::exception_ptr& )
 		{
 			pending_ = false;
 		});
@@ -569,7 +569,7 @@ Future<> WebsocketWriter::write_frame()
 
 	ws_->connection()
 	->write(payload.str())
-	.then([p,this](Connection::Ptr client)
+	.then([p,this](Connection::Ptr /*client*/ )
 	{
 		p.resolve();
 		self_.reset();

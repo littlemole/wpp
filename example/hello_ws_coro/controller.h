@@ -95,7 +95,7 @@ public:
 		: view_(view)
 	{}
 
-	void on_auth_failed(const AuthEx& ex,Request& req, Response& res)
+	void on_auth_failed(const AuthEx& /*ex*/, Request& req, Response& res)
 	{
 		view_->redirect_to_login(req,res);
 	}
@@ -110,7 +110,7 @@ public:
 		view_->render_registration(req,res,ex.what());
 	}
 
-	void on_std_ex(const std::exception& ex,Request& req, Response& res)
+	void on_std_ex(const std::exception& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << typeid(ex).name() << ":" << ex.what() << std::endl;
 		view_->render_error(ex,res);

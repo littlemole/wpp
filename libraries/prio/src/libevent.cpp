@@ -89,7 +89,7 @@ Event::Ptr onEvent(socket_t fd, short what)
 }
 
 
-void Event::event_handler(intptr_t fd, short what, void* arg)
+void Event::event_handler(event_fd_t fd, short what, void* arg)
 {
 	Event* e = (Event*)arg;
 	e->cb_(fd,what);
@@ -120,7 +120,7 @@ Event::Ptr Event::create(::event_base* loop, socket_t fd, short what) noexcept
 Event::Event() noexcept
 {
 	e = nullptr;
-	cb_ = [](socket_t fd, short what){};
+	cb_ = [](socket_t /* fd */, short /* what */){};
 	REPRO_MONITOR_INCR(Event);
 }
 
@@ -138,7 +138,7 @@ void Event::cancel() noexcept
 		::event_free(e);
 		e = nullptr;
 	}
-	cb_ = [](socket_t fd, short what){};
+	cb_ = [](socket_t /* fd */, short /* what */){};
 }
 
 Event::Ptr Event::add(int secs, int ms) noexcept
@@ -189,7 +189,7 @@ event* Event::handle()
 void nextTick( const std::function<void()> f) noexcept
 {
 	auto e = Event::create(eventLoop().base());
-	e->callback( [e,f] (socket_t fd, short what) 
+	e->callback( [e,f] (socket_t /* fd */, short /* what */) 
 	{
 		auto tmp = std::move(f);
 		e->dispose();
@@ -204,7 +204,7 @@ Future<> nextTick() noexcept
 	auto p = promise();
 
 	auto e = Event::create(eventLoop().base());
-	e->callback( [e,p] (socket_t fd, short what) 
+	e->callback( [e,p] (socket_t /* fd */, short /* what */) 
 	{
 		auto tmp = std::move(p);
 		e->dispose();
@@ -292,7 +292,7 @@ ListenerImpl::~ListenerImpl()
 {}
 
 
-void ListenerImpl::bind( int port )
+void ListenerImpl::bind( int /* port */ )
 {
 	if (::listen(fd, SOMAXCONN ) == -1) 
 	{
@@ -326,7 +326,7 @@ void TcpListenerImpl::accept_handler()
 {
 	e = onEvent(fd, EV_READ|EV_PERSIST);
 
-	e->callback( [this](socket_t fd, short what )
+	e->callback( [this](socket_t fd, short /* what */ )
 	{
 		try
 		{
@@ -396,7 +396,7 @@ bool do_verify(SslCtx& ctx, SSL* ssl)
 void do_ssl_accept(SslListenerImpl& listener, Connection::Ptr ptr, socket_t sock_fd, SSL* ssl, short what, SslCtx& sslctx)
 {
 	Event::Ptr e  = onEvent(sock_fd,what);
-	e->callback( [e,&listener,ptr,sock_fd,ssl,what,&sslctx](socket_t fd, short w)
+	e->callback( [e,&listener,ptr,sock_fd,ssl,what,&sslctx](socket_t /* fd */, short /* what */)
 	{
 		int r = ::SSL_accept(ssl);
 		int s = check_err_code(ssl,r,what);
@@ -503,7 +503,7 @@ Future<> IOImpl::onRead(socket_t fd)
 	auto p = promise();
 
 	e = onEvent(fd, EV_READ);
-	e->callback( [p](socket_t fd, short what )
+	e->callback( [p](socket_t /* fd */,  short /* what */ )
 	{
 		p.resolve();
 	})
@@ -518,7 +518,7 @@ Future<> IOImpl::onWrite(socket_t fd)
 	auto p = promise();
 
 	e = onEvent(fd, EV_WRITE);
-	e->callback( [p](socket_t fd, short what )
+	e->callback( [p](socket_t /* fd */, short /* what */ )
 	{		
 		p.resolve();
 	})

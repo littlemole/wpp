@@ -53,12 +53,12 @@ inline void fromParams(const std::string& from, std::string& to)
 	to = from;
 }
 
-inline void fromParams(const std::string& from, prio::HeaderValues& to)
+inline void fromParams(const std::string& /*from*/, prio::HeaderValues& /*to*/ )
 {
 
 }
 
-inline void fromParams(const std::string& from, prio::Cookie& to)
+inline void fromParams(const std::string& /*from*/, prio::Cookie& /*to*/)
 {
 
 }
@@ -108,7 +108,7 @@ inline void fromParams( const prio::Cookie& from, std::string& to )
 
 
 
-inline void fromParams( const prio::Cookie& from, prio::HeaderValues& to )
+inline void fromParams( const prio::Cookie& /*from*/, prio::HeaderValues& /*to*/ )
 {
 	// no op
 }
@@ -159,7 +159,7 @@ inline void fromParams( const prio::HeaderValues& from, bool& to )
 	iss >> to;
 }
 
-inline void fromParams( const prio::HeaderValues& from, prio::Cookie& to )
+inline void fromParams( const prio::HeaderValues& /*from*/, prio::Cookie& /*to*/ )
 {
 	// no op
 }
@@ -259,7 +259,7 @@ class HandlerParam<Parameter<T>>
 {
 public:
 
-	static Parameter<T> get(prio::Request& req,  prio::Response& res)
+	static Parameter<T> get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		Parameter<T> t;
 		fromRequest(req,t.value);
@@ -276,7 +276,7 @@ class HandlerParam<Form<T>>
 {
 public:
 
-	static Form<T> get(prio::Request& req,  prio::Response& res)
+	static Form<T> get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		prio::QueryParams qp(req.body());
 
@@ -297,7 +297,7 @@ class HandlerParam<prio::Request&>
 {
 public:
 
-	static prio::Request& get(prio::Request& req,  prio::Response& res)
+	static prio::Request& get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		return req;
 	}
@@ -310,7 +310,7 @@ class HandlerParam<prio::Response&>
 {
 public:
 
-	static prio::Response& get(prio::Request& req,  prio::Response& res)
+	static prio::Response& get(prio::Request& /*req*/,  prio::Response& res)
 	{
 		return res;
 	}
@@ -323,7 +323,7 @@ class HandlerParam<prio::Cookies>
 {
 public:
 
-	static prio::Cookies get(prio::Request& req,  prio::Response& res)
+	static prio::Cookies get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		return req.headers.cookies();
 	}
@@ -336,7 +336,7 @@ class HandlerParam<prio::MultiParts>
 {
 public:
 
-	static prio::MultiParts get(prio::Request& req,  prio::Response& res)
+	static prio::MultiParts get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		std::string delim = req.headers.values("Content-Type").value().params()["boundary"];
 
@@ -356,7 +356,7 @@ class HandlerParam<prio::QueryParams>
 {
 public:
 
-	static prio::QueryParams get(prio::Request& req,  prio::Response& res)
+	static prio::QueryParams get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		return req.path.queryParams();
 	}
@@ -377,7 +377,7 @@ class HandlerParam<FormParams>
 {
 public:
 
-	static FormParams get(prio::Request& req,  prio::Response& res)
+	static FormParams get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		FormParams fp(req.body());
 		return fp;

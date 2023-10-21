@@ -245,11 +245,11 @@ result_async::result_async(std::shared_ptr<statement_async> st)
 
 }
 
-const int result_async::affected_rows() const {
+int result_async::affected_rows() const {
 	return affected_rows_;
 }
 
-const int result_async::fields() const
+int result_async::fields() const
 {
 	return column_count_;
 }

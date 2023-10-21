@@ -210,7 +210,7 @@ public:
 		: collector_(c)
 	{}
 
-	void metrics(::prio::Request& req, ::prio::Response& res)
+	void metrics(::prio::Request& /*req*/, ::prio::Response& res)
 	{
 		std::string stats = collector_->flush();
 		res.contentType("text/plain").body(stats).ok().flush();

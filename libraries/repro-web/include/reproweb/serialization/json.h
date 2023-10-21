@@ -44,7 +44,7 @@ class HandlerParam<json_t<T>>
 {
 public:
 
-	static json_t<T> get(prio::Request& req,  prio::Response& res)
+	static json_t<T> get(prio::Request& req,  prio::Response& /*res*/ )
 	{	
 		Json::Value json = JSON::parse(req.body());
 
@@ -65,7 +65,7 @@ class HandlerParam<Json::Value>
 {
 public:
 
-	static Json::Value get(prio::Request& req,  prio::Response& res)
+	static Json::Value get(prio::Request& req,  prio::Response& /*res*/ )
 	{
 		Json::Value json = JSON::parse(req.body());
 

@@ -265,7 +265,7 @@ public:
 	{}
 
 	
-	virtual repro::Future<std::string> render_content(prio::Request& req, const std::string& page, Json::Value value)
+	virtual repro::Future<std::string> render_content(prio::Request& /*req*/, const std::string& page, Json::Value value)
 	{
 		auto p = repro::promise<std::string>();
 

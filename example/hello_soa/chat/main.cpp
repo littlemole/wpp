@@ -50,7 +50,7 @@ private:
 };
 
 
-int main(int argc, char **argv)
+int main(int /*argc*/, char** /*argv*/ )
 {
 	prio::Libraries<
 		prio::EventLoop, 

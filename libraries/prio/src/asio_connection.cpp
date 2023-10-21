@@ -46,7 +46,7 @@ Future<Connection::Ptr> TcpConnection::connect(const std::string& host, int port
 	impl->resolver
 	.async_resolve(
 		query,
-		[impl,p,ptr,port](const boost::system::error_code& error,boost::asio::ip::tcp::resolver::iterator iterator)
+		[impl,p,ptr,port](const boost::system::error_code& /*error*/, boost::asio::ip::tcp::resolver::iterator iterator)
 		{
 			while(iterator != boost::asio::ip::tcp::resolver::iterator())
 			{
@@ -196,7 +196,7 @@ Future<Connection::Ptr> TcpConnection::write(const std::string& data)
 	async_write(
 		impl_->socket,
 		boost::asio::buffer(buffer->data(),buffer->size()),
-		[this,p,ptr,buffer](const boost::system::error_code& error,std::size_t bytes_transferred)
+		[this,p,ptr,buffer](const boost::system::error_code& error,std::size_t /*bytes_transferred*/ )
 		{
 			impl_->timer.cancel();
 
@@ -237,12 +237,12 @@ Future<> TcpConnection::shutdown()
 	impl_->socket.shutdown(boost::asio::ip::tcp::socket::shutdown_type::shutdown_send);
 
 	read()
-	.then([this,p](Connection::Ptr,std::string data)
+	.then([this,p](Connection::Ptr,std::string /*data*/ )
 	{
 		close();
 		p.resolve();
 	})
-	.otherwise([this,p](const std::exception& ex)
+	.otherwise([this,p](const std::exception& /*ex*/ )
 	{
 		close();
 		p.resolve();

@@ -214,7 +214,7 @@ Future<Connection::Ptr> TcpConnection::write(const std::string& data)
 	// start waiting for write
 
 	impl_->e_write = onEvent(impl_->fd,EV_WRITE)
-	->callback( [p,this,data,written](socket_t fd, short what)
+	->callback( [p,this,data,written](socket_t /* fd */, short what)
 	{
 		if( what & EV_TIMEOUT)
 		{
@@ -280,11 +280,11 @@ Future<> TcpConnection::shutdown()
 
 	::shutdown(impl_->fd,SHUT_RDWR);
 	read()
-	.then([this](Connection::Ptr,std::string data)
+	.then([this](Connection::Ptr,std::string /* data */)
 	{
 		close();
 	})
-	.otherwise([this](const std::exception& ex)
+	.otherwise([this](const std::exception& /* ex */)
 	{
 		close();
 	});

@@ -49,9 +49,9 @@ TEST_F(BasicTest, SimpleHttp) {
 	std::string header;
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s){ std::cout << "SIGPIPE" << std::endl;});
+		signal(SIGPIPE).then([](int ){ std::cout << "SIGPIPE" << std::endl;});
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 
 		async_curl()
@@ -106,15 +106,15 @@ TEST_F(BasicTest, asyncTest)
 {
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) { std::cout << "SIGPIPE" << std::endl;});
+		signal(SIGPIPE).then([](int ) { std::cout << "SIGPIPE" << std::endl;});
 #endif
-		signal(SIGINT).then([](int s) { theLoop().exit(); });
+		signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 		std::cout << "0:" << std::endl;
 
 		coroutine_example()
 		.then([](){})
-		.otherwise([](const std::exception& ex){});
+		.otherwise([](const std::exception& ){});
 
 		std::cout << "-:" << std::endl;
 
@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 
 Future<> coroutine_example()
 {
-	int status = 0;
+	long status = 0;
 	std::string header;
 
 	try {
@@ -172,5 +172,6 @@ Future<> coroutine_example()
 		theLoop().exit();
 	};
 
+	EXPECT_EQ(200,status);
 }
 

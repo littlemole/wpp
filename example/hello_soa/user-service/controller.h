@@ -17,7 +17,7 @@ public:
 		: userRepository(repo)
 	{}
 
-	async_json_t<User> get_user( Request& req, Response& res)
+	async_json_t<User> get_user( Request& req, Response& /*res*/)
 	{
 		std::string email = Valid::login(req.path.args().get("email"));
 
@@ -33,7 +33,7 @@ public:
 		return p.future();
 	}
 
-	async_json_t<User> login_user( json_t<Login> login, Request& req, Response& res)
+	async_json_t<User> login_user( json_t<Login> login, Request& /*req*/, Response& /*res*/ )
 	{
 		auto p = json_promise<User>();
 
@@ -55,7 +55,7 @@ public:
 		return p.future();
 	}
 
-	async_json_t<User> register_user( json_t<User> user, Request& req, Response& res)
+	async_json_t<User> register_user( json_t<User> user, Request& /*req*/, Response& /*res*/ )
 	{
 		auto p = json_promise<User>();
 
@@ -89,32 +89,32 @@ public:
 	Exceptions()
 	{}
 
-	void on_user_not_found_ex(const UserNotFoundEx& ex,Request& req, Response& res)
+	void on_user_not_found_ex(const UserNotFoundEx& ex, Request& /*req*/, Response& res)
 	{
 		render_error(ex,res.not_found());
 	}		
 
-	void on_bad_request_ex(const BadRequestEx& ex,Request& req, Response& res)
+	void on_bad_request_ex(const BadRequestEx& ex,Request& /*req*/, Response& res)
 	{
 		render_error(ex,res.bad_request());
 	}	
 
-	void on_login_ex(const LoginEx& ex,Request& req, Response& res)
+	void on_login_ex(const LoginEx& ex,Request& /*req*/, Response& res)
 	{
 		render_error(ex,res.forbidden());
 	}	
 
-	void on_login_already_taken_ex(const LoginAlreadyTakenEx& ex,Request& req, Response& res)
+	void on_login_already_taken_ex(const LoginAlreadyTakenEx& ex, Request& /*req*/, Response& res)
 	{
 		render_error(ex,res.forbidden());
 	}	
 
-	void on_register_ex(const RegistrationEx& ex,Request& req, Response& res)
+	void on_register_ex(const RegistrationEx& ex, Request& /*req*/, Response& res)
 	{
 		render_error(ex,res.bad_request());
 	}	
 
-	void on_std_ex(const std::exception& ex,Request& req, Response& res)
+	void on_std_ex(const std::exception& ex, Request& /*req*/, Response& res)
 	{
 		render_error(ex,res.error());
 	}

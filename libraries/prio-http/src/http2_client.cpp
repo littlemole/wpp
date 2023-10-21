@@ -22,12 +22,12 @@ http2_client_stream::~http2_client_stream()
 {}
 
 int http2_client_stream::on_header_callback(
-    const nghttp2_frame *frame, 
+    const nghttp2_frame* /*frame*/, 
     const uint8_t *name,
     size_t namelen, 
     const uint8_t *value,
-    size_t valuelen, 
-    uint8_t flags) 
+    size_t /*valuelen*/, 
+    uint8_t /*flags*/ ) 
 {
     static const char* pseudo_headers[] = { ":status" };
     static std::function<void(HttpResponse& r,char* c)> pseudo_handlers[] = { 
@@ -63,7 +63,7 @@ int http2_client_stream::on_header_callback(
 }
 
 int http2_client_stream::data_chunk_recv_callback(
-    uint8_t flags, 
+    uint8_t /*flags*/, 
     const uint8_t *data, 
     size_t len) 
 {
@@ -136,7 +136,7 @@ int http2_client_session::on_header_callback(
 }
 
 // called when stream is first started
-int http2_client_session::on_begin_headers_callback(const nghttp2_frame *frame) 
+int http2_client_session::on_begin_headers_callback(const nghttp2_frame* /*frame*/ ) 
 {
     return 0;
 }

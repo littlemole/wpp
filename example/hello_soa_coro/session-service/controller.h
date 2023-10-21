@@ -54,7 +54,7 @@ public:
 		on_std_ex(ex,req,res);
 	}	
 
-	void on_std_ex(const std::exception& ex,Request& req, Response& res)
+	void on_std_ex(const std::exception& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << typeid(ex).name() << ":" << ex.what() << std::endl;
 

@@ -266,7 +266,7 @@ int CurlMulti::on_sock_cb(CURL *curl, impl::socket_t sock, int what, CurlEasy* e
 	return 0;
 }
 
-int CurlMulti::on_multi_timer_cb(CURLM *multi, long timeout_ms)
+int CurlMulti::on_multi_timer_cb(CURLM* /*multi*/, long timeout_ms)
 {
 	if(!timeout_)
 		return 0;
@@ -288,7 +288,7 @@ int CurlMulti::on_multi_timer_cb(CURLM *multi, long timeout_ms)
 
 
 // socketdata on multi, value from multi_assign is sockp
-int CurlMulti::sock_cb(CURL *e, impl::socket_t s, int what, void *cbp, void *sockp)
+int CurlMulti::sock_cb(CURL* e, impl::socket_t s, int what, void* cbp, void* /*sockp*/)
 {
 	CurlMulti *curl = (CurlMulti*) cbp;
 

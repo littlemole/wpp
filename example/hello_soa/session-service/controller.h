@@ -15,7 +15,7 @@ public:
 		: sessionRepository(repo)
 	{}
 
-	Future<Json::Value> get_session( Request& req, Response& res)
+	Future<Json::Value> get_session( Request& req, Response& /*res*/ )
 	{
 		std::string sid = Valid::session_id(req.path.args().get("sid"));
 
@@ -26,7 +26,7 @@ public:
 		{
 			p.resolve(meta::toJson(session));
 		})
-		.otherwise([this,p](const std::exception& ex)
+		.otherwise([this,p](const std::exception& )
 		{
 			Session session;
 			sessionRepository->write_user_session(session)
@@ -40,7 +40,7 @@ public:
 		return p.future();
 	}
 
-	Future<Json::Value> write_session( json_t<Session> session, Request& req, Response& res)
+	Future<Json::Value> write_session( json_t<Session> session, Request& /*req*/, Response& /*res*/ )
 	{
 		auto p = promise<Json::Value>();
 
@@ -85,7 +85,7 @@ public:
 	Exceptions()
 	{}
 
-	void on_no_session_ex(const NoSessionEx& ex,Request& req, Response& res)
+	void on_no_session_ex(const NoSessionEx& ex,Request& /*req*/, Response& res)
 	{
 		std::cout << typeid(ex).name() << ":" << ex.what() << std::endl;
 
@@ -98,7 +98,7 @@ public:
 		.flush();
 	}	
 
-	void on_std_ex(const std::exception& ex,Request& req, Response& res)
+	void on_std_ex(const std::exception& ex, Request& /*req*/, Response& res)
 	{
 		std::cout << typeid(ex).name() << ":" << ex.what() << std::endl;
 

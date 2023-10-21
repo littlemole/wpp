@@ -112,7 +112,7 @@
         "inherits": "gcc-debug",
         "cacheVariables": {
           "WITH_LIBEVENT": "On",
-          "WITH_TEST" : "On"
+          "WITH_TEST" : "On" 
         }
       },
       {

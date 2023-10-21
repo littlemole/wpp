@@ -305,7 +305,7 @@ std::string slurp( const std::string& fp )
 unsigned char next_proto_list[256];
 size_t next_proto_list_len;
 
-int next_proto_cb(SSL *ssl, const unsigned char **data,unsigned int *len, void *arg) 
+int next_proto_cb(SSL* /*ssl*/, const unsigned char **data,unsigned int *len, void* /*arg*/ ) 
 {
   *data = next_proto_list;
   *len = (unsigned int)next_proto_list_len;
@@ -313,11 +313,11 @@ int next_proto_cb(SSL *ssl, const unsigned char **data,unsigned int *len, void *
 }
 
 #if OPENSSL_VERSION_NUMBER >= 0x10002000L
-int alpn_select_proto_cb(SSL *ssl, const unsigned char **out,
-          unsigned char *outlen, const unsigned char *in,
-		  unsigned int inlen, void *arg) 
+int alpn_select_proto_cb(SSL* /*ssl*/, const unsigned char** out,
+          unsigned char* outlen, const unsigned char* in,
+		  unsigned int inlen, void* /*arg*/ ) 
 {
-  int rv = nghttp2_select_next_protocol((unsigned char **)out, outlen, in, inlen);
+  int rv = nghttp2_select_next_protocol((unsigned char**)out, outlen, in, inlen);
 
   if (rv != 1) {
     return SSL_TLSEXT_ERR_NOACK;
@@ -367,9 +367,9 @@ void Http2SslCtxImpl::enableHttp2(  )
 	  
 }
 
-static int select_next_proto_cb(SSL *ssl, unsigned char **out,
-	unsigned char *outlen, const unsigned char *in,
-	unsigned int inlen, void *arg) 
+static int select_next_proto_cb(SSL* /*ssl*/, unsigned char** out,
+	unsigned char* outlen, const unsigned char* in,
+	unsigned int inlen, void* /*arg*/) 
 {
 	if (nghttp2_select_next_protocol(out, outlen, in, inlen) <= 0) 
 	{
@@ -470,9 +470,9 @@ void Http2SslCtxImpl::enableHttp2(  )
 
 }
 
-static int select_next_proto_cb(SSL *ssl, unsigned char **out,
-	unsigned char *outlen, const unsigned char *in,
-	unsigned int inlen, void *arg) 
+static int select_next_proto_cb(SSL* /*ssl*/, unsigned char** out,
+	unsigned char* outlen, const unsigned char* in,
+	unsigned int inlen, void* /*arg*/) 
 {
 	if (nghttp2_select_next_protocol(out, outlen, in, inlen) <= 0) 
 	{

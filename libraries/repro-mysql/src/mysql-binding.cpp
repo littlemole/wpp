@@ -381,17 +381,17 @@ bool Retval::operator()()
 	return (!err()) && (!null());
 }
 
-const int Retval::getInt() const
+int Retval::getInt() const
 {
 	return getNumber<int>();
 }
 
-const float Retval::getFloat() const
+float Retval::getFloat() const
 {
 	return getNumber<float>();
 }
 
-const double Retval::getDouble() const
+double Retval::getDouble() const
 {
 	return getNumber<double>();
 }
@@ -401,7 +401,7 @@ const MYSQL_TIME& Retval::getTime() const
 	return u_.timeval_;
 }
 
-const long long int Retval::getLongLong() const
+long long int Retval::getLongLong() const
 {
 	return getNumber<long long>();
 }

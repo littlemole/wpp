@@ -35,7 +35,7 @@ repro::Future<> HttpPlainBodyWriter::flush()
 	return p.future();
 }
 
-void HttpPlainBodyWriter::write(const std::string& c)
+void HttpPlainBodyWriter::write(const std::string& /*c*/ )
 {
 }
 

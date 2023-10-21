@@ -24,9 +24,9 @@ WebServer::WebServer(diy::Context& ctx)
 {
 
 #ifndef _WIN32        
-        signal(SIGPIPE).then( [](int s) {} );
+        signal(SIGPIPE).then( [](int ) {} );
 #endif        
-        signal(SIGINT).then( [this](int s) 
+        signal(SIGINT).then( [this](int ) 
         { 
             shutdown();
             nextTick([]
@@ -54,9 +54,9 @@ int WebServer::listen(int port)
             req.attributes.set("PORT",port);
         	fc->request_handler(req,res);
         })
-		.otherwise([](const std::exception& ex)
+		.otherwise([](const std::exception& ex )
         {
-
+            (void) ex; // might be unused
 #ifdef MOL_PROMISE_DEBUG
         	std::cout << "ex:!" << ex.what() << std::endl;
 #endif
@@ -87,9 +87,9 @@ int WebServer::listen(prio::SslCtx& ssl, int port)
             req.attributes.set("PORT",port);
         	fc->request_handler(req,res);
         })
-		.otherwise([](const std::exception& ex)
+		.otherwise([](const std::exception& ex )
         {
-
+            (void) ex; // might be unused
 #ifdef MOL_PROMISE_DEBUG
         	std::cout << "ex:!" << ex.what() << std::endl;
 #endif
@@ -221,7 +221,7 @@ void WebServer::run_config(Json::Value json)
                 res.body(s);
                 res.ok().flush();
             })
-            .otherwise([&res](const std::exception_ptr& ex)
+            .otherwise([&res](const std::exception_ptr& )
             {
                 res.error().flush();
             });

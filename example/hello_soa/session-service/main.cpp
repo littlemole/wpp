@@ -7,7 +7,7 @@
 
 using namespace diy;  
 
-int main(int argc, char **argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 	prio::Libraries<prio::EventLoop,cryptoneat::SSLUser> init;
 

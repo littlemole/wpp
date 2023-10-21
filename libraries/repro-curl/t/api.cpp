@@ -34,9 +34,9 @@ TEST_F(APITest, SimpleHttp)
 {
 
 #ifndef _WIN32
-	signal(SIGPIPE).then([](int s){ std::cout << "SIGPIPE" << std::endl;});
+	signal(SIGPIPE).then([](int ){ std::cout << "SIGPIPE" << std::endl;});
 #endif
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 
 	int status = 0;
 	std::string header;

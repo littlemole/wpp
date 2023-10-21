@@ -128,7 +128,7 @@ public:
 		view->render_registration(req,res,ex.what());
 	}	
 
-	void on_std_ex(const std::exception& ex,prio::Request& req, prio::Response& res)
+	void on_std_ex(const std::exception& ex,prio::Request& /*req*/, prio::Response& res)
 	{
 		view->render_error(ex,res);
 	}

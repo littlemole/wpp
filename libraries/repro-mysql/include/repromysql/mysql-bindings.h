@@ -236,11 +236,11 @@ public:
 	std::string name() const { return name_; }
 
 	const std::string getString() const;
-	const int getInt() const;
-	const float getFloat() const;
-	const double getDouble() const;
+	int getInt() const;
+	float getFloat() const;
+	double getDouble() const;
 	const MYSQL_TIME& getTime() const;
-	const long long int getLongLong() const;
+	long long int getLongLong() const;
 
 	template<class T>
 	const T getNumber() const

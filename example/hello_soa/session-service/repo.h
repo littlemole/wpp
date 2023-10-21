@@ -29,7 +29,7 @@ struct RedisJsonMapper
 			else
 			{
 				reply->cmd("EXPIRE", key, expire)
-				.then([p](reproredis::RedisResult::Ptr reply)
+				.then([p](reproredis::RedisResult::Ptr /*reply*/ )
 				{
 					p.resolve();
 				})
@@ -63,7 +63,7 @@ struct RedisJsonMapper
 			else
 			{
 				reply->cmd("EXPIRE", key, expire)
-				.then( [p,payload](reproredis::RedisResult::Ptr reply)
+				.then( [p,payload](reproredis::RedisResult::Ptr /*reply*/ )
 				{
 					Json::Value json = JSON::parse(payload);
 					p.resolve(json);				
@@ -87,7 +87,7 @@ struct RedisJsonMapper
 		auto p = promise<>();
 
 		redis->cmd("DEL", key) 
-		.then([p](reproredis::RedisResult::Ptr reply)
+		.then([p](reproredis::RedisResult::Ptr /*reply*/ )
 		{
 			p.resolve();
 		})

@@ -233,7 +233,7 @@ Future<> IOImpl::onRead(socket_t fd)
 
 	sd_.async_read_some(
 		boost::asio::null_buffers(), 
-		[this,p] ( boost::system::error_code ec, std::size_t bytes_transferred  )
+		[this,p] ( boost::system::error_code ec, std::size_t /*bytes_transferred*/  )
 		{
 			handle_callback(p,ec);
 		}
@@ -252,7 +252,7 @@ Future<> IOImpl::onWrite(socket_t fd)
 
 	sd_.async_write_some(
 		boost::asio::null_buffers(), 
-		[this,p] ( boost::system::error_code ec, std::size_t bytes_transferred  )
+		[this,p] ( boost::system::error_code ec, std::size_t /*bytes_transferred*/  )
 		{
 			handle_callback(p,ec);
 		}

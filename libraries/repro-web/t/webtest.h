@@ -22,7 +22,7 @@ public:
 		return "/root";
 	}
 
-	void postMultipart( prio::MultiParts mp,  prio::Request& req,  prio::Response& res)
+	void postMultipart( prio::MultiParts mp,  prio::Request& /*req*/,  prio::Response& res)
 	{
 		for( auto& p : mp.parts)
 		{
@@ -43,7 +43,7 @@ public:
 		res.ok().flush();
 	}
 
-	Async handlerB( prio::Request& req, prio::Response& res) 
+	Async handlerB( prio::Request& /*req*/, prio::Response& res) 
 	{
 		int status = 0;
 		std::string header;
@@ -103,7 +103,7 @@ public:
 			res.body(s);
 			res.ok().flush();
 		})
-		.otherwise([&res](const std::exception& ex)
+		.otherwise([&res](const std::exception& )
 		{
 			res.error().flush();
 		});

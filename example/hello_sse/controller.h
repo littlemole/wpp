@@ -112,7 +112,7 @@ public:
 		});
 	}
 
-	void postMsg(Request& req, Response& res)
+	void postMsg(Request& req, Response& res )
 	{
 		auto session = req_session(req);
 		if(session->authenticated)
@@ -121,6 +121,7 @@ public:
 
 			chat_->sendMsg(session->data,msg);
 		}
+		res.ok().flush();
 	}
 
 private:

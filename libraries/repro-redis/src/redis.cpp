@@ -65,7 +65,7 @@ public:
 	repro::Future<RedisResult::Ptr> do_cmd(const std::string& cmd, repro::Promise<RedisResult::Ptr> p)
 	{
 		con->con->write(cmd)
-		.then([this](prio::Connection::Ptr con)
+		.then([this](prio::Connection::Ptr /*con*/ )
 		{
 			return parse();
 		})
@@ -177,7 +177,7 @@ void RedisBulkStringResult::parse_response(repro::Promise<RedisResult::Ptr> p)
 void RedisBulkStringResult::read(repro::Promise<RedisResult::Ptr> p)
 {
 	parser_.connection()->read()
-	.then([this,p](prio::Connection::Ptr con, std::string data)
+	.then([this,p](prio::Connection::Ptr /*con*/, std::string data)
 	{
 		parser_.buffer.append(data);
 		parse_response(p);
@@ -306,7 +306,7 @@ public:
 
 
 		read()
-		.then([this](RedisResult::Ptr r)
+		.then([this](RedisResult::Ptr )
 		{
 			if(size_ == (long)elements_.size())
 			{
@@ -417,7 +417,7 @@ repro::Future<RedisResult::Ptr> RedisArrayResult::read()
 	}
 
 	parser_.connection()->read()
-	.then([this,p](prio::Connection::Ptr con, std::string data)
+	.then([this,p](prio::Connection::Ptr /*con*/, std::string data)
 	{
 		parser_.buffer.append(data);
 		read()
@@ -529,7 +529,7 @@ void RedisParser::listen( bool& shutdown, prio::Callback<std::pair<std::string, 
 		cb.resolve(std::make_pair(channel,msg));
 		listen( shutdown, cb);
 	})		
-	.otherwise([this,&cb](const std::exception_ptr& ex)
+	.otherwise([&cb](const std::exception_ptr& ex)
 	{
 		cb.reject(ex);
 	});	
@@ -581,7 +581,7 @@ prio::Callback<std::pair<std::string,std::string>>& RedisSubscriber::subscribe(c
 		parser->con = redis;
 		return parser->connection()->write(cmd);
 	})
-	.then([this,parser](prio::Connection::Ptr con)
+	.then([this,parser](prio::Connection::Ptr /*con*/ )
 	{				
 		parser_->con = parser->con;		
 		return parser->parse();

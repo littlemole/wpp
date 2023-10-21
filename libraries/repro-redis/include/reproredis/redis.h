@@ -110,7 +110,7 @@ public:
 	}
 
 	RedisResult(const RedisResult& rhs)
-		: con(rhs.con)
+		: enable_shared_from_this(rhs), con(rhs.con)
 	{
 		REPRO_MONITOR_INCR(RedisResult);	
 	}
@@ -126,7 +126,7 @@ public:
 	virtual std::string str() 						{ return ""; }
 	virtual long integer()    						{ return 0; }
 	virtual long size()   							{ return 0; }
-	virtual RedisResult::Ptr element(std::size_t i) { return nullptr; }
+	virtual RedisResult::Ptr element(std::size_t )  { return nullptr; }
 	virtual repro::Future<RedisResult::Ptr> parse()	= 0;
 
 	template<class ... Args>

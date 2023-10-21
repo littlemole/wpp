@@ -49,17 +49,26 @@ find_package(metacpp REQUIRED)
 
 
 ############################################
-# clang support
+# basic compile flags
 ############################################
 
 set(LINKERFLAGS "")
 set(STDLIB "")
-set(FLAGS "")
+
+IF (WIN32)
+    set(FLAGS "/W3")
+else()
+    set(FLAGS "-Wall -Wextra")
+endif()
+
+############################################
+# clang support
+############################################
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(STDLIB "c++abi")
     set(LINKERFLAGS "-stdlib=libc++ -fcoroutines-ts")
-    set(FLAGS "-stdlib=libc++ -fcoroutines-ts ")
+    set(FLAGS "-Wall -Wextra -stdlib=libc++ -fcoroutines-ts ")
 endif()
 
 
@@ -111,9 +120,7 @@ IF (WIN32)
 	    ${STDLIB}	
     )
 
-    # hm, inspect why this errors ?
-    add_definitions("-D_WIN32_WINNT=0x0A00")    
-   
+    add_definitions("-D_WIN32_WINNT=0x0A00")       
 
 ELSEIF (UNIX)
 

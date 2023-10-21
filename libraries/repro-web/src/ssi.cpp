@@ -184,7 +184,7 @@ void ssi_content::register_static_handler(diy::Context* ctx)
 			res.body(s);
 			res.ok().flush();
 		})
-		.otherwise([&res](const std::exception& ex)
+		.otherwise([&res](const std::exception& /*ex*/ )
 		{
 			res.error().flush();
 		});

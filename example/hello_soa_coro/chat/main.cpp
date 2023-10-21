@@ -12,7 +12,7 @@ using namespace prio;
 using namespace reproweb;
 
 
-int main(int argc, char **argv)
+int main(int /*argc*/, char** /*argv*/ )
 {
 	prio::Libraries<
 		prio::EventLoop,

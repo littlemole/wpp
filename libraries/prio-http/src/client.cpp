@@ -152,7 +152,7 @@ prio::Callback<Response&>&HttpClient::fetch()
 			cb = &tmp;
 		}
 
-		cb->then( [this](Request& req,Response& res)
+		cb->then( [this](Request& /*req*/, Response& res )
 		{
 			cb_.resolve(res);
 			self_.reset();

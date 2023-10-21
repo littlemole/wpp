@@ -133,7 +133,7 @@ repro::Future<> Http2Conversation::flush(Response& res)
     return p.future();
 }
 
-void Http2Conversation::chunk(const std::string& ch)
+void Http2Conversation::chunk(const std::string& /*ch*/)
 {
    // TODO ?
 }

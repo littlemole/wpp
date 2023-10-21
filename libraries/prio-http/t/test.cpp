@@ -86,7 +86,7 @@ public:
 		responseComplete(s);
 	}
 
-	virtual void onRequestError(const std::exception_ptr& s)
+	virtual void onRequestError(const std::exception_ptr& )
 	{
 		isError = true;
 	}
@@ -128,9 +128,9 @@ public:
 		return p.future();
 	}
 
-	virtual void flush(Response& res) {}
-	virtual void onFlush(std::function<void(Request& req, Response& res)> f) {};
-	virtual void chunk(const std::string& ch) {};
+	virtual void flush(Response& ) {}
+	virtual void onFlush(std::function<void(Request& req, Response& res)> ) {};
+	virtual void chunk(const std::string& ) {};
 	virtual Connection::Ptr con() { return nullptr; }
 
 	virtual bool keepAlive()
@@ -158,7 +158,7 @@ TEST_F(BasicTest, HeaderReader)
 	HttpHeaderReader hr(&spy);
 	hr.consume("");
 
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 	theLoop().run();
 
 	EXPECT_STREQ("/path",path.c_str());
@@ -181,7 +181,7 @@ TEST_F(BasicTest, BodyReader)
 	HttpContentLengthBodyReader br(&spy);
 	br.consume("12345");
 
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 	theLoop().run();
 
 	EXPECT_STREQ("1234567890",body.c_str());
@@ -191,7 +191,7 @@ TEST_F(BasicTest, BodyWriter)
 {
 	ConversationSpy spy;
 	spy.res.ok().contentType("text/html").body("0123456789");
-	spy.responseComplete = [](std::string s)
+	spy.responseComplete = [](std::string )
 	{
 		theLoop().exit();		
 	};
@@ -199,7 +199,7 @@ TEST_F(BasicTest, BodyWriter)
 	HttpPlainBodyWriter br(&spy);
 	br.flush();
 
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 	theLoop().run();
 
 	EXPECT_STREQ("HTTP/1.1 200 OK\r\ncontent-type:text/html\r\nContent-Length:10\r\n\r\n0123456789",spy.written.c_str());
@@ -209,7 +209,7 @@ TEST_F(BasicTest, GzipBodyWriter)
 {
 	ConversationSpy spy;
 	spy.res.ok().contentType("text/html").gzip().body("0123456789");
-	spy.responseComplete = [](std::string s)
+	spy.responseComplete = [](std::string )
 	{
 		theLoop().exit();		
 	};
@@ -218,7 +218,7 @@ TEST_F(BasicTest, GzipBodyWriter)
 	HttpGzippedBodyWriter gz(br);
 	gz.flush();
 
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 	theLoop().run();
 
 	EXPECT_STREQ("HTTP/1.1 200 OK\r\ncontent-type:text/html\r\nContent-Length:10\r\nCONTENT-ENCODING:gzip\r\n\r\n\x1F\x8B\b",spy.written.c_str());
@@ -229,7 +229,7 @@ TEST_F(BasicTest, ChunkedBodyWriter)
 	ConversationSpy spy;
 	spy.res.ok().contentType("text/html");
 	spy.res.isChunked(true);
-	spy.responseComplete = [](std::string s)
+	spy.responseComplete = [](std::string )
 	{
 		theLoop().exit();		
 	};
@@ -239,7 +239,7 @@ TEST_F(BasicTest, ChunkedBodyWriter)
 	br.write("b chunk");
 	br.flush();
 
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 	theLoop().run();
 
 	EXPECT_STREQ("HTTP/1.1 200 OK\r\ncontent-type:text/html\r\nTRANSFER-ENCODING:chunked\r\n\r\n7\r\na chunk\r\n7\r\nb chunk\r\n0\r\n\r\n",spy.written.c_str());
@@ -250,7 +250,7 @@ TEST_F(BasicTest, GzipChunkedBodyWriter)
 	ConversationSpy spy;
 	spy.res.ok().contentType("text/html").gzip();
 	spy.res.isChunked(true);
-	spy.responseComplete = [](std::string s)
+	spy.responseComplete = [](std::string )
 	{
 		theLoop().exit();		
 	};
@@ -262,7 +262,7 @@ TEST_F(BasicTest, GzipChunkedBodyWriter)
 	gz.write("b chunk");
 	gz.flush();
 
-	signal(SIGINT).then([](int s) { theLoop().exit(); });
+	signal(SIGINT).then([](int ) { theLoop().exit(); });
 	theLoop().run();
 
 	EXPECT_STREQ( "HTTP/1.1 200 OK\r\ncontent-type:text/html\r\nTRANSFER-ENCODING:chunked\r\nCONTENT-ENCODING:gzip\r\n\r\na\r\n\x1F\x8B\b\0\0\0\0\0\0\x3\r\n13\r\nKTH\xCE(\xCD\xCBN\x82P\0&\xE3-\x87\xE\0\0\0\r\n0\r\n\r\n", spy.written.c_str());
@@ -300,11 +300,11 @@ TEST_F(BasicTest, SimpleHttp) {
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s){});
+		signal(SIGPIPE).then([](int ){});
 #endif
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 			std::cout << "server start" << std::endl;
 			res.ok().flush();
 		})
@@ -353,11 +353,11 @@ TEST_F(BasicTest, SimpleHttpPost100) {
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res) {
+		.then([](Request& /*req*/, Response& res) {
 			std::cout << "server start" << std::endl;
 			res.ok().flush();
 		})
@@ -518,12 +518,12 @@ TEST_F(BasicTest, KeepAliveHttp) {
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
 
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 			std::cout << "server start" << std::endl;
 			res.ok().flush();
 		})
@@ -583,12 +583,12 @@ TEST_F(BasicTest, SimpleHttpRequest)
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
 
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 			std::cout << "server start" << std::endl;
 			res.ok().flush();
 		})
@@ -609,7 +609,7 @@ TEST_F(BasicTest, SimpleHttpRequest)
 				request.action("GET /test HTTP/1.0");
 
 				HttpClientConversation::on(client,request)
-				.then( [&result,&httpserver](Request& req, Response& res)
+				.then( [&result,&httpserver](Request& /*req*/, Response& res)
 				{
 					std::cout << res.status() << std::endl;
 					result = res.status();
@@ -634,13 +634,13 @@ TEST_F(BasicTest, SimpleHttpRequest2)
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s){theLoop().exit();});
+		signal(SIGINT).then([](int ){theLoop().exit();});
 
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 			std::cout << "server start" << std::endl;
 			res.ok().flush();
 		})
@@ -682,13 +682,13 @@ TEST_F(BasicTest, ChunkedHttpResponse)
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s){theLoop().exit();});
+		signal(SIGINT).then([](int ){theLoop().exit();});
 
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 
 			res.ok();
 			res.chunk("a chunk");
@@ -737,13 +737,13 @@ TEST_F(BasicTest, ChunkedHttpResponse2)
 
 	{
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s){theLoop().exit();});
+		signal(SIGINT).then([](int ){theLoop().exit();});
 
 		http_server httpserver;
 		httpserver.bind(8765)//.listen(10)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 
 			res.ok();
 			res.chunk("a chunk");
@@ -800,13 +800,13 @@ TEST_F(BasicTest, SimpleSSLRequest)
 		client_ctx.set_ca_path("pem/ca.crt");
 		
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s){theLoop().exit();});
+		signal(SIGINT).then([](int ){theLoop().exit();});
 
 		http_server httpserver(server_ctx);
 		httpserver.bind(8765)//.listen(10,server_ctx)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 			std::cout << "server start" << std::endl;
 			res.body("HELO WORLD");
 			res.ok().flush();
@@ -828,7 +828,7 @@ TEST_F(BasicTest, SimpleSSLRequest)
 				request.action("GET /test HTTP/1.0");
 
 				HttpClientConversation::on(client,request)
-				.then( [&result,&httpserver](Request& req, Response& res)
+				.then( [&result,&httpserver](Request& /*req*/, Response& res)
 				{
 					std::cout << res.status() << std::endl;
 					result = res.status();
@@ -1011,13 +1011,13 @@ TEST_F(BasicTest, SimpleHttp2SSLRequest)
 		client_ctx.enableHttp2Client();
 		
 #ifndef _WIN32
-		signal(SIGPIPE).then([](int s) {});
+		signal(SIGPIPE).then([](int ) {});
 #endif
-		signal(SIGINT).then([](int s){theLoop().exit();});
+		signal(SIGINT).then([](int ){theLoop().exit();});
 
 		http_server httpserver(server_ctx);
 		httpserver.bind(8765)//.listen(10,server_ctx)
-		.then([](Request& req, Response& res){
+		.then([](Request& /*req*/, Response& res){
 			std::cout << "server start" << std::endl;
 			res.body("HELO WORLD");
 			res.ok().flush();
@@ -1040,7 +1040,7 @@ TEST_F(BasicTest, SimpleHttp2SSLRequest)
 				request.header("HOST","localhost:8765");
 
 				Http2ClientConversation::on(client,request)
-				.then( [&result,&httpserver](Request& req, Response& res)
+				.then( [&result,&httpserver](Request& /*req*/, Response& res)
 				{
 					std::cout << res.status() << std::endl;
 					result = res.statusCode();

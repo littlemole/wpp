@@ -107,7 +107,7 @@ public:
 	virtual ~HttpClientPlainBodyReader()
 	{}
 
-	virtual void consume(const std::string& c) {}
+	virtual void consume(const std::string& ) {}
 	virtual void complete(const std::string& c);
 
 protected:
@@ -125,7 +125,7 @@ public:
 	virtual ~HttpClientGzippedBodyReader()
 	{}
 
-	virtual void consume(const std::string& c) {};
+	virtual void consume(const std::string& ) {};
 	virtual void add(const std::string& c);
 	virtual void complete(const std::string& c);
 
@@ -181,7 +181,7 @@ void ClientHttpHeaderReader::consume(const std::string& s)
     read();
 }
 
-void ClientHttpHeaderReader::complete(const std::string& c)
+void ClientHttpHeaderReader::complete(const std::string& /*c*/ )
 {
 
 }
@@ -462,7 +462,7 @@ prio::Callback<Request&,Response&>& HttpClientConversation::on(Connection::Ptr c
 	r->self_ = r;
 
 	client->write(req.toString())
-	.then( [con](Connection::Ptr s)
+	.then( [con](Connection::Ptr )
 	{
 		con->reader_->consume("");
 	})
@@ -536,7 +536,7 @@ void HttpClientConversation::onRequestError(const std::exception_ptr& ex)
 }
 
 
-void HttpClientConversation::onRequestComplete(const std::string& b)
+void HttpClientConversation::onRequestComplete(const std::string& /*b*/ )
 {
 }
 
@@ -546,7 +546,7 @@ repro::Future<std::string> HttpClientConversation::read()
 	auto p = repro::promise<std::string>();
 
 	con_->read()
-	.then( [p] (Connection::Ptr c, std::string s)
+	.then( [p] (Connection::Ptr /*c*/, std::string s)
 	{
 		p.resolve(s);
 	})
@@ -563,7 +563,7 @@ repro::Future<> HttpClientConversation::write(const std::string& s)
 	auto p = repro::promise<>();
 
 	con_->write(s)
-	.then( [p] (Connection::Ptr c)
+	.then( [p] (Connection::Ptr /*c*/ )
 	{
 		p.resolve();
 	})

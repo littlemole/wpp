@@ -79,8 +79,8 @@ public:
 
 	bool fetch();
 
-	const int fields() const;
-	const int affected_rows() const;
+	int fields() const;
+	int affected_rows() const;
 	const Retval& field(int i) const;
 	const Retval& field(const std::string& name) const;
 
@@ -159,7 +159,7 @@ private:
 	int column_count_;
 };
 
-inline void binder(statement_async::Ptr& ptr, int i)
+inline void binder(statement_async::Ptr& /*ptr*/, int /*i*/ )
 {
 
 }
@@ -323,7 +323,7 @@ repro::Future<> MysqlPool::tx(F fun)
 		.otherwise( [p,m](const std::exception_ptr ex)
 		{
 			m->rollback()
-			.then([p,ex](mysql_async::Ptr a)
+			.then([p,ex](mysql_async::Ptr )
 			{
 				p.reject(ex);
 			});

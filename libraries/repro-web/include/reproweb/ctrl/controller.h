@@ -325,7 +325,7 @@ inline auto render_error(prio::Response& res)
 
 //! \private
 // terminator for below recursive function
-inline void redirect_url(std::ostringstream& oss)
+inline void redirect_url(std::ostringstream& /*oss*/ )
 {
 }
 
@@ -428,7 +428,7 @@ public:
 		// make Context itself injectable
 		std::shared_ptr<diy::Context> ctx = std::shared_ptr<diy::Context>( 
 			(diy::Context*)this, 
-			[](diy::Context* c) {}
+			[](diy::Context* ) {}
 		);
 
 		register_static<WebApplicationContext,Context>(ctx);
