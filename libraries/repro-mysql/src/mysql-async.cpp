@@ -99,7 +99,7 @@ MYSQL_FIELD* statement_async::field( size_t i ) const
 	if(!prepare_meta_result_)
 		throw repro::Ex("no result yet");
 
-	if ( i < 0 || i >= column_count_ )
+	if ( i >= column_count_ )
 		throw repro::Ex("invalid field!");
 
 	return mysql_fetch_field_direct(prepare_meta_result_.get(), i);
