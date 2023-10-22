@@ -81,7 +81,7 @@ statement_async::statement_async(std::shared_ptr<mysql_async> con,MYSQL_STMT* st
 
 	if ( param_count_ > 0 )
 	{
-		for ( int i = 0; i < param_count_; i++)
+		for ( size_t i = 0; i < param_count_; i++)
 		{
 			bind_.push_back(MYSQL_BIND());
 			memset(&(bind_[i]),0,sizeof(MYSQL_BIND));
@@ -94,7 +94,7 @@ statement_async::statement_async(std::shared_ptr<mysql_async> con,MYSQL_STMT* st
 }
 
 
-MYSQL_FIELD* statement_async::field( int i ) const
+MYSQL_FIELD* statement_async::field( size_t i ) const
 {
 	if(!prepare_meta_result_)
 		throw repro::Ex("no result yet");
@@ -134,7 +134,7 @@ result_async::Ptr statement_async::query()
 
 	if ( param_count_ > 0 )
 	{
-		for ( int i = 0; i < param_count_; i++)
+		for ( size_t i = 0; i < param_count_; i++)
 		{
 			params_[i]->bind(bind_[i]);
 		}
@@ -165,7 +165,7 @@ mysql_async::Ptr statement_async::execute()
 
 	if ( param_count_ > 0 )
 	{
-		for ( int i = 0; i < param_count_; i++)
+		for ( size_t i = 0; i < param_count_; i++)
 		{
 			params_[i]->bind(bind_[i]);
 		}
@@ -217,7 +217,7 @@ result_async::result_async(std::shared_ptr<statement_async> st)
 	}
 
 	fields_.clear();
-	for( int i = 0; i < column_count_; i++)
+	for( size_t i = 0; i < column_count_; i++)
 	{
 		memset(&(bind_.get()[i]),0,sizeof(MYSQL_BIND));
 

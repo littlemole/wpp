@@ -13,7 +13,7 @@ std::string Urlencode::decode(const std::string& s)
 std::string Urlencode::decode(const char* s, size_t len)
 {
 	std::ostringstream oss;
-	for( int i = 0; i < len; i++) {
+	for( size_t i = 0; i < len; i++) {
 		if ( s[i] == '+' ) {
 			oss << " ";
 		}

@@ -129,7 +129,7 @@ public:
 	{
 		auto p = repro::promise<RedisResult::Ptr>();
 		
-		if(size_==-1)
+		if(size_== (size_t)-1)
 		{
 			nil_ = true;
 			return p.resolved(shared_from_this());
@@ -148,7 +148,7 @@ public:
 private:
 
 	bool nil_ = false;
-	long size_ = 0;
+	size_t size_ = 0;
 	std::string str_;
 	RedisParser& parser_;
 		

@@ -337,7 +337,7 @@ void SslConnection::do_ssl_write(Promise<Connection::Ptr> p, std::string data, s
 	{
 		while(true)
 		{
-			int len = SSL_write( impl_->ssl, data.c_str() + *written, (int)( data.size() - *written) );
+			int len = SSL_write( impl_->ssl, data.c_str() + *written, (long)( data.size() - *written) );
 			if ( len > 0 )
 			{
 				*written = *written + len;
@@ -379,7 +379,7 @@ Future<Connection::Ptr> SslConnection::write( const std::string& data)
 
 	while(true)
 	{
-		int len = SSL_write( impl_->ssl, data.c_str() + *written, (int)(data.size() - *written) );
+		int len = SSL_write( impl_->ssl, data.c_str() + *written, (long)(data.size() - *written) );
 		if ( len > 0 )
 		{
 			*written = *written + len;

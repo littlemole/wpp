@@ -136,7 +136,7 @@ Future<Connection::Ptr, std::string> TcpConnection::read(size_t s)
 		}
 
 		std::vector<char> buf(s, 0);
-		long len  = read_socket( fd, &buf[0], (int)*want );
+		long len  = read_socket( fd, &buf[0], (long)*want );
 
 		if ( len <= 0 )
 		{
@@ -184,7 +184,7 @@ Future<Connection::Ptr> TcpConnection::write(const std::string& data)
 
 	while(true)
 	{
-		long n  = write_socket( impl_->fd, data.c_str() + *written, (int)( data.size() - *written) );
+		long n  = write_socket( impl_->fd, data.c_str() + *written, (long)( data.size() - *written) );
 		if ( n < 0 )
 		{
 			if(would_block())
@@ -222,7 +222,7 @@ Future<Connection::Ptr> TcpConnection::write(const std::string& data)
 			return;
 		}
 
-		long n  = write_socket( impl_->fd, data.c_str() + *written, (int)( data.size() - *written) );
+		long n  = write_socket( impl_->fd, data.c_str() + *written, (long)( data.size() - *written) );
 
 		if ( n < 0 )
 		{

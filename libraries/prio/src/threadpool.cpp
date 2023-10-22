@@ -49,7 +49,7 @@ ThreadPool::~ThreadPool() noexcept
 void ThreadPool::start() noexcept
 {
 	stop_.store(false);
-    for( int i = 0; i < nthreads_; ++i )
+    for( size_t i = 0; i < nthreads_; ++i )
     {
         workers_.push_back(std::thread(impl::Worker(*this)));
     }

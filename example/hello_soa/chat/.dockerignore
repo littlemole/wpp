@@ -1,0 +1,10 @@
+**/out/
+**/*~
+**/vcpkg/
+
+**/debug/
+**/release/
+**/Debug/
+**/Release/
+**/.vscode/
+**/.vs/

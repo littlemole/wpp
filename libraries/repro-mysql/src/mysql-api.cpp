@@ -141,7 +141,7 @@ statement::statement(std::shared_ptr<mysql> con,MYSQL_STMT* st)
 
 	if ( param_count_ > 0 )
 	{
-		for ( int i = 0; i < param_count_; i++)
+		for ( size_t i = 0; i < param_count_; i++)
 		{
 			bind_.push_back(MYSQL_BIND());
 			memset(&(bind_[i]),0,sizeof(MYSQL_BIND));
@@ -152,7 +152,7 @@ statement::statement(std::shared_ptr<mysql> con,MYSQL_STMT* st)
 }
 
 
-MYSQL_FIELD* statement::field( int i ) const
+MYSQL_FIELD* statement::field( size_t i ) const
 {
 	if(!prepare_meta_result_)
 		throw repro::Ex("no result yet");
@@ -195,7 +195,7 @@ result::Ptr statement::query()
 
 	if ( ptr->param_count_ > 0 )
 	{
-		for ( int i = 0; i < ptr->param_count_; i++)
+		for ( size_t i = 0; i < ptr->param_count_; i++)
 		{
 			ptr->params_[i]->bind(ptr->bind_[i]);
 		}
@@ -224,7 +224,7 @@ statement::Ptr statement::execute()
 
 	if ( ptr->param_count_ > 0 )
 	{
-		for ( int i = 0; i < ptr->param_count_; i++)
+		for ( size_t i = 0; i < ptr->param_count_; i++)
 		{
 			ptr->params_[i]->bind(ptr->bind_[i]);
 		}
@@ -270,7 +270,7 @@ result::result(std::shared_ptr<statement> st)
 	}
 
 	fields_.clear();
-	for( int i = 0; i < column_count_; i++)
+	for( size_t i = 0; i < column_count_; i++)
 	{
 		memset(&(bind_.get()[i]),0,sizeof(MYSQL_BIND));
 

@@ -111,7 +111,7 @@ public:
 	statement_async(std::shared_ptr<mysql_async> con,MYSQL_STMT* st);
 	~statement_async();
 
-	MYSQL_FIELD* field( int i ) const;
+	MYSQL_FIELD* field( size_t i ) const;
 	size_t affected_rows() const;
 	size_t param_count() const;
 	size_t column_count() const;

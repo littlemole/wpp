@@ -50,7 +50,7 @@ public:
 	statement(std::shared_ptr<mysql> con,MYSQL_STMT* st);
 	~statement() {}
 
-	MYSQL_FIELD* field( int i ) const;
+	MYSQL_FIELD* field( size_t i ) const;
 	size_t param_count() const;
 	size_t column_count() const;
 	size_t affected_rows() const;
