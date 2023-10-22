@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.22)
 
 project(hello_soa_userservice)
 
-find_package("wpp")
+find_package("wpp_examples")
 
 
 ############################################

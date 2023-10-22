@@ -1,11 +1,12 @@
 find_package("wpp")
 
-############################################
-# copy dlls for windows
-############################################
+#################################################
+# for win32, copy dlls & set inc dir
+#################################################
 
 if(WIN32)
 
+    # dlls
     cmake_path(GET NGHTTP2_LIBRARY PARENT_PATH  LIB_DIR)
     cmake_path(GET LIB_DIR PARENT_PATH  BIN_PARENT)
 
@@ -17,4 +18,10 @@ if(WIN32)
         file(COPY ${DLL_FILES} DESTINATION . PATTERN "event*" EXCLUDE)
     endif()
 
-endif()
+    # include path
+    get_filename_component(PRESET "${CMAKE_BINARY_DIR}" NAME)
+    message("WPP_INCLUDES: ${CMAKE_CURRENT_LIST_DIR}/../../include")
+    include_directories("${CMAKE_CURRENT_LIST_DIR}/../../include")
+
+ endif()
+
