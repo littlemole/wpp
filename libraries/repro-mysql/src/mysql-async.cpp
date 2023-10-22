@@ -46,7 +46,7 @@ statement_async::Ptr mysql_async::prepare(std::string sql)
 	int mb =  1;
 	mysql_stmt_attr_set( stmt, STMT_ATTR_UPDATE_MAX_LENGTH, &mb);
 
-	if ( mysql_stmt_prepare(stmt, sql.c_str(), sql.size()) )
+	if ( mysql_stmt_prepare(stmt, sql.c_str(), (unsigned long) sql.size()) )
 	{
 		prio::Resource::invalidate(mysql_);
 		throw repro::Ex("mysql_stmt_prepare failed!");
@@ -105,15 +105,15 @@ MYSQL_FIELD* statement_async::field( int i ) const
 	return mysql_fetch_field_direct(prepare_meta_result_.get(), i);
 }
 
-int statement_async::param_count() const {
+size_t statement_async::param_count() const {
 	return param_count_;
 }
 
-int statement_async::column_count() const {
+size_t statement_async::column_count() const {
 	return column_count_;
 }
 
-int statement_async::affected_rows() const {
+size_t statement_async::affected_rows() const {
 	return affected_rows_;
 }
 
@@ -245,16 +245,16 @@ result_async::result_async(std::shared_ptr<statement_async> st)
 
 }
 
-int result_async::affected_rows() const {
+size_t result_async::affected_rows() const {
 	return affected_rows_;
 }
 
-int result_async::fields() const
+size_t result_async::fields() const
 {
 	return column_count_;
 }
 
-const Retval& result_async::field(int i) const
+const Retval& result_async::field(size_t i) const
 {
 	return *(fields_[i].get());
 }

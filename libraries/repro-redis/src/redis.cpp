@@ -122,8 +122,8 @@ public:
 	
 	virtual bool isNill()     		{ return nil_; }
 	virtual std::string str() 		{ return str_; }
-	virtual long size()   			{ return size_; }
-	virtual long integer()    		{ std::istringstream iss(str_); long r; iss >> r; return r; }
+	virtual size_t size()   		{ return size_; }
+	virtual ptrdiff_t integer()    	{ std::istringstream iss(str_); ptrdiff_t r; iss >> r; return r; }
 
 	virtual Future<RedisResult::Ptr> parse()
 	{
@@ -159,7 +159,7 @@ private:
 
 void RedisBulkStringResult::parse_response(repro::Promise<RedisResult::Ptr> p)
 {
-	int s = parser_.buffer.size() - parser_.pos;
+	size_t s = parser_.buffer.size() - parser_.pos;
 
 	if( s >= size_ + 2)
 	{
@@ -198,8 +198,8 @@ public:
 	{}
 	
 	virtual std::string str() 		{ return str_; }
-	virtual long size()   			{ return str_.size(); }
-	virtual long integer()    		{ std::istringstream iss(str_); long r; iss >> r; return r; }
+	virtual size_t size()   		{ return str_.size(); }
+	virtual ptrdiff_t integer()    	{ std::istringstream iss(str_); ptrdiff_t r; iss >> r; return r; }
 
 	virtual Future<RedisResult::Ptr> parse()
 	{
@@ -228,8 +228,8 @@ public:
 	{}
 
 	virtual std::string str() 		{ return str_; }
-	virtual long size()   			{ return str_.size(); }
-	virtual long integer()    		{ std::istringstream iss(str_); long r; iss >> r; return r; }
+	virtual size_t size()   			{ return str_.size(); }
+	virtual ptrdiff_t integer()    		{ std::istringstream iss(str_); ptrdiff_t r; iss >> r; return r; }
 
 	virtual Future<RedisResult::Ptr> parse()
 	{
@@ -256,8 +256,8 @@ public:
 	{}
 	
 	virtual std::string str() 		{ return str_; }
-	virtual long size()   			{ return str_.size(); }
-	virtual long integer()    		{ std::istringstream iss(str_); long r; iss >> r; return r; }
+	virtual size_t size()   		{ return str_.size(); }
+	virtual ptrdiff_t integer()    	{ std::istringstream iss(str_); ptrdiff_t r; iss >> r; return r; }
 	
 	virtual Future<RedisResult::Ptr> parse()
 	{
@@ -289,7 +289,7 @@ public:
 	
 	virtual bool isArray()    						 { return true; }
 	virtual bool isNill()     						 { return nil_; }
-	virtual long size()   							 { return size_; }
+	virtual size_t size()   						 { return size_; }
 	virtual RedisResult::Ptr element(std::size_t i)  { return elements_[i]; }
 
 	virtual Future<RedisResult::Ptr> parse()

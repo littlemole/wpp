@@ -231,7 +231,7 @@ namespace Resource {
 
 		std::map<std::string, std::set<type>> used_;
 		std::map<std::string, std::set<type>> unused_;
-		std::map<type, long long> timestamps_;
+		std::map<type, size_t> timestamps_;
 		std::list<PromiseType> waiting_;
 
 	};

@@ -604,7 +604,7 @@ int CurlEasy::on_write_cb(void *data, size_t size, size_t nmemb)
 		std::string s((char*)data,len);
 		oss_ << s;
 	}
-    return len;
+    return (int) len;
 }
 
 

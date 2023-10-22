@@ -124,8 +124,8 @@ public:
 	virtual bool isError()    						{ return false; }
 	virtual bool isArray()    						{ return false; }
 	virtual std::string str() 						{ return ""; }
-	virtual long integer()    						{ return 0; }
-	virtual long size()   							{ return 0; }
+	virtual ptrdiff_t integer()    					{ return 0; }
+	virtual size_t size()   						{ return 0; }
 	virtual RedisResult::Ptr element(std::size_t )  { return nullptr; }
 	virtual repro::Future<RedisResult::Ptr> parse()	= 0;
 

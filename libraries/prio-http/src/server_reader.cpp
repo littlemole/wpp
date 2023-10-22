@@ -39,7 +39,7 @@ void HttpHeaderReader::consume(const std::string& s)
     size_t pos = headers_stream_.find("\r\n\r\n");
     if ( pos != std::string::npos)
     {
-    	int len = headers_stream_.size()-(4+pos);
+    	size_t len = headers_stream_.size()-(4+pos);
 		if ( len > 0 )
 		{
 			body_stream_.append( headers_stream_.c_str()+pos+4, len );

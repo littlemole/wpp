@@ -244,9 +244,9 @@ void SslConnection::do_ssl_read( Promise<Connection::Ptr,std::string> p, short w
 		while(true)
 		{
 			char c[1024];
-			int n = *want;
+			size_t n = *want;
 
-			int len = SSL_read( impl_->ssl, c, n );
+			int len = SSL_read( impl_->ssl, c, (int) n );
 			if ( len > 0 )
 			{
 				buffer->append(std::string(c,len));
@@ -290,11 +290,11 @@ Future<Connection::Ptr, std::string> SslConnection::read(size_t s)
 	std::shared_ptr<std::string> buffer = std::make_shared<std::string>();
 
 	std::vector<char> c(s,0);
-	int n = s;
+	size_t n = s;
 
 	while(true)
 	{
-		int len = SSL_read( impl_->ssl, &c[0], n );
+		int len = SSL_read( impl_->ssl, &c[0], (int) n );
 		if ( len > 0 )
 		{
 			std::string tmp(&c[0],len);
@@ -337,7 +337,7 @@ void SslConnection::do_ssl_write(Promise<Connection::Ptr> p, std::string data, s
 	{
 		while(true)
 		{
-			int len = SSL_write( impl_->ssl, data.c_str() + *written, data.size() - *written );
+			int len = SSL_write( impl_->ssl, data.c_str() + *written, (int)( data.size() - *written) );
 			if ( len > 0 )
 			{
 				*written = *written + len;
@@ -379,7 +379,7 @@ Future<Connection::Ptr> SslConnection::write( const std::string& data)
 
 	while(true)
 	{
-		int len = SSL_write( impl_->ssl, data.c_str() + *written, data.size() - *written );
+		int len = SSL_write( impl_->ssl, data.c_str() + *written, (int)(data.size() - *written) );
 		if ( len > 0 )
 		{
 			*written = *written + len;

@@ -95,7 +95,7 @@ std::string JWT::payload()
 
 void JWT::expire(size_t expires_s)
 {
-    unsigned int exp = (unsigned int)time(NULL);
+    size_t exp = time(NULL);
     exp += expires_s;
     claim_["exp"] = exp;
 }
@@ -147,7 +147,7 @@ size_t JWT::inspect(const std::string& token)
     try {
         header_ = JSON::parse( jwt_header );
         claim_ = JSON::parse( jwt_claim );
-    } catch( JSON::ParseEx& ex)
+    } catch( JSON::ParseEx& )
     {
         return std::string::npos;
     }

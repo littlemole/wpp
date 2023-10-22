@@ -126,7 +126,7 @@ ssize_t http2_server_stream::data_provider_callback(
     {                    
         *data_flags |= NGHTTP2_DATA_FLAG_EOF;
     }
-    return want;
+    return (ssize_t) want;
 }    
 
 ///////////////////////////////////////////////////////////////////

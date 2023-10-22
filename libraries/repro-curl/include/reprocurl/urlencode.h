@@ -11,9 +11,9 @@ class Urlencode
 public:
 
     static std::string decode(const std::string& s);
-    static std::string decode(const char* s, int len);
+    static std::string decode(const char* s, size_t len);
     static std::string encode(const std::string& s);
-    static std::string encode(const char* s, int len);
+    static std::string encode(const char* s, size_t len);
 };
 
 } // close namespaces

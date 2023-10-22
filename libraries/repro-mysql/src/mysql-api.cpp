@@ -111,7 +111,7 @@ statement::Ptr mysql::prepare(std::string sql)
 	int mb =  1;
 	mysql_stmt_attr_set( stmt, STMT_ATTR_UPDATE_MAX_LENGTH, &mb);
 
-	if ( mysql_stmt_prepare(stmt, sql.c_str(), sql.size()) )
+	if ( mysql_stmt_prepare(stmt, sql.c_str(), (unsigned long)sql.size()) )
 		throw repro::Ex("mysql_stmt_prepare failed!");
 
 	return std::make_shared<statement>(ptr,stmt);
@@ -163,16 +163,16 @@ MYSQL_FIELD* statement::field( int i ) const
 	return mysql_fetch_field_direct(prepare_meta_result_.get(), i);
 }
 
-int statement::param_count() const {
+size_t statement::param_count() const {
 	return param_count_;
 }
 
-int statement::column_count() const {
+size_t statement::column_count() const {
 	return column_count_;
 }
 
 
-int statement::affected_rows() const {
+size_t statement::affected_rows() const {
 	return affected_rows_;
 }
 
@@ -289,17 +289,17 @@ result::result(std::shared_ptr<statement> st)
 
 }
 
-int result::fields() const
+size_t result::fields() const
 {
 	return column_count_;
 }
 
-int result::affected_rows() const
+size_t result::affected_rows() const
 {
 	return affected_rows_;
 }
 
-const Retval& result::field(int i) const
+const Retval& result::field(size_t i) const
 {
 	return *(fields_[i].get());
 }

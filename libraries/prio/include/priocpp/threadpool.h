@@ -41,7 +41,7 @@ private:
     std::mutex queue_mutex_;
     std::condition_variable condition_;
     std::atomic<bool> stop_;
-    int nthreads_;
+    size_t nthreads_;
 
     ThreadPool() = delete;
     ThreadPool(const ThreadPool& rhs) = delete;

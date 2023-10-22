@@ -20,7 +20,7 @@
 
 namespace prio {
 
-	int unix_timestamp()
+	size_t unix_timestamp()
 	{
 		return std::time(0);
 	}
@@ -89,7 +89,7 @@ namespace prio {
 		return base64_encode((unsigned char const*)bytes_to_encode.c_str(), bytes_to_encode.size());
 	}
 
-	std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len)
+	std::string base64_encode(unsigned char const* bytes_to_encode, size_t in_len)
 	{
 		std::string ret;
 		int i = 0;

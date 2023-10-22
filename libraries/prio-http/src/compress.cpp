@@ -78,7 +78,7 @@ std::string CompressorImpl::compress(const std::string& s)
     std::ostringstream oss;
 
     strm_.next_in = (unsigned char *) s.c_str();
-    strm_.avail_in = s.size();;
+    strm_.avail_in = (unsigned int) s.size();
 
     do
     {
@@ -186,7 +186,7 @@ DecompressorImpl::~DecompressorImpl()
 void DecompressorImpl::decompress(const std::string& s)
 {
     strm_.next_in = (unsigned char*) s.c_str();
-	strm_.avail_in = s.size();
+	strm_.avail_in = (unsigned int)s.size();
 	do
 	{
 		unsigned have;

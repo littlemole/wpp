@@ -79,9 +79,9 @@ public:
 
 	bool fetch();
 
-	int fields() const;
-	int affected_rows() const;
-	const Retval& field(int i) const;
+	size_t fields() const;
+	size_t affected_rows() const;
+	const Retval& field(size_t i) const;
 	const Retval& field(const std::string& name) const;
 
 	std::shared_ptr<statement_async> st();
@@ -92,8 +92,8 @@ private:
 	result_async(const result_async&) = delete;
 	result_async& operator=(const result_async&) = delete;
 
-	int affected_rows_;
-	int column_count_;
+	size_t affected_rows_;
+	size_t column_count_;
 	std::vector<std::shared_ptr<Retval>> fields_;
 	std::shared_ptr<MYSQL_BIND> bind_;
 
@@ -112,15 +112,15 @@ public:
 	~statement_async();
 
 	MYSQL_FIELD* field( int i ) const;
-	int affected_rows() const;
-	int param_count() const;
-	int column_count() const;
+	size_t affected_rows() const;
+	size_t param_count() const;
+	size_t column_count() const;
 
 	template<class T>
-	void bind(int index, T value, enum_field_types t)
+	void bind(size_t index, T value, enum_field_types t)
 	{
-		int i = index-1;
-		if ( i < 0 || i >= (int)params_.size())
+		size_t i = index-1;
+		if ( i < 0 || i >= params_.size())
 		{
 			throw repro::Ex("invalid param index");
 		}
@@ -129,10 +129,10 @@ public:
 
 
 	template<class T>
-	void bind(int index, T value)
+	void bind(size_t index, T value)
 	{
-		int i = index-1;
-		if ( i < 0 || i >= (int)params_.size())
+		size_t i = index-1;
+		if ( i < 0 || i >= params_.size())
 		{
 			throw repro::Ex("invalid param index");
 		}
@@ -154,9 +154,9 @@ private:
 	std::shared_ptr<mysql_async> mysql_;
 	std::shared_ptr<MYSQL_STMT> stmt_;
 	std::shared_ptr<MYSQL_RES> prepare_meta_result_;
-	int affected_rows_;
-	int param_count_;
-	int column_count_;
+	size_t affected_rows_;
+	size_t param_count_;
+	size_t column_count_;
 };
 
 inline void binder(statement_async::Ptr& /*ptr*/, int /*i*/ )
@@ -254,7 +254,7 @@ public:
 	std::string quote(const std::string& s)
 	{
 		std::vector<char> buf(s.size()*2+1);
-		unsigned long len =  mysql_real_escape_string(mysql_.get(), &(buf[0]), s.c_str(), s.size());
+		unsigned long len =  mysql_real_escape_string(mysql_.get(), &(buf[0]), s.c_str(), (unsigned long) s.size());
 		return std::string( &(buf[0]),len);
 	}
 

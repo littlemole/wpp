@@ -44,12 +44,12 @@ std::string nonce(unsigned int n);
 //! encode input string to base64
 std::string base64_encode(const std::string& bytes_to_encode);
 //! encode input c-style string to base64
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len);
+std::string base64_encode(unsigned char const* bytes_to_encode, size_t in_len);
 //! decode a base64 encoded string
 std::string base64_decode(const std::string& encoded_string);
 
 //! current time as UNIX timestamp
-int unix_timestamp();
+size_t unix_timestamp();
 
 #ifndef _WIN32
 typedef int socket_t;

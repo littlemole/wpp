@@ -73,8 +73,8 @@ public:
 
 	sqlite3_int64 last_insert_id;
 
-	unsigned int rows() { return data.size(); }
-	unsigned int cols()
+	size_t rows() { return data.size(); }
+	size_t cols()
 	{
 		if ( data.empty() ) return 0;
 		return data[0].size();

@@ -23,18 +23,18 @@ public:
 
 	bool fetch();
 
-	int fields() const;
-	const Retval& field(int i) const;
+	size_t fields() const;
+	const Retval& field(size_t i) const;
 
-	int affected_rows() const;
+	size_t affected_rows() const;
 
 	std::shared_ptr<statement> st();
 	std::shared_ptr<mysql> con();
 
 private:
 
-	int affected_rows_;
-	int column_count_;
+	size_t affected_rows_;
+	size_t column_count_;
 	std::vector<std::shared_ptr<Retval>> fields_;
 	std::shared_ptr<MYSQL_BIND> bind_;
 	std::shared_ptr<statement> st_;
@@ -51,9 +51,9 @@ public:
 	~statement() {}
 
 	MYSQL_FIELD* field( int i ) const;
-	int param_count() const;
-	int column_count() const;
-	int affected_rows() const;
+	size_t param_count() const;
+	size_t column_count() const;
+	size_t affected_rows() const;
 
 	template<class T>
 	void bind(int index, T value, enum_field_types t)
@@ -93,9 +93,9 @@ private:
 	std::shared_ptr<MYSQL_STMT> stmt_;
 	std::shared_ptr<MYSQL_RES> prepare_meta_result_;
 	
-	int affected_rows_;
-	int param_count_;
-	int column_count_;
+	size_t affected_rows_;
+	size_t param_count_;
+	size_t column_count_;
 };
 
 
@@ -141,7 +141,7 @@ public:
 	std::string quote(const std::string& s)
 	{
 		std::vector<char> buf(s.size()*2+1);
-		unsigned long len =  mysql_real_escape_string(con_, &(buf[0]), s.c_str(), s.size());
+		unsigned long len =  mysql_real_escape_string(con_, &(buf[0]), s.c_str(), (unsigned long) s.size());
 		return std::string( &(buf[0]),len);
 	}
 
@@ -159,7 +159,7 @@ public:
 	: res_(r)
 	{}
 
-	const Retval& operator[] ( int index )
+	const Retval& operator[] ( size_t index )
 	{
 		return res_->field(index);
 	}

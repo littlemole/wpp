@@ -137,7 +137,7 @@ Statement::FutureType Statement::exec(  )
 
 		for ( unsigned int i = 0; i < values_.size(); i++)
 		{
-			sqlite3_bind_text(stm, i+1, values_[i].c_str(),values_[i].size(),SQLITE_TRANSIENT);
+			sqlite3_bind_text(stm, i+1, values_[i].c_str(), (int) values_[i].size(), SQLITE_TRANSIENT);
 		}
 
 		int step = sqlite3_step(stm);

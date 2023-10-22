@@ -14,11 +14,11 @@ public:
     //! url-decode given string
     static std::string decode(const std::string& s);
     //! url-decode given c-style string
-    static std::string decode(const char* s, int len);
+    static std::string decode(const char* s, size_t len);
     //! url-encode given string
     static std::string encode(const std::string& s);
     //! url-encode given c-style string
-    static std::string encode(const char* s, int len);
+    static std::string encode(const char* s, size_t len);
 };
 
 } // close namespaces

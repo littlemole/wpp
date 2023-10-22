@@ -90,13 +90,13 @@ public:
 private:
 
     void cleanup();
-    int now();
+    size_t now();
 
     prio::Timeout timer_;
     int session_timeout_;
 
     std::map<std::string,Session> map_;    
-    std::map<std::string,int> timeouts_;    
+    std::map<std::string,size_t> timeouts_;    
 };
 
 //! HTTP filter to handle session management

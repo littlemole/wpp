@@ -243,7 +243,7 @@ public:
 	long long int getLongLong() const;
 
 	template<class T>
-	const T getNumber() const
+	 T getNumber() const
 	{
 		if(null()){
 			return 0;
@@ -255,17 +255,17 @@ public:
 			case MYSQL_TYPE_SHORT:
 			case MYSQL_TYPE_LONG:
 			{
-				return u_.intval_;
+				return (T) u_.intval_;
 			}
 			case MYSQL_TYPE_FLOAT:
 			case MYSQL_TYPE_DOUBLE:
 			{
-				return u_.doubleval_;
+				return (T)u_.doubleval_;
 			}
 			case MYSQL_TYPE_LONGLONG:
 			case MYSQL_TYPE_INT24:
 			{
-				return u_.longlongval_;
+				return (T)u_.longlongval_;
 			}
 			case MYSQL_TYPE_TIME:
 			case MYSQL_TYPE_DATE:

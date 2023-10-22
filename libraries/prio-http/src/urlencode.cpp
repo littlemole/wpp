@@ -30,7 +30,7 @@ std::string Urlencode::encode(const std::string& s)
 }
 
 
-std::string Urlencode::encode(const char* in, int n)
+std::string Urlencode::encode(const char* in, size_t n)
 {
     std::string out("");
     const size_t nLen = n + 1;
@@ -66,7 +66,7 @@ std::string Urlencode::encode(const char* in, int n)
     return out;
 }
 
-std::string Urlencode::decode( const char* in, int n )
+std::string Urlencode::decode( const char* in, size_t n )
 {
 	size_t len = n;
 	unsigned char* inBuff = (unsigned char*)(in);

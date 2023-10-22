@@ -156,7 +156,7 @@ void Param::set( const std::string& s, enum_field_types type )
 			std::regex rx("^(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d) ?(\\d\\d)?:?(\\d\\d)?:?(\\d\\d)?");
 
 			std::regex_search(s.c_str(),res,rx);
-			int nmatches = res.size();
+			size_t nmatches = res.size();
 
 			if ( nmatches > 1) {
 				u_.timeval_.year = asInt(res.str(1));
@@ -188,11 +188,11 @@ void Param::set( const std::string& s, enum_field_types type )
 		case MYSQL_TYPE_DECIMAL:
 		case MYSQL_TYPE_NEWDECIMAL:
 		{
-			int n = s.size()+1;
+			size_t n = s.size()+1;
 			char* buf = new char[n];
 			strncpy(buf,s.c_str(),n);
 			buf_.reset(buf,[](const char* c){delete[] c;});
-			u_.strlen_ = s.size();
+			u_.strlen_ = (unsigned long)s.size();
 			break;
 		}
 		default :

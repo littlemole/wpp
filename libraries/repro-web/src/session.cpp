@@ -74,7 +74,7 @@ repro::Future<> MemorySessionProvider::remove_user_session(Session session)
 
 void MemorySessionProvider::cleanup()
 {
-    int n = now();
+    size_t n = now();
 
     std::vector<std::string> purgatory;
 
@@ -99,7 +99,7 @@ void MemorySessionProvider::cleanup()
 }
 
 
-int MemorySessionProvider::now()
+size_t MemorySessionProvider::now()
 {
     std::time_t t = std::time(0);
     return t;
