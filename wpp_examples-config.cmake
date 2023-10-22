@@ -1,7 +1,7 @@
 find_package("wpp")
 
 ############################################
-# copy dlls for windows
+# copy dlls for windows & set inc dir
 ############################################
 
 if(WIN32)
@@ -17,4 +17,9 @@ if(WIN32)
         file(COPY ${DLL_FILES} DESTINATION . PATTERN "event*" EXCLUDE)
     endif()
 
-endif()
+    get_filename_component(PRESET "${CMAKE_BINARY_DIR}" NAME)
+    message("WPP_INCLUDES: ${CMAKE_CURRENT_LIST_DIR}/../../include")
+    include_directories("${CMAKE_CURRENT_LIST_DIR}/../../include")
+
+ endif()
+
