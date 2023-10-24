@@ -135,7 +135,10 @@ IF (WIN32)
     pkg_check_modules(NGHTTP2 REQUIRED libnghttp2)
     pkg_check_modules(LIBEVENT REQUIRED libevent_pthreads)
     pkg_check_modules(SQLITE REQUIRED sqlite3)
-    pkg_check_modules(MYSQL REQUIRED mysqlclient)
+    pkg_check_modules(MYSQL  mysqlclient)
+    if( !MYSQL_FOUND )
+        pkg_check_modules(MYSQL  mariadb)
+    endif()
 
     set(LIBEVENT_LIBRARY ${LIBEVENT_LIBRARIES})
 

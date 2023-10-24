@@ -131,7 +131,11 @@ ELSEIF (UNIX)
     pkg_check_modules(CURL REQUIRED libcurl)
     pkg_check_modules(NGHTTP2 REQUIRED libnghttp2)
     pkg_check_modules(SQLITE REQUIRED sqlite3)
-    pkg_check_modules(MYSQL REQUIRED mysqlclient)
+    pkg_check_modules(MYSQL  mysqlclient)
+    if( !MYSQL_FOUND )
+        pkg_check_modules(MYSQL  mariadb)
+    endif()
+    
 
     if(WITH_LIBEVENT)
         add_definitions(-DPROMISE_USE_LIBEVENT)    
