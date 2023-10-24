@@ -19,6 +19,7 @@ if(WIN32)
     endif()
 
     # include path
+
     get_filename_component(PRESET "${CMAKE_BINARY_DIR}" NAME)
     message("WPP_INCLUDES: ${CMAKE_CURRENT_LIST_DIR}/../../include")
     include_directories("${CMAKE_CURRENT_LIST_DIR}/../../include")

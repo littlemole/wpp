@@ -51,7 +51,7 @@ public:
 		json_t<T> t;
 		meta::fromJson(json,t.value);
 
-		std::cout << JSON::stringify(meta::toJson(t.value)) << std::endl;
+		//std::cout << JSON::stringify(meta::toJson(t.value)) << std::endl;
 		validate(t.value);
 
 		return t;
@@ -107,7 +107,6 @@ Async invoke_handler(FrontController& fc, prio::Request& req,  prio::Response& r
 {
 	try
 	{
-		std::cout << req.body() << std::endl;
 		C& c = prepare_controller<C>(req);
 		json_t<R> r = co_await (c.*fun)(HandlerParam<Args>::get(req,res)...);		
 		output_json(res,r);
