@@ -4,11 +4,11 @@ set -e
 cd /usr/local/src/
 git clone https://github.com/littlemole/$1.git
 
-repro=9801f3bee48f41630ef093e4a5368ad9bdb23c95
-diy=e3f22f360ec048caed1d61bbfa8b8ed9d54836a0
-cryptoneat=477d46a2d12de4698a7a1423d80ff8b49769d28c
-patex=1903d80ed0c8f0fa567cd75bdbe15995513cb72c
-metacpp=ef5bff82dfffe53bb6e2bcd0f3b0fc37251dab64
+repro=4ac2dd63df4c29909b3250c583c975364271ea89
+diy=4a47114d21e891e7af2052eb9b1da333cdddb50a
+cryptoneat=70e0e2f133d51dc9c0bb040e3ada8cf9be8fa573
+patex=de54c3b1d051627a6254bcf96a00b68118ab75d8
+metacpp=7aa997e726ba3f374dc9f02ec3f6e0f5906e0111
 
 VERSION=$(eval echo -n \$$1)
 #git checkout $VERSION
