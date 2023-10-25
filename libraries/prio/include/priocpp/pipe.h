@@ -335,7 +335,7 @@ public:
 	static Ptr create();
 
 	//! specify stdin for PipedProcessd process
-	Ptr stdin(const std::string& s);
+	Ptr putStdin(const std::string& s);
 
 	//! specify path for subprocess to execute
 	//! once the PipedProcessd process has finished, the future will be resolved
@@ -374,9 +374,9 @@ public:
 	}
 
 	//! get the PipedProcessd processes stdout
-	std::string stdout();
+	std::string getStdout();
 	//! get the PipedProcessd processes stderr
-	std::string stderr();
+	std::string getStderr();
 
 	//! exit code from PipedProcessd process
 	int result();

@@ -500,7 +500,7 @@ TEST_F(BasicTest, SimplePipeClass)
 			->pipe("/bin/ls",args)
 			.then([](PipedProcess::Ptr pipe)
 			{
-				std::cout << pipe->stdout() << std::endl;
+				std::cout << pipe->getStdout() << std::endl;
 			})
 			.otherwise([](const std::exception& ex)
 			{
@@ -520,11 +520,11 @@ TEST_F(BasicTest, SimplePipeClassCat)
 		timeout( []()
 		{
 			PipedProcess::create()
-			->stdin("HELLO CAT")
+			->putStdin("HELLO CAT")
 			->pipe("/bin/cat",PipedProcess::arguments("cat"))
 			.then([](PipedProcess::Ptr pipe)
 			{
-				std::cout << pipe->stdout() << std::endl;
+				std::cout << pipe->getStdout() << std::endl;
 			})
 			.otherwise([](const std::exception& ex)
 			{

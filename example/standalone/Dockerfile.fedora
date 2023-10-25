@@ -5,26 +5,13 @@ LABEL author <little.mole@oha7.org>
 RUN yum -y update
 RUN yum -y install joe git
 
-RUN yum -y install make automake gcc gcc-c++ kernel-devel
-#RUN yum -y g++ pkg-config 
-RUN yum -y gtest openssl libevent libevent-devel libuuid libuuid-devel
-RUN yum -y nghttp2 libnghttp2-devel libcurl libcurl-devel clang libcxx 
+RUN yum -y install make automake gcc gcc-c++ kernel-devel \
+  gtest openssl libevent libevent-devel libuuid libuuid-devel \
+  nghttp2 libnghttp2-devel libcurl libcurl-devel clang libcxx \
+  redis boost zlib mysql-devel sqlite3 sqlite-devel expat \
+  expat-devel cmake mustache-devel json-devel
+
 #libc++1 ???
-RUN yum -y redis boost zlib mysql-devel sqlite3 sqlite-devel expat expat-devel cmake mustache-devel json-devel
-
-
-# std debian dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  git sudo joe wget netcat psmisc net-tools \
-  build-essential g++ pkg-config valgrind \
-  libgtest-dev  openssl libssl-dev libevent-dev uuid-dev \
-  nghttp2 libnghttp2-dev libcurl4-openssl-dev \
-  clang libc++-dev libc++abi-dev redis-server \
-  libboost-dev libboost-system-dev zlib1g-dev \
-  libmysqlclient-dev sqlite3 libsqlite3-dev \
-  libexpat-dev cmake nlohmann-json3-dev libkainjow-mustache-dev
 
 
 ARG CXX=g++

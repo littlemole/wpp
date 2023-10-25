@@ -52,7 +52,7 @@ PipedProcess::Ptr PipedProcess::create()
 	return ptr;
 }
 
-PipedProcess::Ptr PipedProcess::stdin(const std::string& s)
+PipedProcess::Ptr PipedProcess::putStdin(const std::string& s)
 {
 	stdin_ = s;
 	return self_;
@@ -84,12 +84,12 @@ Future<PipedProcess::Ptr> PipedProcess::PipedProcess_impl(const std::string& pat
 	return promise_.future();
 }
 
-std::string PipedProcess::stdout()
+std::string PipedProcess::getStdout()
 {
 	return stdout_oss_.str();
 }
 
-std::string PipedProcess::stderr()
+std::string PipedProcess::getStderr()
 {
 	return stderr_oss_.str();
 }
