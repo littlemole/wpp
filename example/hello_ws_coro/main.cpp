@@ -38,11 +38,7 @@ int main(int /*argc*/, char** /*argv*/ )
 
 		view_templates("/view/"),
 
-#ifndef _WIN32
-		static_content("/htdocs/","/etc/mime.types"),
-#else
 		static_content("/htdocs/","mime.types"),
-#endif
 
 		ex_handler(&Exceptions::on_auth_failed),
 		ex_handler(&Exceptions::on_login_failed),

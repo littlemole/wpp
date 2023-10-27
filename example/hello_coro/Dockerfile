@@ -8,8 +8,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server libsqlite3-de
 ARG CXX=clang++
 ENV CXX=${CXX}
 
-ARG BACKEND=
-ENV BACKEND=${BACKEND}
+ARG EVENTLIB=
+ENV BACKEND=${EVENTLIB}
 
 ARG BUILDCHAIN=make
 ENV BUILDCHAIN=${BUILDCHAIN}

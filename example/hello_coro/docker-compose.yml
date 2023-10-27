@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         CXX: ${CXX}
-        BACKEND: ${BACKEND}
+        EVENTLIB: ${EVENTLIB}
         BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:

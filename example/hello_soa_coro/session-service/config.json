@@ -5,7 +5,7 @@
     {
         "cert"   : "pem/session.pem",
         "ports"  : [ 9878 ],
-        "http2"  : true
+        "http2"  : false
     }
 }
 

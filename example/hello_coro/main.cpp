@@ -70,11 +70,7 @@ int main(int /*argc*/, char** /*argv*/ )
 		ex_handler(&Exceptions::on_registration_failed),
 		ex_handler(&Exceptions::on_std_ex),
 
-#ifndef _WIN32
-		static_content("/htdocs/","/etc/mime.types"),
-#else
 		static_content("/htdocs/","mime.types"),
-#endif
 
 		singleton<AppConfig()>(),
 		singleton<SessionPool(AppConfig)>(),

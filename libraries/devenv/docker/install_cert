@@ -6,6 +6,6 @@ then
     cp /usr/local/src/reproweb-example/pem/ca.crt /usr/local/share/ca-certificates/hello_soa.crt 
     update-ca-certificates
 else
-    trust anchor --store usr/local/src/reproweb-example/pem/ca.crt
+    trust anchor --store /usr/local/src/reproweb-example/pem/ca.crt
     update-ca-trust
 fi

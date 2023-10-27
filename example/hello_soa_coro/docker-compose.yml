@@ -7,7 +7,7 @@ services:
       args:
         TS: ${TS}
         CXX: ${CXX}
-        BACKEND: ${BACKEND}
+        EVENTLIB: ${EVENTLIB}
         BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:
@@ -19,7 +19,7 @@ services:
       args:
         TS: ${TS}
         CXX: ${CXX}
-        BACKEND: ${BACKEND}
+        EVENTLIB: ${EVENTLIB}
         BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:
@@ -34,7 +34,7 @@ services:
       args:
         TS: ${TS}
         CXX: ${CXX}
-        BACKEND: ${BACKEND}
+        EVENTLIB: ${EVENTLIB}
         BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:

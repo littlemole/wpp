@@ -18,18 +18,18 @@ bash: image
 	docker run --name hello_world -ti -e CXX=$(CXX) -e BUILDCHAIN=$(BUILDCHAIN) -e BACKEND=$(BACKEND)  $(IMAGE) bash
 
 build: ## build the docker image
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose build
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose build
 
 up: ## run the docker image 
 	echo $(BUILDCHAIN)
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
 
 force: ## run the docker image (no cache)
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose build --no-cache
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose build --no-cache
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
 
 down: ## stop running docker image, if any
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose stop
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose stop
 
 # self documenting makefile, see 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html

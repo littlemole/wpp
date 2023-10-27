@@ -136,7 +136,7 @@ IF (WIN32)
     pkg_check_modules(LIBEVENT REQUIRED libevent_pthreads)
     pkg_check_modules(SQLITE REQUIRED sqlite3)
     pkg_check_modules(MYSQL  mysqlclient)
-    if( !MYSQL_FOUND )
+    if( NOT MYSQL )
         pkg_check_modules(MYSQL  mariadb)
     endif()
 

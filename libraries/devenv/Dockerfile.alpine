@@ -28,6 +28,7 @@ ADD ./docker/install.sh /usr/local/bin/install.sh
 ADD ./docker/compile.sh /usr/local/bin/compile.sh
 ADD ./docker/mustache.sh /usr/local/bin/mustache.sh
 ADD ./docker/utest.sh /usr/local/bin/utest.sh
+ADD ./docker/install_cert /usr/local/bin/install_cert
 
 RUN /usr/local/bin/utest.sh
 

@@ -3,13 +3,11 @@ ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 LABEL me <little.mole@oha7.org>
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server libsqlite3-dev
-
 ARG CXX=g++
 ENV CXX=${CXX}
 
-ARG BACKEND=
-ENV BACKEND=${BACKEND}
+ARG EVENTLIB=
+ENV BACKEND=${EVENTLIB}
 
 ARG BUILDCHAIN=make
 ENV BUILDCHAIN=${BUILDCHAIN}

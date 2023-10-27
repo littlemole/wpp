@@ -10,8 +10,8 @@ LABEL me <little.mole@oha7.org>
 ARG CXX=g++
 ENV CXX=${CXX}
 
-ARG BACKEND=
-ENV BACKEND=${BACKEND}
+ARG EVENTLIB=
+ENV BACKEND=${EVENTLIB}
 
 ARG BUILDCHAIN=cmake
 ENV BUILDCHAIN=${BUILDCHAIN}
@@ -23,9 +23,11 @@ ENV BUILDCHAIN=${BUILDCHAIN}
 RUN mkdir -p /usr/local/src/reproweb-example
 ADD . /usr/local/src/reproweb-example
 
-RUN mkdir /usr/local/share/ca-certificates/reprocpp && \
-    cp /usr/local/src/reproweb-example/pem/ca.crt /usr/local/share/ca-certificates/reprocpp/root.cert.crt && \
-    update-ca-certificates
+#RUN mkdir /usr/local/share/ca-certificates/reprocpp && \
+#    cp /usr/local/src/reproweb-example/pem/ca.crt /usr/local/share/ca-certificates/reprocpp/root.cert.crt && \
+#    update-ca-certificates
+
+RUN /usr/local/bin/install_cert
 
 #RUN cd /usr/local/src/reproweb-example && (if [ "$BUILDCHAIN" != "cmake" ] ; then make -e; else (mkdir -p build && cd build && cmake .. && make) fi)
 

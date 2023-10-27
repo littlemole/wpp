@@ -39,11 +39,11 @@ devenv:
 
 image: devenv ## build docker test image
 	
-	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg BACKEND=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)  --build-arg WITH_TEST=$(WITH_TEST)
+	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)  --build-arg WITH_TEST=$(WITH_TEST)
 
 clean-image: ## rebuild the docker test image from scratch
 	cd libraries/devenv && make -e -f Makefile clean-image
-	docker build -t $(IMAGE) . --no-cache -fDockerfile --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg BACKEND=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE) --build-arg WITH_TEST=$(WITH_TEST)
+	docker build -t $(IMAGE) . --no-cache -fDockerfile --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE) --build-arg WITH_TEST=$(WITH_TEST)
 	
 		
 bash: rmc image ## run the docker image and open a shell
