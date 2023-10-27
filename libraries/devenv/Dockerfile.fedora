@@ -1,0 +1,43 @@
+# This is a comment
+FROM fedora:38
+LABEL author <little.mole@oha7.org>
+
+RUN yum -y update
+RUN yum -y install joe git
+
+RUN yum -y install make automake gcc gcc-c++ kernel-devel \
+  gtest openssl libevent libevent-devel libuuid libuuid-devel \
+  nghttp2 libnghttp2-devel libcurl libcurl-devel clang libcxx \
+  redis boost boost-devel zlib mysql-devel sqlite3 sqlite-devel expat \
+  expat-devel cmake mustache-devel json-devel
+
+#libc++1 ???
+
+
+ARG CXX=g++
+ENV CXX=${CXX}
+
+ARG BACKEND=
+ENV BACKEND=${BACKEND}
+
+ARG BUILDCHAIN=cmake
+ENV BUILDCHAIN=${BUILDCHAIN}
+
+# add little moles build & install helper scripts
+ADD ./docker/build.sh /usr/local/bin/build.sh
+ADD ./docker/install.sh /usr/local/bin/install.sh
+ADD ./docker/compile.sh /usr/local/bin/compile.sh
+ADD ./docker/mustache.sh /usr/local/bin/mustache.sh
+ADD ./docker/utest.sh /usr/local/bin/utest.sh
+ADD ./docker/install_cert /usr/local/bin/install_cert
+
+RUN /usr/local/bin/utest.sh
+
+# install little moles basic dev packages, for given compiler
+RUN /usr/local/bin/install.sh cryptoneat 
+RUN /usr/local/bin/install.sh diy 
+RUN /usr/local/bin/install.sh patex
+RUN /usr/local/bin/install.sh metacpp
+ 
+RUN /usr/local/bin/install.sh repro
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if command -v update-ca-certificates &> /dev/null
+then
+    mkdir -p /usr/local/share/ca-certificates/ 
+    cp /usr/local/src/reproweb-example/pem/ca.crt /usr/local/share/ca-certificates/hello_soa.crt 
+    update-ca-certificates
+else
+    trust anchor --store usr/local/src/reproweb-example/pem/ca.crt
+    update-ca-trust
+fi
