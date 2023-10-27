@@ -1,5 +1,5 @@
 # This is a comment
-FROM ubuntu:22.04
+FROM ubuntu:22.04 as build
 LABEL author <little.mole@oha7.org>
 
 # std debian dependencies
@@ -21,9 +21,6 @@ ENV CXX=${CXX}
 
 ARG EVENTLIB=
 ENV BACKEND=${EVENTLIB}
-
-ARG BUILDCHAIN=cmake
-ENV BUILDCHAIN=${BUILDCHAIN}
 
 # add little moles build & install helper scripts
 ADD ./docker/build.sh /usr/local/bin/build.sh
@@ -48,8 +45,26 @@ RUN mkdir -p /usr/local/src/reproweb-example
 ADD . /usr/local/src/reproweb-example
 
 # build the webapp
-RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
+RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}" /usr/local/bin/compile.sh reproweb-example'
 
+
+
+FROM ubuntu:22.04 
+
+# std debian dependencies
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  openssl libevent-2.1-7 uuid \
+  nghttp2 libcurl4 \
+  zlib1g \
+  sqlite3 libevent-pthreads-2.1-7  \
+  libexpat1 
+
+#  joe wget netcat psmisc net-tools libboost-system1.74.0  \
+
+
+COPY --from=build usr/local/src/reproweb-example /usr/local/src/reproweb-example
 # run the webapp
 CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'
 

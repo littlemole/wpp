@@ -1,4 +1,3 @@
-# This is a comment
 FROM ubuntu:22.04
 LABEL author <little.mole@oha7.org>
 
@@ -24,15 +23,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 ARG CXX=g++
 ENV CXX=${CXX}
 
-# depend on buildchain (optional as it should yield same results)
-ARG BUILDCHAIN=cmake
-ENV BUILDCHAIN=${BUILDCHAIN}
-
 ARG SKIPTESTS=false
 ENV SKIPTESTS=${SKIPTESTS}
 
 ARG WITH_TEST=On
 ENV WITH_TEST=${WITH_TEST}
+
+ARG WITH_DEBUG=Off
+ENV WITH_DEBUG=${WITH_DEBUG}
 
 # compile gtest with given compiler
 #ADD ./docker/gtest.sh /usr/local/bin/gtest.sh

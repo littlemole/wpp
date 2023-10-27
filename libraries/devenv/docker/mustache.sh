@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-cd /usr/src/
+mkdir -p /usr/local/src
+cd /usr/local/src/
 
 git clone https://github.com/kainjow/Mustache.git
 

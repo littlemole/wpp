@@ -7,7 +7,6 @@ services:
       args:
         CXX: ${CXX}
         EVENTLIB: ${EVENTLIB}
-        BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:
      - "9876:9876"

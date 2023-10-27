@@ -8,7 +8,6 @@ services:
         TS: ${TS}
         CXX: ${CXX}
         EVENTLIB: ${EVENTLIB}
-        BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:
      - "9876:9876"
@@ -20,7 +19,6 @@ services:
         TS: ${TS}
         CXX: ${CXX}
         EVENTLIB: ${EVENTLIB}
-        BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:
      - "9877:9877"
@@ -35,7 +33,6 @@ services:
         TS: ${TS}
         CXX: ${CXX}
         EVENTLIB: ${EVENTLIB}
-        BUILDCHAIN: ${BUILDCHAIN}
         BASE_IMAGE: ${BASE_IMAGE}
     ports:
      - "9878:9878"          

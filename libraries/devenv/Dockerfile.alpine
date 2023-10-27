@@ -1,4 +1,3 @@
-# This is a comment
 FROM alpine:3.18
 LABEL author <little.mole@oha7.org>
 
@@ -19,8 +18,8 @@ ENV CXX=${CXX}
 ARG BACKEND=
 ENV BACKEND=${BACKEND}
 
-ARG BUILDCHAIN=cmake
-ENV BUILDCHAIN=${BUILDCHAIN}
+ARG WITH_DEBUG=Off
+ENV WITH_DEBUG=${WITH_DEBUG}
 
 # add little moles build & install helper scripts
 ADD ./docker/build.sh /usr/local/bin/build.sh

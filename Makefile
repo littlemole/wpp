@@ -3,16 +3,16 @@ CXX = g++
 TARGET=devenv
 DESTDIR=/
 PREFIX=/usr/local
-WITH_TEST=On
+WITH_TEST=Off
+WITH_DEBUG=Off
 
 PWD=$(shell pwd)
 
 BACKEND = libevent
-BUILDCHAIN = cmake
 CONTAINER = $(shell echo "wpp_$(CXX)_$(BACKEND)" | sed 's/++/pp/')
 IMAGE = littlemole/$(CONTAINER)
 
-BASE_CONTAINER = $(shell echo "devenv_$(CXX)_$(BUILDCHAIN)" | sed 's/++/pp/')
+BASE_CONTAINER = $(shell echo "devenv_$(CXX)_cmake" | sed 's/++/pp/')
 BASE_IMAGE = littlemole/$(BASE_CONTAINER)
 
 
@@ -34,16 +34,16 @@ clean: ## cleans up build artefacts
 # docker stable testing environment
 
 devenv:
-	cd libraries/devenv && make -e -f Makefile image BUILDCHAIN=cmake WITH_TEST=$(WITH_TEST)
+	cd libraries/devenv && make -e -f Makefile image WITH_TEST=$(WITH_TEST) WITH_DEBUG=$(WITH_DEBUG) 
 
 
 image: devenv ## build docker test image
 	
-	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)  --build-arg WITH_TEST=$(WITH_TEST)
+	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg WITH_DEBUG=$(WITH_DEBUG) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)  --build-arg WITH_TEST=$(WITH_TEST)
 
 clean-image: ## rebuild the docker test image from scratch
 	cd libraries/devenv && make -e -f Makefile clean-image
-	docker build -t $(IMAGE) . --no-cache -fDockerfile --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE) --build-arg WITH_TEST=$(WITH_TEST)
+	docker build -t $(IMAGE) . --no-cache -fDockerfile --build-arg CXX=$(CXX) --build-arg WITH_DEBUG=$(WITH_DEBUG) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE) --build-arg WITH_TEST=$(WITH_TEST)
 	
 		
 bash: rmc image ## run the docker image and open a shell
@@ -66,7 +66,7 @@ help:
 	@echo "\tCXX set to g++|clang++ to set compiler (defaults to g++)"
 	@echo "example calls:"
 	@echo "\t sudo make image CXX=clang++ "
-	@echo "\t sudo make image CXX=clang++ BUILDCHAIN=cmake "
+	@echo "\t sudo make image CXX=clang++ DOCKERFILE=Dockerfile.fedora"
 	@echo "available targets:"
 	@grep -E -h '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 

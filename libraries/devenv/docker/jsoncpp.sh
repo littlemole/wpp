@@ -1,10 +1,8 @@
 #!/bin/bash
 set -e
 
-if [ "$BUILDCHAIN" == "make" ]
-then
-
-cd /usr/src/
+mkdir -p /usr/local/src
+cd /usr/local/src/
 
 git clone https://github.com/open-source-parsers/jsoncpp.git
 
@@ -24,5 +22,4 @@ make
 make install
 #rm /usr/local/lib/libjsoncpp.so*
   
-fi
 

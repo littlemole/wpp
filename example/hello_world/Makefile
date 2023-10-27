@@ -1,10 +1,7 @@
 CXX = g++
 BACKEND=libevent
-BUILDCHAIN = cmake
 
-CONTAINER = $(shell echo "reproweb_example_$(CXX)_$(BACKEND)_$(BUILDCHAIN)" | sed 's/++/pp/')
 BASE_CONTAINER = $(shell echo "wpp_$(CXX)_$(BACKEND)" | sed 's/++/pp/')
-IMAGE = littlemole/$(CONTAINER)
 BASE_IMAGE = littlemole\/$(BASE_CONTAINER)
 
 
@@ -12,24 +9,23 @@ cacert :
 	cd pem && ./make_cert.sh
 	
 image: 
-	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg BACKEND=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)
+	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg BACKEND=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)
 
 bash: image
-	docker run --name hello_world -ti -e CXX=$(CXX) -e BUILDCHAIN=$(BUILDCHAIN) -e BACKEND=$(BACKEND)  $(IMAGE) bash
+	docker run --name hello_world -ti -e CXX=$(CXX) -e -e BACKEND=$(BACKEND)  $(IMAGE) bash
 
 build: ## build the docker image
-	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose build
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BASE_IMAGE=$(BASE_IMAGE) docker-compose build
 
 up: ## run the docker image 
-	echo $(BUILDCHAIN)
-	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
 
 force: ## run the docker image (no cache)
-	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose build --no-cache
-	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BASE_IMAGE=$(BASE_IMAGE) docker-compose build --no-cache
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BASE_IMAGE=$(BASE_IMAGE) docker-compose up -d --build
 
 down: ## stop running docker image, if any
-	CXX=$(CXX) EVENTLIB=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) BASE_IMAGE=$(BASE_IMAGE) docker-compose stop
+	CXX=$(CXX) EVENTLIB=$(BACKEND) BASE_IMAGE=$(BASE_IMAGE) docker-compose stop
 
 # self documenting makefile, see 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html

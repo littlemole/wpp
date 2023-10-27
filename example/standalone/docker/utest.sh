@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-mkdir -p /usr/src
-cd /usr/src/
+mkdir -p /usr/local/src
+cd /usr/local/src/
 
 git clone https://github.com/sheredom/utest.h.git utest
 

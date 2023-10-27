@@ -2,8 +2,8 @@
 set -e
 
 echo "**********************************"
-echo "compiling $1 for $BACKEND with" 
-echo "$CXX using $BUILDCHAIN"
+echo "compiling $1 for $BACKEND " 
+echo "using $CXX "
 echo "**********************************"
 
 function cmake_build {
@@ -35,7 +35,10 @@ function cmake_build {
 
 cd /usr/local/src/$1
 
-cmake_build "Debug"
+if [ "$WITH_DEBUG" == "On" ]
+then
+    cmake_build "Debug"
+fi
 cmake_build "Release"
 
 

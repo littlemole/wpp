@@ -20,9 +20,6 @@ ENV CXX=${CXX}
 ARG EVENTLIB=
 ENV BACKEND=${EVENTLIB}
 
-ARG BUILDCHAIN=cmake
-ENV BUILDCHAIN=${BUILDCHAIN}
-
 # add little moles build & install helper scripts
 ADD ./docker/build.sh /usr/local/bin/build.sh
 ADD ./docker/install.sh /usr/local/bin/install.sh
@@ -46,7 +43,7 @@ RUN mkdir -p /usr/local/src/reproweb-example
 ADD . /usr/local/src/reproweb-example
 
 # build the webapp
-RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
+RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}" /usr/local/bin/compile.sh reproweb-example'
 
 # run the webapp
 CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'

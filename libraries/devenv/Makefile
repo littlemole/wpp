@@ -6,8 +6,7 @@ PREFIX=/usr/local
 
 PWD=$(shell pwd)
 
-BUILDCHAIN = make
-CONTAINER = $(shell echo "devenv_$(CXX)_$(BUILDCHAIN)" | sed 's/++/pp/')
+CONTAINER = $(shell echo "devenv_$(CXX)_cmake" | sed 's/++/pp/')
 IMAGE = littlemole/$(CONTAINER)
 WITH_TEST = On
 
@@ -31,10 +30,10 @@ clean: ## cleans up build artefacts
 # docker stable testing environment
 
 image: ## build docker test image
-	docker build -t $(IMAGE) . -f $(DOCKERFILE)  --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg WITH_TEST=$(WITH_TEST)
+	docker build -t $(IMAGE) . -f $(DOCKERFILE)  --build-arg CXX=$(CXX) --build-arg WITH_TEST=$(WITH_TEST)
 
 clean-image: ## rebuild the docker test image from scratch
-	docker build -t $(IMAGE) . --no-cache -f $(DOCKERFILE) --build-arg CXX=$(CXX) --build-arg BUILDCHAIN=$(BUILDCHAIN) --build-arg WITH_TEST=$(WITH_TEST)
+	docker build -t $(IMAGE) . --no-cache -f $(DOCKERFILE) --build-arg CXX=$(CXX) --build-arg WITH_TEST=$(WITH_TEST)
 		
 bash: rmc image ## run the docker image and open a shell
 	docker run --name $(CONTAINER) -ti $(IMAGE) bash
@@ -55,8 +54,8 @@ help:
 	@echo "common build flags for all targets:"
 	@echo "\tCXX set to g++|clang++ to set compiler (defaults to g++)"
 	@echo "example calls:"
+	@echo "\t sudo make image  "
 	@echo "\t sudo make image CXX=clang++ "
-	@echo "\t sudo make image CXX=clang++ BUILDCHAIN=cmake "
 	@echo "available targets:"
 	@grep -E -h '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 

@@ -1,5 +1,4 @@
-# This is a comment
-FROM alpine:3
+FROM alpine:3 as build
 LABEL author <little.mole@oha7.org>
 
 RUN apk upgrade
@@ -8,7 +7,7 @@ RUN apk add sudo git joe wget g++ make \
     openssl-dev libevent-dev libuuid \
     nghttp2-dev curl-dev clang clang-dev \
     libc++-dev redis boost zlib-dev \
-    mysql-client sqlite sqlite-dev \
+    mariadb-dev sqlite sqlite-dev \
     expat-dev cmake nlohmann-json bash \
     util-linux-dev
     
@@ -19,22 +18,15 @@ ENV CXX=${CXX}
 ARG EVENTLIB=
 ENV BACKEND=${EVENTLIB}
 
-ARG BUILDCHAIN=cmake
-ENV BUILDCHAIN=${BUILDCHAIN}
-
 # add little moles build & install helper scripts
 ADD ./docker/build.sh /usr/local/bin/build.sh
 ADD ./docker/install.sh /usr/local/bin/install.sh
 ADD ./docker/compile.sh /usr/local/bin/compile.sh
 ADD ./docker/mustache.sh /usr/local/bin/mustache.sh
 
-#RUN ls -lah /usr/src && 1s
 ADD ./docker/utest.sh /usr/local/bin/utest.sh
 
-
-RUN ls -lah /usr/local/bin
 RUN /usr/local/bin/utest.sh
-RUN ls -lah /usr/src
 
 # install little moles basic dev packages, for given compiler
 RUN /usr/local/bin/install.sh cryptoneat 
@@ -50,7 +42,23 @@ RUN mkdir -p /usr/local/src/reproweb-example
 ADD . /usr/local/src/reproweb-example
 
 # build the webapp
-RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
+RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}" /usr/local/bin/compile.sh reproweb-example'
+
+
+# This is a comment
+FROM alpine:3 
+
+RUN apk upgrade
+RUN apk add openssl libevent libuuid \
+    nghttp2 curl zlib \
+    sqlite  \
+    expat libuuid 
+
+#    util-linux-dev
+
+
+COPY --from=build usr/local/src/reproweb-example /usr/local/src/reproweb-example
+
 
 # run the webapp
 CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'

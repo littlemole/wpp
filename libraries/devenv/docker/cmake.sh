@@ -5,6 +5,7 @@ VERSION=3.18.4
 
 apt remove --purge --auto-remove cmake
 
+mkdir -p /usr/local/src/
 cd /usr/local/src/
 wget "https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-$VERSION.tar.gz"
 

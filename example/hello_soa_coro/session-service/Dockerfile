@@ -1,9 +1,6 @@
-# This is a comment
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 LABEL me <little.mole@oha7.org>
-
-#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server 
 
 ARG CXX=g++
 ENV CXX=${CXX}
@@ -11,15 +8,10 @@ ENV CXX=${CXX}
 ARG EVENTLIB=
 ENV BACKEND=${EVENTLIB}
 
-ARG BUILDCHAIN=make
-ENV BUILDCHAIN=${BUILDCHAIN}
-
 ARG TS=
 ENV TS=${TS}
 
 ENV REDIS_HOST=redis
-
-#RUN  /usr/local/bin/install.sh  repro-redis
 
 RUN mkdir -p /usr/local/src/reproweb-example
 ADD . /usr/local/src/reproweb-example
@@ -30,10 +22,8 @@ ADD . /usr/local/src/reproweb-example
 
 RUN /usr/local/bin/install_cert
 
-#RUN cd /usr/local/src/reproweb-example && (if [ "$BUILDCHAIN" != "cmake" ] ; then make -e; else (mkdir -p build && cd build && cmake .. && make) fi)
-#CMD bash -c " cd /usr/local/src/reproweb-example &&  build/hello_world.bin"
 
-RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}_${BUILDCHAIN}" /usr/local/bin/compile.sh reproweb-example'
+RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}" /usr/local/bin/compile.sh reproweb-example'
 
 CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_soa_sessionservice.bin'
 

@@ -5,8 +5,8 @@ VERSION=$2
 
 
 echo "**********************************"
-echo "building $1 for $BACKEND with" 
-echo "$CXX using $BUILDCHAIN"
+echo "building $1 for $BACKEND " 
+echo "using $CXX "
 echo "**********************************"
 
 function cmake_build {
@@ -48,8 +48,11 @@ then
     git checkout $VERSION
 fi
 
+if [ "$WITH_DEBUG" == "On" ]
+then
+    cmake_build "Debug"
+fi
 
-cmake_build "Debug"
 cmake_build "Release"
 
 
