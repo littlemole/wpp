@@ -51,7 +51,7 @@ FROM alpine:3
 RUN apk upgrade
 RUN apk add openssl libevent libuuid \
     nghttp2 curl zlib \
-    sqlite  \
+    sqlite-libs  \
     expat libuuid 
 
 #    util-linux-dev
@@ -61,6 +61,6 @@ COPY --from=build usr/local/src/reproweb-example /usr/local/src/reproweb-example
 
 
 # run the webapp
-CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'
+CMD sh -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'
 
 

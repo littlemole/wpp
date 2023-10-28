@@ -1,5 +1,5 @@
 # This is a comment
-FROM fedora:38
+FROM fedora:38 as build
 LABEL author <little.mole@oha7.org>
 
 RUN yum -y update
@@ -44,6 +44,18 @@ ADD . /usr/local/src/reproweb-example
 
 # build the webapp
 RUN bash -c 'cd /usr/local/src/reproweb-example && WITH_TEST=Off VERSION="${CXX}_${BACKEND}" /usr/local/bin/compile.sh reproweb-example'
+
+
+FROM fedora:38 
+
+RUN yum -y update
+
+RUN yum -y install openssl libevent libuuid \
+  nghttp2 libcurl mariadb-devel \
+  zlib sqlite3 expat 
+
+
+COPY --from=build usr/local/src/reproweb-example /usr/local/src/reproweb-example
 
 # run the webapp
 CMD bash -c 'cd /usr/local/src/reproweb-example && Release/hello_standalone.bin'
