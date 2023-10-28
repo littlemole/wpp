@@ -261,8 +261,8 @@ int CurlMulti::on_sock_cb(CURL *curl, reprocurl::impl::socket_t sock, int what, 
 {
 	easy->what_ = what;
 
-	if(timeout_)
-		timeout_->cancel();
+	//if(timeout_)  // this causes nghttp2 to hang on fedora and alpine :-/
+	//	timeout_->cancel();
 
 	if (what & CURL_POLL_REMOVE)
 	{

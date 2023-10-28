@@ -186,6 +186,8 @@ struct IOImpl
 	repro::Future<> onRead(socket_t fd);
 	repro::Future<> onWrite(socket_t fd);
 
+	repro::Future<short> onSocket(socket_t fd, short what);
+
 	void cancel();
 
 	Event::Ptr e;

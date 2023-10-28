@@ -527,6 +527,20 @@ Future<> IOImpl::onWrite(socket_t fd)
 	return p.future();
 }
 
+Future<short> IOImpl::onSocket(socket_t fd, short what)
+{
+	auto p = promise<short>();
+
+	e = onEvent(fd, what);
+	e->callback( [p](socket_t /* fd */, short  what  )
+	{		
+		p.resolve(what);
+	})
+	->add();
+
+	return p.future();
+}
+
 void IOImpl::cancel()
 {
 	if(e)

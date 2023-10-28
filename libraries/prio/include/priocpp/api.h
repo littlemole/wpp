@@ -17,7 +17,14 @@
 
 namespace prio      {
 
+enum ASYNC_WHAT {
 
+	ASYNC_TIMEOUT = 0x01,
+	ASYNC_READ = 0x02,
+	ASYNC_WRITE	= 0x04,
+	ASYNC_SIGNAL = 0x08,
+	ASYNC_PERSIST =	0x10	
+};
 
 /**
 *  \brief call std::function<void()> f on the eventloop asynchronously.
@@ -221,6 +228,9 @@ public:
 	repro::Future<> onRead(socket_t fd);
 	//! wait for write on given socket
 	repro::Future<> onWrite(socket_t fd);
+
+	//! wait for read/write on given socket
+	repro::Future<short> onSocket(socket_t fd);
 
 	//! cancel any current waits
 	void cancel();

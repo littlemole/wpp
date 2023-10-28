@@ -36,7 +36,7 @@ int main(int /*argc*/, char** /*argv*/)
 	sslCtx.load_cert_pem(cert);
 
 	// issues on fedora?
-	//sslCtx.enableHttp2();
+	sslCtx.enableHttp2();
 
 	WebServer server(ctx);
 	server.listen(sslCtx,9878);

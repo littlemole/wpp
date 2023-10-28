@@ -261,6 +261,63 @@ Future<> IOImpl::onWrite(socket_t fd)
 	return p.future();
 }
 
+Future<short> IOImpl::onSocket(socket_t fd, short what)
+{
+	auto p = promise<short>();
+
+	cancel();
+	sd_.assign(fd);
+
+	if(what & ASYNC_WRITE)
+	{
+
+		sd_.async_write_some(
+			boost::asio::null_buffers(), 
+			[this,p] ( boost::system::error_code error, std::size_t /*bytes_transferred*/  )
+			{
+				if(error)
+				{
+					if(is_io_cancelled(error))
+					{
+						return;
+					}
+
+					p.reject(Ex(std::string("wait failed: ") + error.message()));
+				}
+				else
+				{
+					p.resolve(ASYNC_WRITE );
+				}
+			}
+		);	
+	}
+
+	if(what & ASYNC_READ)
+	{
+		sd_.async_read_some(
+			boost::asio::null_buffers(), 
+			[this,p] ( boost::system::error_code error, std::size_t /*bytes_transferred*/  )
+			{
+				if(error)
+				{
+					if(is_io_cancelled(error))
+					{
+						return;
+					}
+
+					p.reject(Ex(std::string("wait failed: ") + error.message()));
+				}
+				else
+				{
+					p.resolve( ASYNC_READ);
+				}
+			}
+		);
+	}	
+
+	return p.future();
+}
+
 void IOImpl::handle_callback( const Promise<>& p, boost::system::error_code error )
 {
 	if(error)

@@ -142,7 +142,7 @@ struct IOImpl
 
 	repro::Future<> onRead(socket_t fd);
 	repro::Future<> onWrite(socket_t fd);
-
+	repro::Future<short> onSocket(socket_t fd, short ehat);
 	void cancel();
 
 private:

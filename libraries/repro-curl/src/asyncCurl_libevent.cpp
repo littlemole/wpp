@@ -115,23 +115,22 @@ bool CurlMulti::check_multi_info()
 			easy = msg->easy_handle;
 			r = msg->data.result;
 		}
-	}
 
-	if(easy) // we are done
-	{
-		CurlEasy* ceasy = nullptr;
-		curl_easy_getinfo(easy,CURLINFO_PRIVATE,(char**)&ceasy);
-		if ( r != CURLE_OK )
+		if(easy) // we are done
 		{
-			repro::Ex ex("async curl ex");
-			ceasy->reject(ex);
-			return true;
+			CurlEasy* ceasy = nullptr;
+			curl_easy_getinfo(easy,CURLINFO_PRIVATE,(char**)&ceasy);
+			if ( r != CURLE_OK )
+			{
+				repro::Ex ex("async curl ex");
+				ceasy->reject(ex);
+			}
+			else
+			{
+				ceasy->resolve();
+			}
 		}
-		else
-		{
-			ceasy->resolve();
-			return true;
-		}
+		easy = 0;
 	}
 
 	if(!still_running_)
@@ -181,9 +180,10 @@ bool CurlMulti::check_err_code(const char *where, int code)
 
 bool CurlMulti::onSocket(impl::socket_t fd, short kind, CurlEasy* easy)
 {
-	int action =
-		(kind & CURL_POLL_IN ? CURL_CSELECT_IN : 0) |
-		(kind & CURL_POLL_OUT ? CURL_CSELECT_OUT : 0);
+	int action = 0;
+	if( kind == CURL_POLL_IN ) action |= CURL_CSELECT_IN;
+	if( kind == CURL_POLL_OUT ) action |= CURL_CSELECT_OUT;
+	if( kind == CURL_POLL_INOUT ) action |= (CURL_CSELECT_OUT | CURL_CSELECT_IN);
 
 	CURLMcode rc = curl_multi_socket_action(multi_, fd, action, &still_running_);
 	if(!check_err_code("event_cb: curl_multi_socket_action", (int) rc))
@@ -211,11 +211,14 @@ int CurlMulti::on_sock_cb(CURL *curl, impl::socket_t sock, int what, CurlEasy* e
 {
 	easy->what_ = what;
 
-	if(timeout_)
-		timeout_->cancel();
+	//if(timeout_) // this causes nghttp2 to hang on fedora and alpine :-/
+	//	timeout_->cancel();
 
-	if (what & CURL_POLL_REMOVE)
+	if (what == CURL_POLL_REMOVE)
 	{
+		easy->io_write.cancel();
+		easy->io_read.cancel();
+		curl_multi_assign(this->multi_,sock,NULL);
 		return 0;
 	}
 
@@ -224,7 +227,7 @@ int CurlMulti::on_sock_cb(CURL *curl, impl::socket_t sock, int what, CurlEasy* e
 		return 0;
 	}
 
-	if (what & CURL_POLL_IN)
+	if (what == CURL_POLL_IN)
 	{
 		easy->io_write.cancel();
 		easy->io_read.cancel();
@@ -243,7 +246,7 @@ int CurlMulti::on_sock_cb(CURL *curl, impl::socket_t sock, int what, CurlEasy* e
 		});
 	}
 	else
-	if (what & CURL_POLL_OUT)
+	if (what == CURL_POLL_OUT)
 	{			
 		easy->io_read.cancel();
 		easy->io_write.cancel();
@@ -261,6 +264,41 @@ int CurlMulti::on_sock_cb(CURL *curl, impl::socket_t sock, int what, CurlEasy* e
 		{
 			std::cout << ex.what() << std::endl;
 		});
+	}
+	else
+	if (what == CURL_POLL_INOUT)
+	{			
+		easy->io_read.cancel();
+		easy->io_write.cancel();
+		easy->io_write.onWrite(sock)
+		.then( [this,curl,sock,what,easy]()
+		{	
+			if(onSocket(sock,CURL_POLL_OUT,easy))
+			{
+				return;
+			}
+
+			on_sock_cb(curl,sock,easy->what_,easy);
+		})
+		.otherwise( [](const std::exception& ex)
+		{
+			std::cout << ex.what() << std::endl;
+		});
+
+		easy->io_read.onRead(sock)
+		.then( [this,curl,sock,what,easy]()
+		{	
+			if(onSocket(sock,CURL_POLL_IN,easy))
+			{
+				return;
+			}
+			on_sock_cb(curl,sock,easy->what_,easy);
+		})
+		.otherwise( [](const std::exception& ex)
+		{
+			std::cout << ex.what() << std::endl;
+		});
+
 	}
 
 	return 0;
