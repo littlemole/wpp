@@ -7,6 +7,12 @@ BASE_IMAGE = littlemole\/$(BASE_CONTAINER)
 
 cacert :
 	cd pem && ./make_cert.sh
+
+ca :
+	cd ca && bin/make_pki	
+
+remove_ca :
+	cd ca && bin/remove_ca	
 	
 image: 
 	docker build -t $(IMAGE) . -fDockerfile  --build-arg CXX=$(CXX) --build-arg BACKEND=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE)
@@ -40,6 +46,6 @@ help:
 	@echo "available targets:"
 	@grep -E -h '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 		
-.PHONY: build up force down cacert help
+.PHONY: build up force down cacert help ca
  
  

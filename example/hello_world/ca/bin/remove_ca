@@ -20,7 +20,7 @@ sudo apt install libnss3-tools
 ###
 
 certfile="ca/ca.crt"
-certname="reprocpp root ca"
+certname="ca.localhost"
 
 
 ###
