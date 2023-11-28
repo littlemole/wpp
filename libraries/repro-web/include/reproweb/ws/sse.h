@@ -42,7 +42,7 @@ public:
 		req = r;
         con_ = r.con();
 
-        HttpRequest& request = (HttpRequest&)r;
+        prio::HttpRequest& request = (prio::HttpRequest&)r;
         request.detach();
         request.con()->timeouts().rw_timeout_s = 1000L * 60L * 10L;
     }

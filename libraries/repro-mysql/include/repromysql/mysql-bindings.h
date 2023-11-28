@@ -116,6 +116,7 @@ protected:
 	union
 	{
 		int					intval_;
+		long				longval_;		
 		double				doubleval_;
 		long long int		longlongval_;
 		MYSQL_TIME			timeval_;
@@ -149,9 +150,13 @@ public:
 		{
 			case MYSQL_TYPE_TINY:
 			case MYSQL_TYPE_SHORT:
-			case MYSQL_TYPE_LONG:
 			{
 				u_.intval_ = t;
+				break;
+			}
+			case MYSQL_TYPE_LONG:
+			{
+				u_.longval_ = t;
 				break;
 			}
 			case MYSQL_TYPE_LONGLONG:
@@ -241,6 +246,7 @@ public:
 	double getDouble() const;
 	const MYSQL_TIME& getTime() const;
 	long long int getLongLong() const;
+	long getLong() const;
 
 	template<class T>
 	 T getNumber() const
@@ -253,9 +259,12 @@ public:
 		{
 			case MYSQL_TYPE_TINY:
 			case MYSQL_TYPE_SHORT:
-			case MYSQL_TYPE_LONG:
 			{
 				return (T) u_.intval_;
+			}
+			case MYSQL_TYPE_LONG:
+			{
+				return (T) u_.longval_;
 			}
 			case MYSQL_TYPE_FLOAT:
 			case MYSQL_TYPE_DOUBLE:

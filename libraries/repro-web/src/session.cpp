@@ -150,7 +150,8 @@ void SessionFilter::before( prio::Request& req, prio::Response& res, std::shared
 
         Session session(sid,Json::objectValue);
         req.attributes.set("_session_", std::make_shared<Session>(session) );   
-        chain->next(req,res);        
+        //chain->next(req,res);        
+        throw ex;
     });
 }
 

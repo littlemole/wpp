@@ -36,9 +36,13 @@ void Binding::bind(MYSQL_BIND& bind )
 	{
 		case MYSQL_TYPE_TINY:
 		case MYSQL_TYPE_SHORT:
-		case MYSQL_TYPE_LONG:
 		{
 			bind.buffer = (char*)&u_.intval_;
+			break;
+		}
+		case MYSQL_TYPE_LONG:
+		{
+			bind.buffer = (char*)&u_.longval_;
 			break;
 		}
 		case MYSQL_TYPE_LONGLONG:
@@ -76,7 +80,8 @@ void Binding::bind(MYSQL_BIND& bind )
 		{
 			std::ostringstream oss;
 			oss << "bind: unsupported mysql data type: " << type_;
-			throw repro::Ex(oss.str());
+			std::cout << oss.str() << std::endl;
+//			throw repro::Ex(oss.str());
 			break;
 		}
 
@@ -122,11 +127,17 @@ void Param::set( const std::string& s, enum_field_types type )
 	{
 		case MYSQL_TYPE_TINY:
 		case MYSQL_TYPE_SHORT:
-		case MYSQL_TYPE_LONG:
 		{
 			int i;
 			iss >> i;
 			u_.intval_ = i;
+			break;
+		}
+		case MYSQL_TYPE_LONG:
+		{
+			long i;
+			iss >> i;
+			u_.longval_ = i;
 			break;
 		}
 		case MYSQL_TYPE_LONGLONG:
@@ -294,10 +305,15 @@ const std::string Retval::getString() const
 	{
 		case MYSQL_TYPE_TINY:
 		case MYSQL_TYPE_SHORT:
-		case MYSQL_TYPE_LONG:
 		{
 			std::ostringstream oss;
 			oss << u_.intval_;
+			return oss.str();
+		}
+		case MYSQL_TYPE_LONG:
+		{
+			std::ostringstream oss;
+			oss << u_.longval_;
 			return oss.str();
 		}
 		case MYSQL_TYPE_FLOAT:
@@ -355,8 +371,8 @@ const std::string Retval::getString() const
 				return "";
 			if (is_err_)
 				return "";
-
-			return buf_.get();
+			
+			return std::string( buf_.get(), u_.strlen_ );
 		}
 		case MYSQL_TYPE_NULL:
 		{
@@ -366,7 +382,8 @@ const std::string Retval::getString() const
 		{
 			std::ostringstream oss;
 			oss << "unsupported mysql data type: " << type_;
-			throw repro::Ex(oss.str());
+			std::cout << oss.str() << std::endl;
+//			throw repro::Ex(oss.str());
 			break;
 		}
 
@@ -406,6 +423,10 @@ long long int Retval::getLongLong() const
 	return getNumber<long long>();
 }
 
+long Retval::getLong() const
+{
+	return getNumber<long>();
+}
 
 
 ResultSet::ResultSet(MYSQL_RES* res)

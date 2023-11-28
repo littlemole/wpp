@@ -45,7 +45,7 @@ int main(int /*argc*/, char** /*argv*/ )
 		singleton<Controller(Users,Chat,View)>(),
 
 		singleton<EventBus()>(),
-		singleton<SSEController(EventBus)>(),
+		singleton<SSEController(RedisBus)>(),
 
 		singleton<SessionFilter(MemorySessionProvider)>()
 };	

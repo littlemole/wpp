@@ -23,6 +23,10 @@ public:
         : redis_(r)
     {}
 
+    RedisSessionProvider( int timeout, std::shared_ptr<reproredis::RedisPool> r)
+        : redis_(r), session_timeout(timeout)
+    {}
+	
     virtual ~RedisSessionProvider() {}
 
 
@@ -38,16 +42,16 @@ public:
 			if( reply->isError() )
 			{
 				std::cout << "redis err " << reply->isError() << std::endl;
-				throw repro::Ex("invalid session");
+				//throw repro::Ex("invalid session");
 			}
-
+			else
 			if( !reply->isNill() )
 			{
 				Json::Value json = JSON::parse(reply->str());
 				meta::fromJson(json,*session);
 			}
 
-            return redis_->cmd("EXPIRE", session->sid, 60);
+            return redis_->cmd("EXPIRE", session->sid, session_timeout);
 		})
 		.then([p,session](reproredis::RedisResult::Ptr reply)
 		{
@@ -72,14 +76,16 @@ public:
 		redis_->cmd("SET", sid, json)
 		.then([this,sid](reproredis::RedisResult::Ptr reply)
 		{
-			return redis_->cmd("EXPIRE", sid, 60);
+			return redis_->cmd("EXPIRE", sid, session_timeout);
 		})
 		.then([p,session](reproredis::RedisResult::Ptr reply)
 		{
 			p.resolve();
 		})
-		.otherwise(repro::reject(p));
-
+		.otherwise([p](const std::exception& ex)
+		{
+			p.resolve();
+		});
 		return p.future();
     }
 
@@ -93,13 +99,19 @@ public:
 		{
 			p.resolve();
 		})
-		.otherwise(repro::reject(p));
+		.otherwise([p](const std::exception& ex)
+		{
+			p.resolve();
+		});
 
 		return p.future();
 	}
+protected:
+	long session_timeout = 60;
 
 private:
     std::shared_ptr<reproredis::RedisPool> redis_;
+
 };
 
 

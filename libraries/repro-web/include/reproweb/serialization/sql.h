@@ -52,6 +52,28 @@ inline void fromSQL( const char* name, repromysql::result_async::Ptr r, int& t)
     }
 }
 
+#ifndef WIN32
+inline void fromSQL( const char* name, repromysql::result_async::Ptr r, long& t)
+{
+    try
+    {
+        const repromysql::Retval& rv = r->field(std::string(name));
+        if( !rv.null() )
+        {
+            t = r->field(std::string(name)).getLong(); 
+        }
+        else
+        {
+            t = 0;
+        }
+    }
+    catch(...)
+    {
+        t = 0;
+    }
+}
+#endif
+
 inline void fromSQL( const char* name, repromysql::result_async::Ptr r, double& t)
 {
     try

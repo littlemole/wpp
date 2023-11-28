@@ -92,7 +92,7 @@ private:
 		.otherwise([this,topic,observer](const std::exception& ex)
 		{
 			std::cout << "!" << ex.what() << std::endl;
-			timeout([this,topic,observer]()
+			prio::timeout([this,topic,observer]()
 			{
 				redis_subscribe(topic,observer);
 			},10);

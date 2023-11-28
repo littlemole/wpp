@@ -195,21 +195,24 @@ void FrontController::dispatch(const std::string& path, prio::Request& req, prio
 {
 	std::string method = req.path.method();
 
-	auto handler = find_handler(path, method, req, res);
-	if (!handler)
-	{
-		res.not_found().flush();
-		return;
-	}
+	reproweb::HandlerInfo* handler = nullptr;
 
-	try
+	try 
 	{
+		handler = find_handler(path, method, req, res);
+
+		if (!handler)
+		{
+			res.not_found().flush();
+			return;
+		}
+
 		handler->invoke(req, res);
 	}
-	catch (const std::exception& ex)
-	{
-		handle_exception(ex, req, res);
-	}
+    catch(const std::exception& ex)
+    {
+    	handle_exception(ex,req,res);
+    }
 }
 
 repro::Future<std::string> FrontController::include(const prio::Request& req, const std::string& path)
@@ -350,7 +353,15 @@ void StaticContentHandler::register_static_handler(diy::Context* ctx)
     http_handler_t handler = [path_base,map_](prio::Request& req, prio::Response& res)
     {
 		std::string path = path_base + req.path.path();
-		path = prio::real_path(path);
+
+		try{
+			path = prio::real_path(path);
+		}
+		catch(...)
+		{
+			res.not_found().flush();
+			return;
+		}
  
  #ifndef _WIN32
 		if ( path.substr(0,path_base.length()) != path_base )

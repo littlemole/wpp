@@ -64,6 +64,13 @@ mustache::Data mustache::fromJson(Json::Value& data)
 	{
 		return Data(Data::type::bool_false);
 	}
+	if ( data.isBool())
+	{
+		bool b = data.asBool();
+		if(b)
+			return Data(Data::type::bool_true);
+		return Data(Data::type::bool_false);
+	}
 	return Data(data.asString());
 }
 
@@ -196,10 +203,11 @@ repro::Future<> AbstractView::render(prio::Request& req, prio::Response& res, co
 
 void AbstractView::flush_content(prio::Response& res,const std::string& content)
 {
+	if(res.status().empty()) res.ok();
+	if(res.headers.get("content-type").empty()) res.contentType("text/html");
+
 	res
 	.body(content)
-	.contentType("text/html")
-	.ok()
 	.flush();
 }
 
