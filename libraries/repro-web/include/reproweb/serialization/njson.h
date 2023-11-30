@@ -1,0 +1,148 @@
+#ifndef _MOL_DEF_GUARD_DEFINE_REPROWEB_SERIALIZER_NJSON_DEF_GUARD_
+#define _MOL_DEF_GUARD_DEFINE_REPROWEB_SERIALIZER_NJSON_DEF_GUARD_
+
+#include <reproweb/serialization/parameter.h>
+#include <metacpp/njson.h>
+#include "reproweb/ctrl/front_controller.h"
+
+namespace reproweb {
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+template<class T>
+struct json_t
+{
+	T value;
+
+	T* operator->()
+	{
+		return &value;
+	}
+
+	T& operator*()
+	{
+		return value;
+	}
+};
+
+template<class T>
+using async_json_t = repro::Future<json_t<T>>;
+
+template<class T>
+auto json_promise()
+{
+	return repro::promise<json_t<T>>();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+template<class T>
+class HandlerParam<json_t<T>>
+{
+public:
+
+	static json_t<T> get(prio::Request& req,  prio::Response& /*res*/ )
+	{	
+		Json::Value json = JSON::parse(req.body());
+
+		json_t<T> t;
+		meta::fromJson(json,t.value);
+
+		//std::cout << JSON::stringify(meta::toJson(t.value)) << std::endl;
+		validate(t.value);
+
+		return t;
+	}
+};
+
+//////////////////////////////////////////////////////////////
+
+template<>
+class HandlerParam<nlohmann::json>
+{
+public:
+
+	static nlohmann::json get(prio::Request& req,  prio::Response& /*res*/ )
+	{
+		nlohmann::json json = JSON::parse(req.body());
+		return json;
+	}
+};
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+inline void output_json(prio::Response& res,nlohmann::json json)
+{
+	res
+	.body(JSON::flatten(json))
+	.contentType("application/json")
+	.ok()
+	.flush();
+}
+
+template<class T>
+void output_json(prio::Response& res, T& t)
+{
+	output_json(res, meta::toJson(t) );
+}
+
+
+template<class T>
+void output_json(prio::Response& res, json_t<T>& t)
+{
+	output_json(res, meta::toJson(t.value) );
+}
+
+//////////////////////////////////////////////////////////////
+
+
+template<class R,class C, class ... Args>
+Async invoke_handler(FrontController& fc, prio::Request& req,  prio::Response& res, repro::Future<json_t<R>> (C::*fun)(Args...) )
+{
+	try
+	{
+		C& c = prepare_controller<C>(req);
+		json_t<R> r = co_await (c.*fun)(HandlerParam<Args>::get(req,res)...);		
+		output_json(res,r);
+	}
+	catch(std::exception& ex)
+	{
+		fc.handle_exception(ex, req, res);
+	}
+
+	(void)(co_await prio::nextTick());
+	co_return;
+}
+
+
+
+
+template<class C, class ... Args>
+Async invoke_handler(FrontController& fc, prio::Request& req,  prio::Response& res, repro::Future<nlohmann::json> (C::*fun)(Args...) )
+{
+	try
+	{
+		C& c = prepare_controller<C>(req);
+		nlohmann::json r = co_await (c.*fun)(HandlerParam<Args>::get(req,res)...);	
+		output_json(res,r);		
+	}
+	catch(std::exception& ex)
+	{
+		fc.handle_exception(ex, req, res);
+	}
+
+	(void)(co_await prio::nextTick());
+	co_return;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+}
+
+#endif
+

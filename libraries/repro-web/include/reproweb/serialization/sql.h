@@ -188,6 +188,18 @@ template<class T>
 void fromSQL(repromysql::result_async::Ptr r, std::vector<T>& v);
 
 
+template<class T>
+void fromSQL(const char* name, repromysql::result_async::Ptr r, T& t, typename std::enable_if<std::is_class<T>::value>::type* = nullptr))
+{
+    auto visitor = [&r]( auto name, auto m)
+    {	
+        typename decltype(m)::setter_value_t value;
+        fromSQL(name.name,r,value);
+        m = value;
+    };
+    meta::visit(t,visitor);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 

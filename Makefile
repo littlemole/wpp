@@ -15,6 +15,10 @@ IMAGE = littlemole/$(CONTAINER)
 BASE_CONTAINER = $(shell echo "devenv_$(CXX)_cmake" | sed 's/++/pp/')
 BASE_IMAGE = littlemole/$(BASE_CONTAINER)
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+PRESET_DBG = $(shell echo "gcc-debug-$(BACKEND)" | sed 's/boost_//' )
+PRESET_REL = $(shell echo "gcc-release-$(BACKEND)" | sed 's/boost_//' )
 
 #################################################
 # rule to compile all (default rule)
@@ -29,8 +33,17 @@ all: ## just compiles and links the library
 
 clean: ## cleans up build artefacts
 	-find -name "*~" -exec rm {} \;
-	-rm -rf ./build
+	-rm -rf ./out
 		
+install: clean ## full build and install
+	cmake --preset $(PRESET_DBG)
+	cmake --build --preset $(PRESET_DBG)
+	sudo cmake --build  --target install --preset $(PRESET_DBG)
+
+	cmake --preset $(PRESET_REL)
+	cmake --build --preset $(PRESET_REL)
+	sudo cmake --build  --target install --preset $(PRESET_REL)
+
 # docker stable testing environment
 
 devenv:
