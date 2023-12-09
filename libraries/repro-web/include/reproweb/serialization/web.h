@@ -107,7 +107,6 @@ inline void fromParams( const prio::Cookie& from, std::string& to )
 }
 
 
-
 inline void fromParams( const prio::Cookie& /*from*/, prio::HeaderValues& /*to*/ )
 {
 	// no op
@@ -178,8 +177,6 @@ void fromParams( prio::QueryParams& qp, T& t)
 	{	
 		std::remove_reference_t<typename decltype(m)::setter_value_t> value;
 		std::string val = qp.get(n.name);
-		std::cout << "val: " << val << std::endl;
-		//std::cout << typeid(value).name() << std::endl;
 		fromParams(val,value);
 		m = value;
 	});
@@ -198,6 +195,17 @@ void fromParams( const std::string& val, std::vector<T>& to)
 	}
 }
 
+template<class T>
+void fromParams( prio::Args& args, T& t)
+{
+	meta::visit(t, [&args](auto n, auto m) 
+	{	
+		std::remove_reference_t<typename decltype(m)::setter_value_t> value;
+		std::string val = args.get(n.name);
+		fromParams(val,value);
+		m = value;
+	});
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -268,6 +276,27 @@ public:
 		return t;
 	}
 };
+
+
+//////////////////////////////////////////////////////////////
+
+template<class T>
+class HandlerParam<PathArgs<T>>
+{
+public:
+
+	static PathArgs<T> get(prio::Request& req,  prio::Response& /*res*/ )
+	{
+		PathArgs<T> t;
+
+		prio::Args args = req.path.args();
+		reproweb::fromParams( args, t.value );
+		validate(t.value);
+
+		return t;
+	}
+};
+
 
 //////////////////////////////////////////////////////////////
 
@@ -349,6 +378,19 @@ public:
 };
 	
 
+//////////////////////////////////////////////////////////////
+
+template<>
+class HandlerParam<prio::Args>
+{
+public:
+
+	static prio::Args get(prio::Request& req,  prio::Response& /*res*/ )
+	{
+		return req.path.args();
+	}
+};
+				
 //////////////////////////////////////////////////////////////
 
 template<>

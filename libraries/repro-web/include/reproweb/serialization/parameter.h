@@ -38,6 +38,24 @@ void validate( T& t)
 //////////////////////////////////////////////////////////////
 
 template<class T>
+struct PathArgs
+{
+	T value;
+
+	T* operator->()
+	{
+		return &value;
+	}
+
+	T& operator*()
+	{
+		return value;
+	}
+};
+
+//////////////////////////////////////////////////////////////
+
+template<class T>
 struct Form
 {
 	T value;
