@@ -71,6 +71,20 @@ rmc: stop ## remove docker container, if any
 rmi : ## remove existing docker image, if any
 	-docker rmi $(IMAGE)
 
+package: ## make debian package
+	rm -rf out
+
+	cmake --preset "gcc-debug-libevent"
+	cmake --build --preset "gcc-debug-libevent"
+	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-debug-libevent"
+
+	cmake --preset "gcc-release-libevent"
+	cmake --build --preset "gcc-release-libevent"
+	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-release-libevent"
+
+	cpack --config release.cmake -G DEB
+
+
 # self documenting makefile, see 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 

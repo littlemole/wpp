@@ -6,3 +6,6 @@ debug/
 release/
 **/.vscode/
 **/.vs/
+_CPack_Packages
+_packages 
+_install 

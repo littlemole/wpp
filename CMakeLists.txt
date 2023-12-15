@@ -266,3 +266,11 @@ message("INCDIRS : ${INCLUDE_DIRECTORIES}")
 
 install(FILES wpp-config.cmake DESTINATION lib/wpp-${VERSION})
 install(FILES wpp_examples-config.cmake DESTINATION lib/wpp_examples-${VERSION})
+
+############################################
+# packaging
+############################################
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+include(package)
+
