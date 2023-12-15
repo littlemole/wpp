@@ -2,8 +2,8 @@ set(CPACK_PACKAGE_NAME ${PROJECT_NAME}
     CACHE STRING "The resulting package"
 )
 
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "openssl crypto for mere mortals."
-    CACHE STRING "crypto only parts of openssl with an easy to use c++ interface"
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wpp - modern web programming for c++."
+    CACHE STRING "wpp"
 )
 set(CPACK_PACKAGE_VENDOR "molesoft")
 
