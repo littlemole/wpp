@@ -20,6 +20,14 @@ else()
 endif()
 option(WITH_TEST "run tests (default:on)" ON)
 
+
+if(WITH_LIBEVENT)
+    set(CPACK_BACKEND "libevent")
+else()
+    set(CPACK_BACKEND "asio")
+endif()
+
+
 ############################################
 # c++ std
 ############################################
@@ -268,13 +276,13 @@ message("INCDIRS : ${INCLUDE_DIRECTORIES}")
 # used by examples
 ############################################
 
-install(FILES wpp-config.cmake DESTINATION lib/wpp-${VERSION})
-install(FILES wpp_examples-config.cmake DESTINATION lib/wpp_examples-${VERSION})
+install(FILES cmake/wpp-config.cmake DESTINATION lib/wpp-${VERSION})
+install(FILES cmake/wpp_examples-config.cmake DESTINATION lib/wpp_examples-${VERSION})
 
 ############################################
 # packaging
 ############################################
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(package)
 

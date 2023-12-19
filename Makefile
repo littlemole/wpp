@@ -24,7 +24,7 @@ PRESET_REL = $(shell echo "gcc-release-$(BACKEND)" | sed 's/boost_//' )
 # rule to compile all (default rule)
 #################################################
 
-all: ## just compiles and links the library
+all: ## show help
 	make help
 	
 #################################################
@@ -72,17 +72,17 @@ rmi : ## remove existing docker image, if any
 	-docker rmi $(IMAGE)
 
 package: ## make debian package
-	rm -rf out
+#	rm -rf out
 
-	cmake --preset "gcc-debug-libevent"
-	cmake --build --preset "gcc-debug-libevent"
-	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-debug-libevent"
+	cmake --preset "gcc-debug-$(BACKEND)"
+	cmake --build --preset "gcc-debug-$(BACKEND)"
+	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-debug-$(BACKEND)"
 
-	cmake --preset "gcc-release-libevent"
-	cmake --build --preset "gcc-release-libevent"
-	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-release-libevent"
+	cmake --preset "gcc-release-$(BACKEND)"
+	cmake --build --preset "gcc-release-$(BACKEND)"
+	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-release-$(BACKEND)"
 
-	cpack --config release.cmake -G DEB
+	cpack --config cmake/release-$(BACKEND).cmake -G DEB 
 
 
 # self documenting makefile, see 
