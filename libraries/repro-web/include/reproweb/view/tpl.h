@@ -26,6 +26,8 @@ public:
 	//! constrcut mustache template from string
 	mustache( const std::string& tpl);
 
+	void add_partial(const std::string& name, const std::string& tpl);
+
 	//! \private
 	std::string render(Data& data);
 	//! render template with data from JSON
@@ -36,10 +38,15 @@ public:
 	//! render template with data from JSON
 	static std::string render(const std::string& tpl,Json::Value data);
 
+	static std::string render(const std::string& tpl,Data& data, const std::map<std::string,Data> partials);
+	//! render template with data from JSON
+	static std::string render(const std::string& tpl,Json::Value data, const std::map<std::string,Data> partials);
+
 	//! \private
 	static Data fromJson(Json::Value& data);
 
 private:
+	std::map<std::string,Data> partials_;
 	std::string template_;
 };
 
@@ -60,13 +67,21 @@ public:
 	//! get template by name
 	std::string& get(const std::string& name);
 
+	bool exists(const std::string& name);
+
 	//! load all templates from given directory
 	void load(const std::string& path);
 
+	std::vector<std::string> keys();
+
 	//! render named template with given data from JSON
 	std::string render(const std::string& tpl, Json::Value val);
+
+	std::string render(const std::string& tpl, Json::Value val, const std::vector<std::string>& partials);
+
 	//! \private
 	std::string render(const std::string& tpl, const std::string& json);
+	std::string render(const std::string& tpl, const std::string& json, const std::vector<std::string>& partials);
 
 private:
 	std::string path_;
@@ -125,8 +140,18 @@ public:
 	void render_error(prio::Response& res, const std::exception& ex);
 };
 
+
+/*
+
+	AbstractView
+		TemplateView
+			LayoutView
+				MustacheView (with partials and i18n lambda)
+*/
+
 //! Mustache Template view
 //! \ingroup view
+
 
 class TemplateView : public AbstractView
 {

@@ -12,14 +12,22 @@ mustache::mustache( const std::string& tpl)
 
 std::string mustache::render(Json::Value data)
 {
-	return render(template_,data);
+	return render(template_,data,partials_);
 }
 
 
 std::string mustache::render(Data& data)
 {
-	return render(template_,data);
+	return render(template_,data,partials_);
 }
+
+
+void mustache::add_partial(const std::string& name, const std::string& tpl)
+{
+	partials_[name] = tpl;
+}
+
+// statics
 
 std::string mustache::render(const std::string& tpl, Json::Value data)
 {
@@ -30,7 +38,25 @@ std::string mustache::render(const std::string& tpl, Json::Value data)
 
 std::string mustache::render(const std::string& tpl, Data& data)
 {
+	std::map<std::string,Data> partials;
+	return render(tpl,data,partials);
+}
+
+std::string mustache::render(const std::string& tpl, Json::Value data, const std::map<std::string,Data> partials)
+{
+	Data d(fromJson(data));
+	return render(tpl,d,partials);
+}
+
+
+std::string mustache::render(const std::string& tpl, Data& data, const std::map<std::string,Data> partials)
+{
 	std::ostringstream oss;
+
+	for(auto& it : partials)
+	{
+		data.set(it.first, it.second);
+	}
 
 	Mustache tmpl{tpl};
 
@@ -74,12 +100,23 @@ mustache::Data mustache::fromJson(Json::Value& data)
 	return Data(data.asString());
 }
 
+
 //////////////////////////////////////////////////////
 
 
 TplStore::TplStore()
 {
 	path_ = prio::get_current_work_dir();
+}
+
+std::vector<std::string> TplStore::keys()
+{
+	std::vector<std::string> result;
+	for(auto& it : templates_)
+	{
+		result.push_back(it.first);
+	}
+	return result;
 }
 
 void TplStore::register_tpl(const std::string& name, const std::string& tpl)
@@ -95,6 +132,11 @@ void TplStore::unregister_tpl(const std::string& name)
 std::string& TplStore::get(const std::string& name)
 {
 	return templates_[name];
+}
+
+bool TplStore::exists(const std::string& name)
+{
+	return templates_.contains(name);
 }
 
 void TplStore::load(const std::string& path)
@@ -125,21 +167,37 @@ void TplStore::load(const std::string& path)
 
 std::string TplStore::render(const std::string& tpl, Json::Value val)
 {
+	std::vector<std::string> partials = keys();
+	return render(tpl,val,partials);
+}
+
+std::string TplStore::render(const std::string& tpl, Json::Value val, const std::vector<std::string>& partials)
+{
 	mustache m = {
 		get(tpl)
 	};
+
+	for(auto& it : partials)
+	{
+		if(exists(it))
+		{
+			m.add_partial(it, get(it));
+		}
+	}
 
 	return m.render(val);
 }
 
 std::string TplStore::render(const std::string& tpl, const std::string& json)
 {
-	mustache m = {
-		get(tpl)
-	};
-
+	std::vector<std::string> partials = keys();
+	return render(tpl,json,partials);
+}
+ 
+std::string TplStore::render(const std::string& tpl, const std::string& json, const std::vector<std::string>& partials)
+{
 	Json::Value val = JSON::parse(json);
-	return m.render(val);
+	return render(tpl,val,partials);
 }
 
 //////////////////////////////////////////////////////

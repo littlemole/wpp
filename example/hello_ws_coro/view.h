@@ -93,7 +93,9 @@ private:
 		.then( [this,&res,value,locale](std::string txt)
 		{
 			std::string tmpl = i18n_->render(locale,txt);
-			std::string content = mustache::render(tmpl,value);
+			std::map<std::string,mustache::Data> partials;
+			partials["header"] = templates_->get("header");
+			std::string content = mustache::render(tmpl,value,partials);
 
 			res
 			.body(content)

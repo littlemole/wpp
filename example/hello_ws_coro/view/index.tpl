@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!--#include virtual="/inc/header.inc" -->
+{{>header}}
 </head>
 <body>
 
