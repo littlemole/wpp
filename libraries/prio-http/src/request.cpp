@@ -53,6 +53,14 @@ std::string Request::host()
     return oss.str();
 }
 
+std::string Request::locale()
+{
+	auto h = headers.values("Accept-Language");
+	auto lang = h.value().main();
+	std::string locale = std::regex_replace (lang,std::regex("-"),"_");		
+
+	return locale;
+}  	
 
 std::string Request::operator[](const std::string& s)
 {

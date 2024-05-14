@@ -93,9 +93,19 @@ private:
 		.then( [this,&res,value,locale](std::string txt)
 		{
 			std::string tmpl = i18n_->render(locale,txt);
+
 			std::map<std::string,mustache::Data> partials;
 			partials["header"] = templates_->get("header");
-			std::string content = mustache::render(tmpl,value,partials);
+
+			std::map<std::string,std::function<std::string(const std::string&)>> lambdas;
+
+			lambdas["i18n"] = [this,locale]( const std::string& key)
+			{
+				std::cout << "i18n: " << key << std::endl;
+				return i18n_->key(locale,key);
+			};
+
+			std::string content = mustache::render(tmpl,value,partials,lambdas);
 
 			res
 			.body(content)

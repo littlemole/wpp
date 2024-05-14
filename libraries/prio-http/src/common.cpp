@@ -5,7 +5,8 @@
 
 #ifndef _WIN32
 #include <dirent.h>
-
+#include <sys/types.h>
+#include <sys/stat.h>
 #else
 #include "priohttp/msdirent.h"
 #include <stdlib.h>  
@@ -15,10 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <regex>
-
-
 #include <limits.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #ifdef _WIN32
 #include <inttypes.h>
@@ -259,18 +259,35 @@ std::vector<std::string> glob(const std::string& f)
   {
     while ((dir = readdir(d)) != NULL)
     {
-        if (dir->d_type == DT_REG)
-        {   
+//        if (dir->d_type == DT_REG)
+//        {   
             std::string n = std::string(dir->d_name);
             if ( n != "." && n != "..")
             {
                 result.push_back(dir->d_name);
             }
-        }
+//		  }
     }
     closedir(d);
   }
   return result;
+}
+
+bool is_directory(const std::string& path)
+{
+	if(path.empty()) return false;
+
+#ifndef _WIN32
+	struct stat s;
+	if( stat(path.c_str(),&s) == 0 )
+#else
+	struct _stat s;
+	if( _stat(path.c_str(),&s) == 0 )
+#endif	
+	{
+		 if( s.st_mode & S_IFDIR ) return true;
+	}
+	return false;
 }
 
 std::string safe_path( const std::string& path )

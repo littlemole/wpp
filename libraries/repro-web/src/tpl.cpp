@@ -27,6 +27,12 @@ void mustache::add_partial(const std::string& name, const std::string& tpl)
 	partials_[name] = tpl;
 }
 
+void mustache::add_lambda(const std::string& name, std::function<std::string(std::string)> lambda)
+{
+	lambdas_[name] = lambda;
+}
+
+
 // statics
 
 std::string mustache::render(const std::string& tpl, Json::Value data)
@@ -51,11 +57,33 @@ std::string mustache::render(const std::string& tpl, Json::Value data, const std
 
 std::string mustache::render(const std::string& tpl, Data& data, const std::map<std::string,Data> partials)
 {
+	std::map<std::string,std::function<std::string(const std::string&)>> lambdas;
+	return render(tpl,data,partials,lambdas);
+}
+
+std::string mustache::render(const std::string& tpl, Json::Value data, const std::map<std::string,Data> partials, std::map<std::string,std::function<std::string(const std::string&)>> lambdas)
+{
+	Data d(fromJson(data));
+	return render(tpl,d,partials,lambdas);
+}
+
+
+std::string mustache::render(const std::string& tpl, Data& data, const std::map<std::string,Data> partials, std::map<std::string,std::function<std::string(const std::string&)>> lambdas)
+{
 	std::ostringstream oss;
 
 	for(auto& it : partials)
 	{
-		data.set(it.first, it.second);
+		// only set partial if not overriden by data
+		if(!data.get(it.first))
+			data.set(it.first, it.second);
+	}
+
+	for(auto& it : lambdas)
+	{
+		// only set partial if not overriden by data
+		if(!data.get(it.first))
+			data.set(it.first, it.second);
 	}
 
 	Mustache tmpl{tpl};
@@ -109,6 +137,12 @@ TplStore::TplStore()
 	path_ = prio::get_current_work_dir();
 }
 
+TplStore::TplStore(std::shared_ptr<I18N> i18n)
+	: i18n_(i18n)
+{
+	path_ = prio::get_current_work_dir();
+}
+
 std::vector<std::string> TplStore::keys()
 {
 	std::vector<std::string> result;
@@ -148,6 +182,11 @@ void TplStore::load(const std::string& path)
 	for ( std::string s : v )
 	{
 		std::string fn = p + "/" + s;
+		if( prio::is_directory(fn) )
+		{
+			load(fn);
+			continue;
+		}
 		std::string f = prio::slurp(fn);
 		if ( f.empty() )
 		{
@@ -171,6 +210,12 @@ std::string TplStore::render(const std::string& tpl, Json::Value val)
 	return render(tpl,val,partials);
 }
 
+std::string TplStore::render(const std::string& tpl, const std::string& locale, Json::Value val)
+{
+	std::vector<std::string> partials = keys();
+	return render(tpl,locale,val,partials);
+}
+
 std::string TplStore::render(const std::string& tpl, Json::Value val, const std::vector<std::string>& partials)
 {
 	mustache m = {
@@ -188,6 +233,30 @@ std::string TplStore::render(const std::string& tpl, Json::Value val, const std:
 	return m.render(val);
 }
 
+std::string TplStore::render(const std::string& tpl, const std::string& locale, Json::Value val, const std::vector<std::string>& partials)
+{
+	mustache m = {
+		get(tpl)
+	};
+
+	for(auto& it : partials)
+	{
+		if(exists(it))
+		{
+			m.add_partial(it, get(it));
+		}
+	}
+
+	if(i18n_)
+	{
+		m.add_lambda("i18n", [this,locale](const std::string& key){
+			return i18n_->key(locale,key);
+		});
+	}
+
+	return m.render(val);
+}
+
 std::string TplStore::render(const std::string& tpl, const std::string& json)
 {
 	std::vector<std::string> partials = keys();
@@ -198,6 +267,18 @@ std::string TplStore::render(const std::string& tpl, const std::string& json, co
 {
 	Json::Value val = JSON::parse(json);
 	return render(tpl,val,partials);
+}
+
+std::string TplStore::render(const std::string& tpl, const std::string& locale, const std::string& json)
+{
+	std::vector<std::string> partials = keys();
+	return render(tpl,locale,json,partials);
+}
+ 
+std::string TplStore::render(const std::string& tpl, const std::string& locale, const std::string& json, const std::vector<std::string>& partials)
+{
+	Json::Value val = JSON::parse(json);
+	return render(tpl,locale,val,partials);
 }
 
 //////////////////////////////////////////////////////

@@ -27,6 +27,7 @@ public:
 	mustache( const std::string& tpl);
 
 	void add_partial(const std::string& name, const std::string& tpl);
+	void add_lambda(const std::string& name, std::function<std::string(std::string)>);
 
 	//! \private
 	std::string render(Data& data);
@@ -42,10 +43,15 @@ public:
 	//! render template with data from JSON
 	static std::string render(const std::string& tpl,Json::Value data, const std::map<std::string,Data> partials);
 
+	static std::string render(const std::string& tpl,Data& data, const std::map<std::string,Data> partials,std::map<std::string,std::function<std::string(const std::string&)>> lambdas);
+	//! render template with data from JSON
+	static std::string render(const std::string& tpl,Json::Value data, const std::map<std::string,Data> partials, std::map<std::string,std::function<std::string(const std::string&)>> lambdas);
+
 	//! \private
 	static Data fromJson(Json::Value& data);
 
 private:
+	std::map<std::string,std::function<std::string(const std::string&)>> lambdas_;
 	std::map<std::string,Data> partials_;
 	std::string template_;
 };
@@ -59,6 +65,9 @@ public:
 
 	//! construct empty template store
 	TplStore();
+
+	//! construct empty template store with i18n support
+	TplStore(std::shared_ptr<I18N> i18n) ;
 
 	//! register a stemplate with store by name
 	void register_tpl(const std::string& name, const std::string& tpl);
@@ -77,13 +86,22 @@ public:
 	//! render named template with given data from JSON
 	std::string render(const std::string& tpl, Json::Value val);
 
+	//! render named template with given data from JSON and locale
+	std::string render(const std::string& tpl, const std::string& locale, Json::Value val);
+
 	std::string render(const std::string& tpl, Json::Value val, const std::vector<std::string>& partials);
+	std::string render(const std::string& tpl, const std::string& locale, Json::Value val, const std::vector<std::string>& partials);
 
 	//! \private
+	// same as above, just with JSON proved as string instead of JSON object
 	std::string render(const std::string& tpl, const std::string& json);
 	std::string render(const std::string& tpl, const std::string& json, const std::vector<std::string>& partials);
 
+	std::string render(const std::string& tpl, const std::string& locale, const std::string& json);
+	std::string render(const std::string& tpl, const std::string& locale, const std::string& json, const std::vector<std::string>& partials);
+
 private:
+	std::shared_ptr<I18N> i18n_;
 	std::string path_;
 	std::map<std::string,std::string> templates_;
 };

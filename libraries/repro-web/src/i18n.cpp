@@ -1,4 +1,5 @@
 #include "reproweb/view/i18n.h"
+#include "priohttp/request.h"
 
 namespace reproweb {
 
@@ -32,6 +33,7 @@ std::string I18N::find_locale(std::string locale)
 
     return locale;
 }
+
 
 const std::string& I18N::key(std::string locale, const std::string& k)
 {

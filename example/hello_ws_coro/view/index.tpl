@@ -25,6 +25,7 @@
   <div id="sitedivider"></div>
   <div class="main">
       <h2><!--#i18n key="index.main.headline" --></h2>
+	  --{{#i18n}}index.main.headline{{/i18n}}--
 
       <h5><!--#i18n key="index.main.greeting" --></h5>
       <p><!--#i18n key="index.main.logout" --> 

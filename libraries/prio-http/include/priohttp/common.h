@@ -25,7 +25,7 @@ std::vector<std::string> split(const std::string &s, char delim, std::vector<std
 std::vector<std::string> split(const std::string &s, char delim);
 std::vector<std::string> split(const std::string &s, std::string delim);
 std::vector<std::string> glob (const std::string& f);
-
+bool is_directory(const std::string& path);
 //////////////////////////////////////////////////////////////
 
 std::string real_path( const std::string& str );

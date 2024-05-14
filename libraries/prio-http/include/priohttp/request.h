@@ -59,6 +59,8 @@ public:
     
     std::string host();
     
+	std::string locale();
+	
 protected:
 
     Conversation* con_;
