@@ -212,6 +212,7 @@ std::string TplStore::render(const std::string& tpl, Json::Value val)
 
 std::string TplStore::render(const std::string& tpl, const std::string& locale, Json::Value val)
 {
+std::cout << "tpl-locale-data" << std::endl;
 	std::vector<std::string> partials = keys();
 	return render(tpl,locale,val,partials);
 }
@@ -235,6 +236,8 @@ std::string TplStore::render(const std::string& tpl, Json::Value val, const std:
 
 std::string TplStore::render(const std::string& tpl, const std::string& locale, Json::Value val, const std::vector<std::string>& partials)
 {
+std::cout << "render tpl-locale-data" << std::endl;
+
 	mustache m = {
 		get(tpl)
 	};
@@ -249,7 +252,9 @@ std::string TplStore::render(const std::string& tpl, const std::string& locale, 
 
 	if(i18n_)
 	{
+std::cout << "have i18n_" << std::endl;
 		m.add_lambda("i18n", [this,locale](const std::string& key){
+std::cout << "i18n lambda " << key << " " << locale << " " << i18n_->key(locale,key) << std::endl;		
 			return i18n_->key(locale,key);
 		});
 	}
