@@ -12,13 +12,13 @@ mustache::mustache( const std::string& tpl)
 
 std::string mustache::render(Json::Value data)
 {
-	return render(template_,data,partials_);
+	return render(template_,data,partials_,lambdas_);
 }
 
 
 std::string mustache::render(Data& data)
 {
-	return render(template_,data,partials_);
+	return render(template_,data,partials_,lambdas_);
 }
 
 
