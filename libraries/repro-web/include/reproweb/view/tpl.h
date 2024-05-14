@@ -100,6 +100,10 @@ public:
 	std::string render(const std::string& tpl, const std::string& locale, const std::string& json);
 	std::string render(const std::string& tpl, const std::string& locale, const std::string& json, const std::vector<std::string>& partials);
 
+	std::shared_ptr<I18N> i18n()
+	{
+	    return i18n_;
+	}
 private:
 	std::shared_ptr<I18N> i18n_;
 	std::string path_;
