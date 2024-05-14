@@ -180,9 +180,18 @@ void WebServer::run_config(Json::Value json)
     {
         std::string path = json["view"].asString();
 
-        auto tpls = std::make_shared<TplStore>();
-        tpls->load(path);
-        ctx_.register_static<TplStore>( tpls );
+        if(json.isMember("i18n")
+        {
+            auto tpls = std::make_shared<TplStore>(diy::inject<I18N>(ctx_));
+            tpls->load(path);
+            ctx_.register_static<TplStore>( tpls );
+        }
+        else
+        {
+            auto tpls = std::make_shared<TplStore>();
+            tpls->load(path);
+            ctx_.register_static<TplStore>( tpls );
+        }
     }
 
     if( json.isMember("htdocs"))
