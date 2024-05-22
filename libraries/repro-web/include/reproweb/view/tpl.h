@@ -105,6 +105,9 @@ public:
 	    return i18n_;
 	}
 private:
+
+	void doload(const std::string& base, const std::string& path);
+
 	std::shared_ptr<I18N> i18n_;
 	std::string path_;
 	std::map<std::string,std::string> templates_;

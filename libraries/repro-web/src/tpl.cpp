@@ -176,7 +176,18 @@ bool TplStore::exists(const std::string& name)
 void TplStore::load(const std::string& path)
 {
 	std::string p = path_ + path;
-	p = prio::real_path(p);
+	doload(p,"");
+
+	auto k = keys();
+	for(auto& it : k) 
+	{
+		std::cout << it << std::endl;
+	}
+}
+
+void TplStore::doload(const std::string& base,const std::string& path)
+{
+	std::string p = base + path;
 
 	std::vector<std::string> v = prio::glob(p);
 	for ( std::string s : v )
@@ -184,7 +195,7 @@ void TplStore::load(const std::string& path)
 		std::string fn = p + "/" + s;
 		if( prio::is_directory(fn) )
 		{
-			load(fn);
+			doload(base,path + "/" + s );
 			continue;
 		}
 		std::string f = prio::slurp(fn);
@@ -192,16 +203,19 @@ void TplStore::load(const std::string& path)
 		{
 			continue;
 		}
-		std::string n = s;
-		size_t pos = s.find_last_of(".");
+		std::string n = path + "/" + s;
+		size_t pos = n.find_last_of(".");
 		if ( pos != std::string::npos)
 		{
-			n = s.substr(0,pos);
+			n = n.substr(0,pos);
+		}
+		if(!n.empty() && n[0] == '/')
+		{
+			n = n.substr(1);
 		}
 		register_tpl(n,f);
 	}
 }
-
 
 
 std::string TplStore::render(const std::string& tpl, Json::Value val)

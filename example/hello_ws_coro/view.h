@@ -96,6 +96,7 @@ private:
 
 			std::map<std::string,mustache::Data> partials;
 			partials["header"] = templates_->get("header");
+			partials["partials/header"] = templates_->get("partials/header");
 
 			std::map<std::string,std::function<std::string(const std::string&)>> lambdas;
 

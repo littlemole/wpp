@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-{{>header}}
+{{>partials/header}}
 </head>
 <body>
 
