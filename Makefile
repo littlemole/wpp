@@ -57,7 +57,12 @@ image: devenv ## build docker test image
 clean-image: ## rebuild the docker test image from scratch
 	cd libraries/devenv && make -e -f Makefile clean-image
 	docker build -t $(IMAGE) . --no-cache -fDockerfile --build-arg CXX=$(CXX) --build-arg WITH_DEBUG=$(WITH_DEBUG) --build-arg EVENTLIB=$(BACKEND) --build-arg BASE_IMAGE=$(BASE_IMAGE) --build-arg WITH_TEST=$(WITH_TEST)
-	
+
+tag:    image
+	docker tag $(IMAGE) "docker.oha7.org:5000/wpp_gpp_libevent:latest"
+
+push:   tag
+	docker push "docker.oha7.org:5000/wpp_gpp_libevent:latest"
 		
 bash: rmc image ## run the docker image and open a shell
 	docker run --name $(CONTAINER) -p9876:9876 -v ./libraries:/usr/local/src/wpp/libraries -ti $(IMAGE) bash 
