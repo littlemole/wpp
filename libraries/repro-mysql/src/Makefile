@@ -2,10 +2,10 @@
 DEBUG = -g -DMOL_PROMISE_DEBUG
 release : override DEBUG = -O3 
 
-DEFAULT_OPTS = -std=c++17
+DEFAULT_OPTS = -std=c++20
 
 ifneq ($(CXX),g++)
-DEFAULT_OPTS = $(TS) -std=c++17 -stdlib=libc++ -fcoroutines-ts -D_RESUMABLE_FUNCTIONS_SUPPORTED 
+DEFAULT_OPTS = $(TS) -std=c++20 -stdlib=libc++ -D_RESUMABLE_FUNCTIONS_SUPPORTED 
 endif
 
 MYSQL_INC = $(shell pkg-config mysqlclient --cflags)

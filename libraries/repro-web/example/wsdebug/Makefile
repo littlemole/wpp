@@ -15,11 +15,11 @@ PKG_INC=$(shell pkg-config cryptoneat reprocpp --cflags)
 PKG_LIB=$(shell pkg-config jsoncpp cryptoneat libnghttp2 sqlite3 zlib libcurl hiredis --libs)
 
 # if not g++ we assume clang++
-DEFAULT_LIBS = -stdlib=libc++ -fcoroutines-ts  -lc++abi -std=c++17
-DEFAULT_OPTS = -std=c++17 -stdlib=libc++ -fcoroutines-ts -D_RESUMABLE_FUNCTIONS_SUPPORTED 
+DEFAULT_LIBS = -stdlib=libc++ --lc++abi -std=c++20
+DEFAULT_OPTS = -std=c++20 -stdlib=libc++ -D_RESUMABLE_FUNCTIONS_SUPPORTED 
 
 ifeq ($(CXX),g++)
-DEFAULT_OPTS = -std=c++17 
+DEFAULT_OPTS = -std=c++20
 DEFAULT_LIBS = 
 endif
 
@@ -101,12 +101,12 @@ update-dockerfile:
 	/bin/sed -i "s/FROM .*/FROM ${BASE_IMAGE}/" Dockerfile
 
 build: update-dockerfile ## run the docker image and open a shell
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) docker-compose build
+	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) docker compose build
 
 up: update-dockerfile ## run the docker image and open a shell
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) docker-compose up -d
+	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) docker compose up -d
 
 down: ## stop running docker image, if any
-	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) docker-compose stop
+	CXX=$(CXX) BACKEND=$(BACKEND) BUILDCHAIN=$(BUILDCHAIN) docker compose stop
 	
 .PHONY: build up down update-dockerfile

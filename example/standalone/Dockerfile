@@ -1,12 +1,12 @@
 # This is a comment
-FROM ubuntu:22.04 as build
+FROM ubuntu:24.04 as build
 LABEL author <little.mole@oha7.org>
 
 # std debian dependencies
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  git sudo joe wget netcat psmisc net-tools \
+  git sudo joe wget netcat-traditional psmisc net-tools \
   build-essential g++ pkg-config valgrind \
   libgtest-dev  openssl libssl-dev libevent-dev uuid-dev \
   nghttp2 libnghttp2-dev libcurl4-openssl-dev \

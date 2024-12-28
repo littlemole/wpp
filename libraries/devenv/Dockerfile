@@ -1,11 +1,11 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 LABEL author <little.mole@oha7.org>
 
 # std debian dependencies
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  git sudo joe wget netcat psmisc net-tools \
+  git sudo joe wget netcat-traditional psmisc net-tools \
   build-essential g++ pkg-config valgrind \
   libgtest-dev  openssl libssl-dev libevent-dev uuid-dev \
   nghttp2 libnghttp2-dev libcurl4-openssl-dev \
@@ -13,11 +13,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
   libboost-dev libboost-system-dev zlib1g-dev \
   libmysqlclient-dev sqlite3 libsqlite3-dev \
   libexpat-dev cmake nlohmann-json3-dev libkainjow-mustache-dev
-
-
-# make specific cmake version
-# ADD ./docker/cmake.sh /usr/local/bin/cmake.sh
-# RUN /usr/local/bin/cmake.sh
 
 # depend on compiler
 ARG CXX=g++
@@ -31,15 +26,6 @@ ENV WITH_TEST=${WITH_TEST}
 
 ARG WITH_DEBUG=Off
 ENV WITH_DEBUG=${WITH_DEBUG}
-
-# compile gtest with given compiler
-#ADD ./docker/gtest.sh /usr/local/bin/gtest.sh
-#RUN /usr/local/bin/gtest.sh
-
-# compile jsoncpp with given compiler
-#ADD ./docker/jsoncpp.sh /usr/local/bin/jsoncpp.sh
-#RUN /usr/local/bin/jsoncpp.sh
-
 
 # add little moles build & install helper scripts
 ADD ./docker/build.sh /usr/local/bin/build.sh

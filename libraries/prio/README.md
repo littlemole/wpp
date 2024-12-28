@@ -212,7 +212,7 @@ building with cmake is supported assuming build happens in a dedicated build dir
     cd prio
     mkdir build
     cd build
-    cmake .. -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_CXX_FLAGS="-std=c++14 -stdlib=libc++"
+    cmake .. -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_CXX_FLAGS="-std=c++20 -stdlib=libc++"
     make
     ctest
     sudo make install    
